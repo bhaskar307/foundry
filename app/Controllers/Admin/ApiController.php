@@ -22,11 +22,13 @@ class ApiController extends Common
     public function login()
     {
         $loginDetails = $this->request->getJSON(true);
-        $resp = $this->apiService->login($loginDetails);
+        $resp = $this->apiService->login($loginDetails);   
         if (!$resp[0]) {
             $this->apiError($resp[1], $resp[2], $resp[3]);
         } else {
             $data['user_id'] = $resp[3]['data']['uid'];
+            $data['user_name'] = $resp[3]['data']['name'];
+            $data['user_image'] = $resp[3]['data']['image'];
             $data['user_type'] = USER_TYPE_ADMIN;
             list($auth_token, $auth_cookie) = generateJwtTokenMain($data);
             $this
