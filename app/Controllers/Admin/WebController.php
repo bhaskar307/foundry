@@ -22,7 +22,7 @@ class WebController extends Common
     /** Index */
     public function index()
     {
-        $jwt = $this->request->getCookie(TOKEN_NAME_JWT);
+        $jwt = $this->request->getCookie(ADMIN_JWT_TOKEN);
         if (empty($jwt)) {
             return view('admin/login.php');
         }
@@ -93,7 +93,7 @@ class WebController extends Common
     /** Logout */
     public function logout()
     {
-        $auth_cookie   = deleteJwtToken(TOKEN_NAME_JWT);
+        $auth_cookie   = deleteJwtToken(ADMIN_JWT_TOKEN);
         return redirect()
             ->to(base_url('admin/login'))
             ->setCookie($auth_cookie);

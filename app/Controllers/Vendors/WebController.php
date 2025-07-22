@@ -22,29 +22,29 @@ class WebController extends Common
     /** Index */
     public function index()
     {
-        $jwt = $this->request->getCookie(VENDOR_TOKEN_JWT);
+        $jwt = $this->request->getCookie(VENDOR_JWT_TOKEN);
         
         if (empty($jwt)) {
-            return view('vendors/login.php');
+            return view('vendor/login.php');
         }
         $data = validateJWT($jwt);
         if (!$data) {
-            return view('vendors/login.php');
+            return view('vendor/login.php');
         }
-        return redirect()->to(base_url('vendors/dashboard'));
+        return redirect()->to(base_url('vendor/dashboard'));
     }
 
     /** Dashboard */
     public function dashboard(){ 
         $payload = $this->validateJwtWebTokenVendor();
         if (!$payload) {
-            return redirect()->to(base_url('vendors/login'));
+            return redirect()->to(base_url('vendor/login'));
         }
 
         return
-            view('vendors/templates/header.php') .
-            view('vendors/dashboard.php') .
-            view('vendors/templates/footer.php');
+            view('vendor/templates/header.php') .
+            view('vendor/dashboard.php') .
+            view('vendor/templates/footer.php');
     }
 
     /** Products */
@@ -95,9 +95,9 @@ class WebController extends Common
     /** Logout */
     public function logout()
     {
-        $auth_cookie   = deleteJwtToken(TOKEN_NAME_JWT);
+        $auth_cookie   = deleteJwtToken(VENDOR_JWT_TOKEN);
         return redirect()
-            ->to(base_url('admin/login'))
+            ->to(base_url('vendor/login'))
             ->setCookie($auth_cookie);
     }
 }

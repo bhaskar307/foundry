@@ -60,10 +60,11 @@ class ApiService
         $vendorUid = generateUid();
         // Handle file upload
         $uploadResult = null;
+        $timestamp = timestamp();
         $image_path = '';
         if ($file && $file->isValid() && !$file->hasMoved()) {
 
-            $uploadResult = uploadFile($file, 'vendor', $vendorUid);
+            $uploadResult = uploadFile($file, 'vendor', $timestamp);
             if (isset($uploadResult['error'])) {
                 return [
                     'status'     => 'failed',
@@ -124,12 +125,13 @@ class ApiService
             return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
         }
         $customerUid = $data['customerUid'];
+        $timestamp = timestamp();
         // Handle file upload
         $uploadResult = null;
         $image_path = '';
         if ($file && $file->isValid() && !$file->hasMoved()) {
 
-            $uploadResult = uploadFile($file, 'customer', $customerUid);
+            $uploadResult = uploadFile($file, 'customer', $timestamp);
             if (isset($uploadResult['error'])) {
                 return [
                     'status'     => 'failed',
@@ -267,12 +269,13 @@ class ApiService
             return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
         }
         $vendorUid = generateUid();
+        $timestamp = timestamp();
         // Handle file upload
         $uploadResult = null;
         $image_path = '';
         if ($file && $file->isValid() && !$file->hasMoved()) {
 
-            $uploadResult = uploadFile($file, 'vendor', $vendorUid);
+            $uploadResult = uploadFile($file, 'vendor', $timestamp);
             if (isset($uploadResult['error'])) {
                 return [
                     'status'     => 'failed',
@@ -339,10 +342,11 @@ class ApiService
         $vendorUid = $data['vendorUid'];
         // Handle file upload
         $uploadResult = null;
+        $timestamp = timestamp();
         $image_path = '';
         if ($file && $file->isValid() && !$file->hasMoved()) {
 
-            $uploadResult = uploadFile($file, 'vendor', $vendorUid);
+            $uploadResult = uploadFile($file, 'vendor', $timestamp);
             if (isset($uploadResult['error'])) {
                 return [
                     'status'     => 'failed',

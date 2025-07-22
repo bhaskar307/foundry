@@ -6,7 +6,7 @@
     /** User Details */
     use Config\Services;
     $request = Services::request();
-    $jwt = $request->getCookie(TOKEN_NAME_JWT);
+    $jwt = $request->getCookie(ADMIN_JWT_TOKEN);
     $user_details = validateJWT($jwt);
     /** User Details */
 ?>

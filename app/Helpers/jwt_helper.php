@@ -5,8 +5,8 @@ use Firebase\JWT\Key;
 use CodeIgniter\Cookie\Cookie;
 
 /** Admin */
-if (!function_exists('generateJwtTokenMain')) {
-    function generateJwtTokenMain($data)
+if (!function_exists('generateJwtTokenAdmin')) {
+    function generateJwtTokenAdmin($data)
     {
         $key = getenv('JWT_SECRET');
         $issuedAt = time();
@@ -22,7 +22,7 @@ if (!function_exists('generateJwtTokenMain')) {
 
         $token = JWT::encode($payload, $key, 'HS256');
 
-        $cookie = new Cookie(TOKEN_NAME_JWT, $token, [
+        $cookie = new Cookie(ADMIN_JWT_TOKEN, $token, [
             'expires'  => $expireAt,
             'path'     => "/",
             'domain'   => "",
@@ -78,7 +78,7 @@ if (!function_exists('generateJwtTokenVendor')) {
 
         $token = JWT::encode($payload, $key, 'HS256');
 
-        $cookie = new Cookie(VENDOR_TOKEN_JWT, $token, [
+        $cookie = new Cookie(VENDOR_JWT_TOKEN, $token, [
             'expires'  => $expireAt,
             'path'     => "/",
             'domain'   => "",

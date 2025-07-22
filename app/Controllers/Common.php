@@ -55,7 +55,7 @@ class Common extends BaseController {
     /** Check Admin JWT Tocken */
     public function validateJwtWebToken() 
     {
-        $jwt = $this->request->getCookie(TOKEN_NAME_JWT);
+        $jwt = $this->request->getCookie(ADMIN_JWT_TOKEN);
 
         if (empty($jwt)) {
             return false;
@@ -66,7 +66,7 @@ class Common extends BaseController {
     }
     public function validateJwtApiToken()
     {
-        $jwt  = $this->request->getCookie(TOKEN_NAME_JWT);
+        $jwt  = $this->request->getCookie(ADMIN_JWT_TOKEN);
 
         if (empty($jwt)) {
             $this->apiError(401, 'Unauthorize access', ['auth_token_missing_401']);
@@ -82,11 +82,12 @@ class Common extends BaseController {
             }
         }
     }
+    /** Check Admin JWT Tocken */
 
     /** Check Admin JWT Tocken */
     public function validateJwtWebTokenVendor() 
     {
-        $jwt = $this->request->getCookie(VENDOR_TOKEN_JWT);
+        $jwt = $this->request->getCookie(VENDOR_JWT_TOKEN);
 
         if (empty($jwt)) {
             return false;
@@ -95,4 +96,5 @@ class Common extends BaseController {
         $data = validateJWT($jwt);
         return $data ?: false;
     }
+    /** Check Admin JWT Tocken */
 }

@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 :root {
     --primary-background-color: #0D9488;
   }
@@ -19,6 +20,7 @@ body{
     font-size:15px;
     line-height: 1.3;
     background-color: #F9FAFB;
+    font-family: "Poppins", sans-serif;
 }
 .fw-500{
     font-weight: 500;
@@ -57,10 +59,23 @@ input[type=number] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
+.bg-primary{
+    background-color: #0D9488 !important;
+}
 .btn{
     font-size: 14px;
     font-weight: 600;
     box-shadow: none !important;
+}
+.btn-outline-primary{
+    border-color: #0D9488;
+    color: #AB3D3C;
+    background-color: transparent;
+}
+.btn-outline-primary:hover, .btn-outline-primary:focus{
+    border-color: #0D9488;
+    background-color: #0D9488;
+    color: #fff;
 }
 .btn-primary{
     color: #fff;
@@ -130,7 +145,7 @@ input[type=number] {
     display: grid;
     grid-template-rows: 60px 1fr 61px;
     height: 99.9vh;
-    background-color: #fff;
+    background-color: #38404d;
 }
 .topbar-header {
     background-color: #fff;
@@ -140,6 +155,7 @@ input[type=number] {
     align-items: center;
     justify-content: space-between;
     position: relative;
+    z-index: 10;
 }
 .content-body{
     background-color: #F1F2F6;
@@ -187,7 +203,7 @@ input[type=number] {
 .mainmenu > li > a{
     display: flex;
     align-items: center;
-    color: #6B7280;
+    color: #fff;
     gap: 10px;
     padding: 10px;
     border-radius: 6px;
@@ -195,6 +211,7 @@ input[type=number] {
 }
 .mainmenu > li > a.active, .mainmenu > li:hover > a{
     background-color: #E4FAF8;
+    color: #38404d;
 }
 .mainmenu > li > a > i{
     max-width: 18px;
@@ -225,6 +242,21 @@ input[type=number] {
 }
 .submenu > li:hover > a, .submenu > li > a.active{
     color: #5183ff;
+}
+input[type="date"]{
+    position: relative;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -2px;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    background-size: 18px auto;
+    background-position: 95% center;
 }
 .btnico{
     display: inline-flex;
@@ -303,7 +335,7 @@ input[type=number] {
     color: #1D1C1C;
 }
 .footermnu > li > a.active{
-    color: #2A54C2; 
+    color: #0d9488; 
 }
 .footermnu > li > a > span{
     font-size: 12px;
@@ -615,8 +647,225 @@ input[type=number] {
     opacity: 0;
     cursor: pointer;
 }
-
+.filterfield {
+    width: 31%;
+}
+.filterbutton{
+    width: 7%;
+}
+.filterfield .form-control, .filterfield .form-select{
+    padding: 14px;
+}
+.filterbutton a {
+    padding: 14px 10px !important;
+}
+form .form-control, form .form-select {
+    padding: 14px;
+}
+.form-label {
+    font-weight: 500;
+}
+textarea.form-control {
+    height: 150px;
+    resize: none;
+}
+.activeimg{
+    position: relative;
+    width: 120px;
+}
+.activeimg:after {
+    content: "";
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    position: absolute;
+    right: 8px;
+    bottom: 1px;
+    background-color: #0B9A72;
+    border: #fff 3px solid;
+}
+.bordertabcontent .nav-tabs .nav-link {
+    font-weight: 500;
+    color: #6C757D;
+    padding-bottom: 15px;
+    background-color: transparent;
+    border: 0;
+    border-color: transparent;
+    border-bottom: transparent 2px solid;
+}
+.bordertabcontent .nav-tabs .nav-item.show .nav-link, .bordertabcontent .nav-tabs .nav-link.active {
+    color: #0d9488;
+    background-color: transparent;
+    border: 0;
+    border-color: transparent;
+    border-bottom: #0d9488 2px solid;
+}
+.bordertabcontent .nav-tabs .nav-link:focus, .bordertabcontent .nav-tabs .nav-link:hover {
+    color: #0d9488;
+    background-color: transparent;
+    border: 0;
+    border-color: transparent;
+    border-bottom: #0d9488 2px solid;
+}
+.hoverasvg a:hover svg path{
+  fill: #0d9488;
+}
+.status-badge {
+            background-color: #d4f8e8;
+            color: #198754;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+        .action-link {
+            color: #0d6efd;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .action-link:hover {
+            text-decoration: underline;
+        }
+.lastbooktble th{
+    color: #6B7280;
+}
+.lastbooktble td{
+    padding: 15px;
+}
+.btn-secondery {
+   transition: all 0.5s;
+}
+.btn-secondery:hover {
+   background-color: #ebebeb;
+}
+ .calendar-container {
+            max-width: 100%;
+            margin: auto;
+            text-align: center;
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+ .appointment {
+    display: block;
+    font-size: 15px;
+    padding: 16px;
+    margin-top: 10px;
+    border-radius: 30px;
+}
+        .green { background-color: #d4edda; color: #155724; }
+        .yellow { background-color: #fff3cd; color: #856404; }
+        .red { background-color: #f8d7da; color: #721c24; }
+ .calendertable th {
+    min-width: 200px;
+    width: auto;
+    padding: 20px;
+} 
+tbody#calendarBody td {
+    padding: 20px;
+}
+.calendertabcnt .nav-tabs .nav-link {
+    border: 0;
+    color: #6C757D;
+    padding: 14px 25px;
+    font-weight: 500;
+}
+.nav-link.active {
+    background: #E4FAF8 !important;
+    color: #0D9488 !important;
+    border-radius: 0;
+}
+.nav-link.active svg path {
+    fill: #0D9488 !important;
+}  
+.nav-link.active svg {
+    fill: #0D9488 !important;
+}  
+.calendertabcnt ul#toggleTab {
+    background: #f9fafb;
+    border-radius: 10px;
+    overflow: hidden;
+    gap: 10px;
+}  
+.adrsTag {
+    position: absolute;
+    left: 15px;
+    top: -15px;
+    padding: 5px 15px;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    display: flex;
+    background-color: #26c395;
+    font-size: 12px;
+    color: #fff;
+}
+.minHSelectJquery44px .select2-container .select2-selection--multiple .select2-selection__rendered {
+    display: block;
+    margin: 0;
+    min-height: 44px;
+}
+.input-group .select2-selection{
+    border-radius: 5px 0 0 5px !important;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    font-size: 13px;
+}
+#waitingModal{
+    display: none !important;
+}
+.regCard{
+    width: 100%;
+    max-width: 400px;
+}
+.rounded-30{
+    border-radius: 30px;
+}
+#referredPatientsSuggestions{
+    padding: .3rem 0;
+    min-width: 100%;
+    font-size: 14px;
+}
+  #appointmentModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+  }
+  #appointmentModal form {
+    background: #f6f6f6;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  }
+  #appointmentModal form .form-control, #appointmentModal form .form-select {
+      padding: 0.5rem;
+  }
+  #appointmentModal textarea.form-control {
+    height: auto;
+    resize: inherit;
+  }
+/*==========================================================media query start=========================================================*/
+@media screen and (min-width: 991px) {
+    .col5{
+        width: 20%;
+    }
+}
 @media screen and (max-width: 767px) {
+    .regCard{
+        width: 100%;
+        max-width: 95%;
+    }
     .cProfileNav .nav-link{
         border: none !important;
         border-radius: 10px;

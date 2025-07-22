@@ -30,7 +30,7 @@ class ApiController extends Common
             $data['user_name'] = $resp[3]['data']['name'];
             $data['user_image'] = $resp[3]['data']['image'];
             $data['user_type'] = USER_TYPE_ADMIN;
-            list($auth_token, $auth_cookie) = generateJwtTokenMain($data);
+            list($auth_token, $auth_cookie) = generateJwtTokenAdmin($data);
             $this
                 ->response
                 ->setStatusCode(200)
