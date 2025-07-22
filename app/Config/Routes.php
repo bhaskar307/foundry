@@ -11,7 +11,7 @@ $routes->get('/', 'Home::index');
 $routes->group('admin', ['namespace' => 'App\Controllers\admin'], function ($routes) {
     $routes->get('', 'WebController::index');
     $routes->get('login', 'WebController::index');
-    $routes->post('login', 'WebController::login'); 
+    // $routes->post('login', 'WebController::login'); 
     $routes->get('dashboard', 'WebController::dashboard'); 
     $routes->get('vendors', 'WebController::vendors'); 
     $routes->get('customers', 'WebController::customers'); 
@@ -48,3 +48,7 @@ $routes->group('admin/api', ['namespace' => 'App\Controllers\admin'], function (
     /** Category */
 });
 /** Admin */
+
+if (file_exists(APPPATH . 'Config/VendorRoutes.php')) {
+    require APPPATH . 'Config/VendorRoutes.php';
+}

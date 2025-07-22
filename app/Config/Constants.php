@@ -92,5 +92,7 @@ define('INACTIVE_STATUS', 'inactive');
 define('DELETED_STATUS', 'deleted');
 
 define('USER_TYPE_ADMIN', 'admin');
+define('USER_TYPE_VENDORS', 'vendor');
 define('TOKEN_NAME_JWT', 'jwt_token');
+define('VENDOR_TOKEN_JWT', 'jwt_token_vendor');
 

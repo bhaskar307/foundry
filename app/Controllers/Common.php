@@ -53,7 +53,7 @@ class Common extends BaseController {
     }
 
     /** Check Admin JWT Tocken */
-    public function validateJwtWebToken()
+    public function validateJwtWebToken() 
     {
         $jwt = $this->request->getCookie(TOKEN_NAME_JWT);
 
@@ -81,5 +81,18 @@ class Common extends BaseController {
                 return $data;
             }
         }
+    }
+
+    /** Check Admin JWT Tocken */
+    public function validateJwtWebTokenVendor() 
+    {
+        $jwt = $this->request->getCookie(VENDOR_TOKEN_JWT);
+
+        if (empty($jwt)) {
+            return false;
+        }
+
+        $data = validateJWT($jwt);
+        return $data ?: false;
     }
 }

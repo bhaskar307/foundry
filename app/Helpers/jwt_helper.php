@@ -4,6 +4,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use CodeIgniter\Cookie\Cookie;
 
+/** Admin */
 if (!function_exists('generateJwtTokenMain')) {
     function generateJwtTokenMain($data)
     {
@@ -33,7 +34,6 @@ if (!function_exists('generateJwtTokenMain')) {
         return [$token, $cookie];
     }
 }
-
 if (!function_exists('validateJWT')) {
     function validateJWT($token)
     {
@@ -45,7 +45,6 @@ if (!function_exists('validateJWT')) {
         }
     }
 }
-
 if (!function_exists('deleteJwtToken')) {
     function deleteJwtToken($name)
     {
@@ -59,3 +58,36 @@ if (!function_exists('deleteJwtToken')) {
         ]);
     }
 }
+/** Admin */
+
+/** Vendors */
+if (!function_exists('generateJwtTokenVendor')) {
+    function generateJwtTokenVendor($data)
+    {
+        $key = getenv('JWT_SECRET');
+        $issuedAt = time();
+        $expireAt = $issuedAt + 360000; // 100 hours
+
+        $payload = array_merge(
+            [
+                'iat'       => $issuedAt,
+                'exp'       => $expireAt
+            ],
+            $data 
+        );
+
+        $token = JWT::encode($payload, $key, 'HS256');
+
+        $cookie = new Cookie(VENDOR_TOKEN_JWT, $token, [
+            'expires'  => $expireAt,
+            'path'     => "/",
+            'domain'   => "",
+            'secure'   => false,
+            'httponly' => false,
+            // 'samesite' => 'none',
+        ]);
+
+        return [$token, $cookie];
+    }
+}
+/** Vendors */
