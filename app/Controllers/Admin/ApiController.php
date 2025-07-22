@@ -88,7 +88,7 @@ class ApiController extends Common
             $this->apiSuccess($resp[1], $resp[2], $resp[3]);
         }
     }
-    public function updateCustomerStatus() 
+    public function updateCustomerStatus()  
     {
         $payload = $this->validateJwtApiToken();
         
@@ -168,4 +168,67 @@ class ApiController extends Common
         }
     }
     /** Vendor Section */
+
+    /** Category Section */
+    public function createdCategory()
+    {
+        $payload = $this->validateJwtApiToken();
+        $categoryDetails = $this->request->getPost();
+        $imageFile = $this->request->getFile('image');
+        
+        $categoryDetails['user_id'] = $payload->user_id;
+        $categoryDetails['user_type'] = $payload->user_type;
+        
+        $resp = $this->apiService->createdCategory($categoryDetails,$imageFile);
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
+    public function updateCategory() 
+    {
+        $payload = $this->validateJwtApiToken();
+        
+        $categoryDetails = $this->request->getPost();
+        $imageFile = $this->request->getFile('image');
+        $categoryDetails['user_id'] = $payload->user_id;
+        $categoryDetails['user_type'] = $payload->user_type;
+
+        $resp = $this->apiService->updateCategory($categoryDetails,$imageFile);
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
+    public function deleteCategory()
+    {
+        $payload = $this->validateJwtApiToken();
+        
+        $categoryDetails = $this->request->getPost();
+        $categoryDetails['user_id'] = $payload->user_id;
+        $categoryDetails['user_type'] = $payload->user_type;
+        
+        $resp = $this->apiService->deleteCategory($categoryDetails);
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
+    public function updateCategoryStatus()  
+    {
+        $payload = $this->validateJwtApiToken();
+        
+        $categoryDetails = $this->request->getJSON(true);
+        $categoryDetails['user_id'] = $payload->user_id;
+        $categoryDetails['user_type'] = $payload->user_type;  
+        $resp = $this->apiService->updateCategoryStatus($categoryDetails);
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
 }

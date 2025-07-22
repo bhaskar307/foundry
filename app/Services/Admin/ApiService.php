@@ -111,7 +111,7 @@ class ApiService
             return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
         }
     }
-    public function updateCustomer($data,$file)   
+    public function updateCustomer($data,$file)    
     {
         $validationRules = [
             'name'      => 'required',
@@ -466,6 +466,203 @@ class ApiService
         }
     }
     /** Vendor Section */
+
+    /** Category Section */
+    public function createdCategory($data,$file)  
+    {
+        $validationRules = [
+            'name'       => 'required'
+        ];
+        $validationResult = validateData($data, $validationRules);
+        if (!$validationResult['success']) {
+            return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
+        }
+        $categoryUid = generateUid();
+        $timestamp = timestamp();
+
+        // Handle file upload
+        $uploadResult = null;
+        $image_path = null;
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+
+            $uploadResult = uploadFile($file, 'category', $timestamp);
+            if (isset($uploadResult['error'])) {
+                return [
+                    'status'     => 'failed',
+                    'statusCode' => 400,
+                    'message'    => 'File upload failed',
+                    'errors'     => ['Vendor Image' => $uploadResult['error']],
+                ];
+            }
+            $image_path = $uploadResult['path'];
+        }
+
+        try {
+            $addData = [
+                'uid'        => $categoryUid,
+                'title'      => $data['name'],
+                'image'      => $image_path,
+                'path'       => $data['category'],
+                'created_by' => $data['user_id'] ?? NULL,
+            ];
+            $success = $this->commonModel->insertData(CATEGORY_TABLE, $addData);
+            if (!$success) {
+                return [
+                    false,
+                    500,
+                    'Category Insert failed.',
+                    ['error' => 'Database insert failed']
+                ];
+            }
+
+            return [
+                true,
+                200,
+                'Category Insert successfully.',
+                ['data' => $success]
+            ];
+        } catch (\Throwable $e) {
+            return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
+        }
+    }
+    public function updateCategory($data,$file)    
+    {
+        $validationRules = [
+            'name'      => 'required'
+        ];
+        $validationResult = validateData($data, $validationRules);
+        if (!$validationResult['success']) {
+            return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
+        }
+        $categoryUid = $data['categoryUid'];
+        $timestamp = timestamp();
+        // Handle file upload
+        $uploadResult = null;
+        $image_path = '';
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+
+            $uploadResult = uploadFile($file, 'category', $timestamp);
+            if (isset($uploadResult['error'])) {
+                return [
+                    'status'     => 'failed',
+                    'statusCode' => 400,
+                    'message'    => 'File upload failed',
+                    'errors'     => ['customer Image' => $uploadResult['error']],
+                ];
+            }
+            $image_path = $uploadResult['path'];
+        }
+        
+        try {
+            $updateData = [
+                'title'      => $data['name'],
+                'path'       => $data['path'],
+                'updated_by' => $data['user_id'] ?? NULL,
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+            if(!empty($image_path)){
+                $updateData['image'] = $image_path;
+            }   
+           
+            $success = $this->commonModel->UpdateData(CATEGORY_TABLE, ['uid' => $categoryUid], $updateData);
+            if (!$success) {
+                return [
+                    false,
+                    500,
+                    'Category Details Update failed.',
+                    ['error' => 'Database update failed']
+                ];
+            }
+
+            return [
+                true,
+                200,
+                'Category details update successfully.',
+                ['data' => $success]
+            ];
+        } catch (\Throwable $e) {
+            return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
+        }
+    }
+    public function deleteCategory($data)   
+    {
+        $validationRules = [
+            'uid'      => 'required'
+        ];
+        $validationResult = validateData($data, $validationRules);
+        if (!$validationResult['success']) {
+            return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
+        }
+        $categoryUid = $data['uid'];
+        
+        try {
+            $updateData = [
+                'status'     => DELETED_STATUS,
+                'updated_by' => $data['user_id'] ?? NULL,
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+
+            $success = $this->commonModel->UpdateData(CATEGORY_TABLE, ['uid' => $categoryUid], $updateData);
+            if (!$success) {
+                return [
+                    false,
+                    500,
+                    'Category Details Deleted failed.',
+                    ['error' => 'Database Deleted failed']
+                ];
+            }
+
+            return [
+                true,
+                200,
+                'Category details Deleted successfully.',
+                ['data' => $success]
+            ];
+        } catch (\Throwable $e) {
+            return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
+        }
+    }
+
+    public function updateCategoryStatus($data)   
+    {
+        $validationRules = [
+            'status'     => 'required',
+        ];
+        $validationResult = validateData($data, $validationRules);
+        if (!$validationResult['success']) {
+            return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
+        }
+        $categoryUid = $data['uid'];
+        
+        try {
+            $updateData = [
+                'status'      => $data['status'],
+                'updated_by' => $data['user_id'] ?? NULL,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]; 
+           
+            $success = $this->commonModel->UpdateData(CATEGORY_TABLE, ['uid' => $categoryUid], $updateData);
+            if (!$success) {
+                return [
+                    false,
+                    500,
+                    'Category Details Update failed.',
+                    ['error' => 'Database update failed']
+                ];
+            }
+
+            return [
+                true,
+                200,
+                'Category details update successfully.',
+                ['data' => $success]
+            ];
+        } catch (\Throwable $e) {
+            return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
+        }
+    }
+    /** Category Section */
+
 
     private function sendVendorPasswordToEmail($name,$email, $plainPassword)
     {

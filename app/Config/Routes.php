@@ -15,6 +15,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\admin'], function ($rou
     $routes->get('dashboard', 'WebController::dashboard'); 
     $routes->get('vendors', 'WebController::vendors'); 
     $routes->get('customers', 'WebController::customers'); 
+    $routes->get('category', 'WebController::category'); 
     $routes->get('logout', 'WebController::logout'); 
 });
 
@@ -36,5 +37,14 @@ $routes->group('admin/api', ['namespace' => 'App\Controllers\admin'], function (
     $routes->post('vendor-update-status', 'ApiController::updateVendorStatus');
     $routes->post('delete-vendor', 'ApiController::deleteVendor');
     /** Vendor */
+
+    /** Category */
+    $routes->group("category", function ($routes) {
+        $routes->post('created', 'ApiController::createdCategory'); 
+        $routes->post('update', 'ApiController::updateCategory'); 
+        $routes->post('update-status', 'ApiController::updateCategoryStatus'); 
+        $routes->post('delete', 'ApiController::deleteCategory');
+    });
+    /** Category */
 });
 /** Admin */

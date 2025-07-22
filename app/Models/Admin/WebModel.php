@@ -6,18 +6,17 @@ use CodeIgniter\Model;
 
 class WebModel extends Model {
 
-    public function test($email, $password)   
+    public function getCategoryData()
     {
         $db = \Config\Database::connect();
-        $builder = $db->table(ADMIN_TABLE);
-        $loginDetails = $builder
-            ->select('*')
-            ->where('email', $email)
-            ->where('password', $password)
-            ->where('status', ACTIVE_STATUS)
-            ->get()
-            ->getRowArray();
-        return $loginDetails;
+
+        $builder = $db->table('category c'); 
+        $builder->select('c.*, cp.title AS path_name');
+        $builder->join('category cp', 'cp.uid = c.path', 'left'); 
+        $builder->where('c.status !=', DELETED_STATUS);    
+        $result = $builder->get()->getResultArray();
+
+        return $result;
     }
 
     

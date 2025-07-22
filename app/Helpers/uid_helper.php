@@ -8,3 +8,10 @@ if (!function_exists('generateUid')) {
         return strtoupper($uid);
     }
 }
+if (!function_exists('timestamp')) {
+    function timestamp()
+    {
+        return date('Ymd_His');
+    }
+}
+
