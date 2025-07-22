@@ -21,6 +21,9 @@ Options -Indexes
 	RewriteCond %{REQUEST_URI} (.+)/$
 	RewriteRule ^ %1 [L,R=301]
 
+	RewriteCond %{REQUEST_URI} ^/vendor
+	RewriteRule ^vendor(/.*)?$ index.php/$1 [L]
+
 	# Rewrite "www.example.com -> example.com"
 	RewriteCond %{HTTPS} !=on
 	RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
