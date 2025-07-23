@@ -150,7 +150,7 @@
             <button class="headeraccbtn gap-2 ps-md-2 pe-md-3 py-md-1 p-0" data-bs-toggle="dropdown" aria-expanded="false">
                 <div>
                     <?php if(empty($user_details->user_image)){ ?>
-                        <img src="<?php echo base_url('assets/clinic/images/no_image.png')?>" alt="avatar" width="36" height="36" class="rounded-circle">
+                        <img src="<?php echo base_url('assets/admin/images/no_image.png')?>" alt="avatar" width="36" height="36" class="rounded-circle">
                     <?php }else{ ?>
                         <img src="<?php echo base_url($user_details->user_image)?>" alt="avatar" width="36" height="36" class="rounded-circle">
                     <?php } ?>

@@ -57,9 +57,9 @@ class WebController extends Common
         //$resp['resp'] = $this->commonModel->getAllData(VENDOR_TABLE,['status !=' => DELETED_STATUS]);
         $resp['resp'] = '';
         return
-            view('vendors/templates/header.php').
-            view('vendors/products.php',$resp).
-            view('vendors/templates/footer.php');
+            view('vendor/templates/header.php').
+            view('vendor/products.php',$resp).
+            view('vendor/templates/footer.php');
     }
 
     /** customers */
