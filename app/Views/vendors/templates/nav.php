@@ -167,7 +167,7 @@
                 </div>
             </button>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">Account</a></li>
+                <li><a class="dropdown-item" href="<?= base_url('vendor/profile') ?>">Profile</a></li>
                 <li><a class="dropdown-item" href="<?= base_url('vendor/change-password') ?>">Change Password</a></li>
                 <li><a class="dropdown-item" href="<?= base_url('vendor/logout') ?>">Logout</a></li>
             </ul>

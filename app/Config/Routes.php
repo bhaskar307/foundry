@@ -7,7 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 /** Admin */
-$routes->group('admin', ['namespace' => 'App\Controllers\admin'], function ($routes) {
+$routes->group('admin', ['namespace' => 'App\Controllers\Admin'], function ($routes) {
     $routes->get('', 'WebController::index');
     $routes->get('login', 'WebController::index');
     // $routes->post('login', 'WebController::login'); 
@@ -18,9 +18,9 @@ $routes->group('admin', ['namespace' => 'App\Controllers\admin'], function ($rou
     $routes->get('products', 'WebController::products'); 
     $routes->get('change-password', 'WebController::changePassword'); 
     $routes->get('logout', 'WebController::logout'); 
-});
+});  
 
-$routes->group('admin/api', ['namespace' => 'App\Controllers\admin'], function ($routes) {
+$routes->group('admin/api', ['namespace' => 'App\Controllers\Admin'], function ($routes) {
     $routes->post('login', 'ApiController::login'); 
     $routes->post('change-password', 'ApiController::changePassword'); 
     

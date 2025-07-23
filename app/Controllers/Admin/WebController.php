@@ -104,6 +104,7 @@ class WebController extends Common
             view('admin/templates/footer.php');
     }
 
+    
     /** Change Password */
     public function changePassword(){  
         $payload = $this->validateJwtWebToken();

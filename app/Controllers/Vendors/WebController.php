@@ -73,6 +73,23 @@ class WebController extends Common
             view('vendors/templates/footer.php');
     }
 
+    /** Profile */
+    public function profile(){  
+        $payload = $this->validateJwtWebTokenVendor();
+        if (!$payload) {
+            return redirect()->to(base_url('vendors/login'));
+        }
+        //$resp['resp'] = $this->commonModel->getSingleData(VENDOR_TABLE,['uid' => $payload->user_id,'status !=' => DELETED_STATUS]);
+        echo '<pre>';
+        print_r($payload);
+        die;
+        return
+            view('vendors/templates/header.php').
+            view('vendors/profile.php').
+            view('vendors/templates/footer.php');
+    }
+
+
     /** Logout */
     public function logout()
     {

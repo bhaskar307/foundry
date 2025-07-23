@@ -3,7 +3,10 @@
 namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
-
+use CodeIgniter\Session\Handlers\FileHandler;
+function findUrl(){
+    return (isset($_SERVER['HTTPS']) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . "/";
+}
 class App extends BaseConfig
 {
     /**
@@ -16,7 +19,8 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'http://localhost/foundry';
+    //public string $baseURL = 'http://localhost/foundry';
+    public string $baseURL = 'https://devs.v-xplore.com/foundry/';
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.

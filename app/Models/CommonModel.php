@@ -29,4 +29,17 @@ class CommonModel extends Model {
         $builder->where($whereArray);
         return $query   = $builder->get()->getResultArray();
     }
+    public function getSingleData($tableName, $whereArray, $selectFields = null)
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table($tableName);
+
+        if (!is_null($selectFields) && $selectFields != "") {
+            $builder->select($selectFields);
+        }
+
+        $builder->where($whereArray);
+
+        return $builder->get()->getRowArray(); // Returns only 1 row
+    }
 }
