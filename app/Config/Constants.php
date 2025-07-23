@@ -84,6 +84,7 @@ define('ADMIN_TABLE', 'admin');
 define('VENDOR_TABLE', 'vendor');
 define('CUSTOMER_TABLE', 'customer');
 define('CATEGORY_TABLE', 'category');
+define('PRODUCT_TABLE', 'product');
 
 
 ////////////////////

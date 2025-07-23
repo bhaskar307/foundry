@@ -18,7 +18,7 @@ class ApiService
         $this->commonModel = new CommonModel();
     }
 
-
+    /** Login */
     public function login($data) 
     {
         $validationRules = [
@@ -42,6 +42,7 @@ class ApiService
             return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
         }
     }
+    /** Login */
 
     /** Customer Section */
     public function createdCustomer($data,$file)  
@@ -667,6 +668,84 @@ class ApiService
     }
     /** Category Section */
 
+    /** Product Section */
+    public function updateProductStatus($data)   
+    {
+        $validationRules = [
+            'status'     => 'required',
+        ];
+        $validationResult = validateData($data, $validationRules);
+        if (!$validationResult['success']) {
+            return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
+        }
+        $productUid = $data['uid'];
+        
+        try {
+            $updateData = [
+                'status'      => $data['status'],
+                'updated_by' => $data['user_id'] ?? NULL,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]; 
+           
+            $success = $this->commonModel->UpdateData(PRODUCT_TABLE, ['uid' => $productUid], $updateData);
+            if (!$success) {
+                return [
+                    false,
+                    500,
+                    'pproduct Status Update failed.',
+                    ['error' => 'Database update failed']
+                ];
+            }
+
+            return [
+                true,
+                200,
+                'pproduct Status update successfully.',
+                ['data' => $success]
+            ];
+        } catch (\Throwable $e) {
+            return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
+        }
+    }
+    public function deleteProduct($data)   
+    {
+        $validationRules = [
+            'uid'      => 'required'
+        ];
+        $validationResult = validateData($data, $validationRules);
+        if (!$validationResult['success']) {
+            return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
+        }
+        $productUid = $data['uid'];
+        
+        try {
+            $updateData = [
+                'status'     => DELETED_STATUS,
+                'updated_by' => $data['user_id'] ?? NULL,
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+
+            $success = $this->commonModel->UpdateData(PRODUCT_TABLE, ['uid' => $productUid], $updateData);
+            if (!$success) {
+                return [
+                    false,
+                    500,
+                    'Product Details Deleted failed.',
+                    ['error' => 'Database Deleted failed']
+                ];
+            }
+
+            return [
+                true,
+                200,
+                'Product details Deleted successfully.',
+                ['data' => $success]
+            ];
+        } catch (\Throwable $e) {
+            return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
+        }
+    }
+    /** Product Section */
 
     private function sendVendorPasswordToEmail($name,$email, $plainPassword)
     {

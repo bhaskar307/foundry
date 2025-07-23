@@ -231,4 +231,37 @@ class ApiController extends Common
             $this->apiSuccess($resp[1], $resp[2], $resp[3]);
         }
     }
+    /** Category Section */
+
+    /** Product Section */
+    public function deleteProduct()
+    {
+        $payload = $this->validateJwtApiToken();
+        
+        $productDetails = $this->request->getPost();
+        $productDetails['user_id'] = $payload->user_id;
+        $productDetails['user_type'] = $payload->user_type;
+        
+        $resp = $this->apiService->deleteProduct($productDetails);
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
+    public function updateProductStatus()  
+    {
+        $payload = $this->validateJwtApiToken();
+        
+        $productDetails = $this->request->getJSON(true);
+        $productDetails['user_id'] = $payload->user_id;
+        $productDetails['user_type'] = $payload->user_type;  
+        $resp = $this->apiService->updateProductStatus($productDetails);
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
+    /** Product Section */
 }

@@ -20,9 +20,9 @@ class WebService
         //$this->commonModel = new Common_model_new();
     }
 
-    public function getCategoryData()  
+    public function getProductsDetails()  
     {
-        $data = $this->webModel->getCategoryData();
+        $data = $this->webModel->getProductsDetails();
         return $data;
     }
     

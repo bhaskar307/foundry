@@ -25,26 +25,26 @@ class WebController extends Common
         $jwt = $this->request->getCookie(VENDOR_JWT_TOKEN);
         
         if (empty($jwt)) {
-            return view('vendor/login.php');
+            return view('vendors/login.php');
         }
         $data = validateJWT($jwt);
         if (!$data) {
-            return view('vendor/login.php');
+            return view('vendors/login.php');
         }
-        return redirect()->to(base_url('vendor/dashboard'));
+        return redirect()->to(base_url('vendors/dashboard'));
     }
 
     /** Dashboard */
     public function dashboard(){ 
         $payload = $this->validateJwtWebTokenVendor();
         if (!$payload) {
-            return redirect()->to(base_url('vendor/login'));
+            return redirect()->to(base_url('vendors/login'));
         }
 
         return
-            view('vendor/templates/header.php') .
-            view('vendor/dashboard.php') .
-            view('vendor/templates/footer.php');
+            view('vendors/templates/header.php') .
+            view('vendors/dashboard.php') .
+            view('vendors/templates/footer.php');
     }
 
     /** Products */
@@ -53,13 +53,12 @@ class WebController extends Common
         if (!$payload) {
             return redirect()->to(base_url('vendors/login'));
         }
-
-        //$resp['resp'] = $this->commonModel->getAllData(VENDOR_TABLE,['status !=' => DELETED_STATUS]);
-        $resp['resp'] = '';
+        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status' => ACTIVE_STATUS]);
+        $resp['resp'] = $this->webService->getProductsDetails();
         return
-            view('vendor/templates/header.php').
-            view('vendor/products.php',$resp).
-            view('vendor/templates/footer.php');
+            view('vendors/templates/header.php').
+            view('vendors/products.php',$resp).
+            view('vendors/templates/footer.php');
     }
 
     /** customers */

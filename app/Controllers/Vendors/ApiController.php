@@ -40,62 +40,62 @@ class ApiController extends Common
         }
     }
 
-    /** Customer */
-    public function createdCustomer()
+
+    /** Product */
+    public function createdProduct()
     {
-        $payload = $this->validateJwtApiToken();
+        $payload = $this->validateJwtApiTokenVendor();
         
-        $customerDetails = $this->request->getPost();
+        $productDetails = $this->request->getPost();
         $imageFile = $this->request->getFile('image');
-        $customerDetails['user_id'] = $payload->user_id;
-        $customerDetails['user_type'] = $payload->user_type;
-        
-        $resp = $this->apiService->createdCustomer($customerDetails,$imageFile);
+        $productDetails['user_id'] = $payload->user_id;
+        $productDetails['user_type'] = $payload->user_type;
+        $resp = $this->apiService->createdProduct($productDetails,$imageFile);
         if (!$resp[0]) {
             $this->apiError($resp[1], $resp[2], $resp[3]);
         } else {
             $this->apiSuccess($resp[1], $resp[2], $resp[3]);
         }
     }
-    public function updateCustomer() 
+    public function updateProduct() 
     {
-        $payload = $this->validateJwtApiToken();
+        $payload = $this->validateJwtApiTokenVendor();
         
-        $customerDetails = $this->request->getPost();
+        $productDetails = $this->request->getPost();
         $imageFile = $this->request->getFile('image');
-        $customerDetails['user_id'] = $payload->user_id;
-        $customerDetails['user_type'] = $payload->user_type;
+        $productDetails['user_id'] = $payload->user_id;
+        $productDetails['user_type'] = $payload->user_type;
         
-        $resp = $this->apiService->updateCustomer($customerDetails,$imageFile);
+        $resp = $this->apiService->updateProduct($productDetails,$imageFile);
         if (!$resp[0]) {
             $this->apiError($resp[1], $resp[2], $resp[3]);
         } else {
             $this->apiSuccess($resp[1], $resp[2], $resp[3]);
         }
     }
-    public function deleteCustomer()
+    public function deleteProduct()
     {
-        $payload = $this->validateJwtApiToken();
+        $payload = $this->validateJwtApiTokenVendor();
         
-        $customerDetails = $this->request->getPost();
-        $customerDetails['user_id'] = $payload->user_id;
-        $customerDetails['user_type'] = $payload->user_type;
+        $productDetails = $this->request->getPost();
+        $productDetails['user_id'] = $payload->user_id;
+        $productDetails['user_type'] = $payload->user_type;
         
-        $resp = $this->apiService->deleteCustomer($customerDetails);
+        $resp = $this->apiService->deleteProduct($productDetails);
         if (!$resp[0]) {
             $this->apiError($resp[1], $resp[2], $resp[3]);
         } else {
             $this->apiSuccess($resp[1], $resp[2], $resp[3]);
         }
     }
-    public function updateCustomerStatus()  
+    public function updateProductStatus()  
     {
-        $payload = $this->validateJwtApiToken();
+        $payload = $this->validateJwtApiTokenVendor();
         
-        $customerDetails = $this->request->getJSON(true);
-        $customerDetails['user_id'] = $payload->user_id;
-        $customerDetails['user_type'] = $payload->user_type;  
-        $resp = $this->apiService->updateCustomerStatus($customerDetails);
+        $productDetails = $this->request->getJSON(true);
+        $productDetails['user_id'] = $payload->user_id;
+        $productDetails['user_type'] = $payload->user_type;  
+        $resp = $this->apiService->updateProductStatus($productDetails);
         if (!$resp[0]) {
             $this->apiError($resp[1], $resp[2], $resp[3]);
         } else {

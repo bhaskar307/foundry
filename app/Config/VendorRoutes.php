@@ -16,8 +16,16 @@ $routes->group('vendor', ['namespace' => 'App\Controllers\vendors'], function ($
     $routes->get('logout', 'WebController::logout'); 
 });
 
-$routes->group('vendors/api', ['namespace' => 'App\Controllers\vendors'], function ($routes) {
+$routes->group('vendor/api', ['namespace' => 'App\Controllers\vendors'], function ($routes) {
     $routes->post('login', 'ApiController::login'); 
+    /** Product */
+    $routes->group("product", function ($routes) {
+        $routes->post('created', 'ApiController::createdProduct'); 
+        $routes->post('update', 'ApiController::updateProduct'); 
+        $routes->post('update-status', 'ApiController::updateProductStatus'); 
+        $routes->post('delete', 'ApiController::deleteProduct');
+    });
+    /** Product */
 });
 /** Vendor */
 

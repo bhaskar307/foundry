@@ -90,6 +90,20 @@ class WebController extends Common
             view('admin/templates/footer.php');
     }
 
+    /** Products */
+    public function products(){ 
+        $payload = $this->validateJwtWebToken();
+        if (!$payload) {
+            return redirect()->to(base_url('admin/login'));
+        }
+        $resp['resp'] = $this->webService->getProductsDetails();
+        
+        return
+            view('admin/templates/header.php').
+            view('admin/products.php',$resp).
+            view('admin/templates/footer.php');
+    }
+
     /** Logout */
     public function logout()
     {

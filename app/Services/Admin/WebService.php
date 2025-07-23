@@ -25,5 +25,12 @@ class WebService
         $data = $this->webModel->getCategoryData();
         return $data;
     }
-    
+
+    /** Get Product Details */
+    public function getProductsDetails()  
+    {
+        $data = $this->webModel->getProductsDetails();
+        return $data;
+    }
+    /** Get Product Details */    
 }
