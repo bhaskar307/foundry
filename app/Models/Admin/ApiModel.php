@@ -6,14 +6,13 @@ use CodeIgniter\Model;
 
 class ApiModel extends Model {
 
-    public function checkAdminLogin($email, $password)   
+    public function checkAdminLogin($email)   
     {
         $db = \Config\Database::connect();
         $builder = $db->table(ADMIN_TABLE);
         $loginDetails = $builder
             ->select('*')
             ->where('email', $email)
-            ->where('password', $password)
             ->where('status', ACTIVE_STATUS)
             ->get()
             ->getRowArray();

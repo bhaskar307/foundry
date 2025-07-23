@@ -13,11 +13,13 @@ $routes->group('vendor', ['namespace' => 'App\Controllers\vendors'], function ($
     $routes->get('login', 'WebController::index');
     $routes->get('dashboard', 'WebController::dashboard'); 
     $routes->get('products', 'WebController::products'); 
+    $routes->get('change-password', 'WebController::changePassword'); 
     $routes->get('logout', 'WebController::logout'); 
 });
 
 $routes->group('vendor/api', ['namespace' => 'App\Controllers\vendors'], function ($routes) {
     $routes->post('login', 'ApiController::login'); 
+    $routes->post('change-password', 'ApiController::changePassword'); 
     /** Product */
     $routes->group("product", function ($routes) {
         $routes->post('created', 'ApiController::createdProduct'); 

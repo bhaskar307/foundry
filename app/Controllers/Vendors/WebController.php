@@ -61,34 +61,16 @@ class WebController extends Common
             view('vendors/templates/footer.php');
     }
 
-    /** customers */
-    public function customers(){  
-        $payload = $this->validateJwtWebToken();
+    /** Change Password */
+    public function changePassword(){  
+        $payload = $this->validateJwtWebTokenVendor();
         if (!$payload) {
-            return redirect()->to(base_url('admin/login'));
+            return redirect()->to(base_url('vendors/login'));
         }
-
-        $resp['resp'] = $this->commonModel->getAllData(CUSTOMER_TABLE,['status !=' => DELETED_STATUS]);
         return
-            view('admin/templates/header.php').
-            view('admin/customer.php',$resp).
-            view('admin/templates/footer.php');
-    }
-
-    /** category */
-    public function category(){  
-        $payload = $this->validateJwtWebToken();
-        if (!$payload) {
-            return redirect()->to(base_url('admin/login'));
-        }
-
-        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status' => ACTIVE_STATUS]);
-        //$resp['resp'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status !=' => DELETED_STATUS]);
-        $resp['resp'] = $this->webService->getCategoryData();
-        return
-            view('admin/templates/header.php').
-            view('admin/category.php',$resp).
-            view('admin/templates/footer.php');
+            view('vendors/templates/header.php').
+            view('vendors/change_password.php').
+            view('vendors/templates/footer.php');
     }
 
     /** Logout */

@@ -264,4 +264,22 @@ class ApiController extends Common
         }
     }
     /** Product Section */
+
+    /** Change Password */
+    public function changePassword()  
+    {
+        $payload = $this->validateJwtApiToken();
+        
+        $adminDetails = $this->request->getPost();
+        $adminDetails['user_id'] = $payload->user_id;
+        $adminDetails['user_type'] = $payload->user_type;  
+
+        $resp = $this->apiService->updatePassword($adminDetails);
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
+    /** Change Password */
 }

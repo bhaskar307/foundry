@@ -31,11 +31,16 @@ class ApiService
         }
         
         try {
-            $success = $this->apiModel->checkAdminLogin($data['email'], $data['password']);
-
+            $success = $this->apiModel->checkAdminLogin($data['email']);
             if (!$success) {
-                return [false, 401, 'Invalid email or password', ['invalid_credentials']];
+                return [false, 401, 'Invalid email', ['invalid_credentials']];
             }
+
+            $plainPassword = $data['password']; 
+            $hashedPassword = $success['password'];
+            if (!password_verify($plainPassword, $hashedPassword)) {
+                return [false, 401, 'Invalid Password', ['invalid_credentials']];
+            } 
 
             return [true, 200, "Login successfully", ["data" => $success]];
         } catch (\Throwable $e) {
@@ -746,6 +751,49 @@ class ApiService
         }
     }
     /** Product Section */
+
+    /** Update Password */
+    public function updatePassword($data)   
+    {
+        $validationRules = [
+            'password'     => 'required',
+        ];
+        $validationResult = validateData($data, $validationRules);
+        if (!$validationResult['success']) {
+            return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
+        }
+        $adminUid = $data['user_id'];
+        
+        try {
+            $plainPassword = $data['password'];
+            $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
+            $updateData = [
+                'password'      => $hashedPassword,
+                'updated_by'    => $data['user_id'] ?? NULL,
+                'updated_at'    => date('Y-m-d H:i:s')
+            ]; 
+           
+            $success = $this->commonModel->UpdateData(ADMIN_TABLE, ['uid' => $adminUid], $updateData);
+            if (!$success) {
+                return [
+                    false,
+                    500,
+                    'Password Update failed.',
+                    ['error' => 'Database update failed']
+                ];
+            }
+
+            return [
+                true,
+                200,
+                'Password update successfully.',
+                ['data' => $success]
+            ];
+        } catch (\Throwable $e) {
+            return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
+        }
+    }
+    /** Update Password */
 
     private function sendVendorPasswordToEmail($name,$email, $plainPassword)
     {

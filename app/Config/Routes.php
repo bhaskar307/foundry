@@ -16,12 +16,14 @@ $routes->group('admin', ['namespace' => 'App\Controllers\admin'], function ($rou
     $routes->get('customers', 'WebController::customers'); 
     $routes->get('category', 'WebController::category'); 
     $routes->get('products', 'WebController::products'); 
+    $routes->get('change-password', 'WebController::changePassword'); 
     $routes->get('logout', 'WebController::logout'); 
 });
 
 $routes->group('admin/api', ['namespace' => 'App\Controllers\admin'], function ($routes) {
     $routes->post('login', 'ApiController::login'); 
-
+    $routes->post('change-password', 'ApiController::changePassword'); 
+    
     /** Customer */
     $routes->group("customer", function ($routes) {
         $routes->post('created', 'ApiController::createdCustomer'); 

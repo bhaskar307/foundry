@@ -9,6 +9,7 @@
     $jwt = $request->getCookie(VENDOR_JWT_TOKEN);
     $user_details = validateJWT($jwt);
     /** User Details */
+    $first_name = explode(' ', $user_details->user_name)[0]; 
 ?>
 <div class="topbar-header px-3 py-2 d-flex align-items-center justify-content-md-between gap-4 bg-white shadow-sm">
     <div class="p-0 col-md-6">
@@ -156,7 +157,8 @@
                     <?php } ?>
                 </div>
                 <div class="d-none d-md-block">
-                    <h6 class="m-0 text-nowrap"><?= $user_details->user_name; ?></h6>
+                    <h6 class="m-0 text-nowrap"><?= $first_name; ?></h6>
+                    <small class="d-block text-gray text-nowrap">Vendor</small>
                 </div>
                 <div class="d-none d-md-block">
                     <svg width="15" height="10" viewBox="0 0 452 258" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -166,7 +168,7 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
                 <li><a class="dropdown-item" href="#">Account</a></li>
-                <li><a class="dropdown-item" href="#">Change Password</a></li>
+                <li><a class="dropdown-item" href="<?= base_url('vendor/change-password') ?>">Change Password</a></li>
                 <li><a class="dropdown-item" href="<?= base_url('vendor/logout') ?>">Logout</a></li>
             </ul>
         </div>

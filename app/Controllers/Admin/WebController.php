@@ -91,7 +91,7 @@ class WebController extends Common
     }
 
     /** Products */
-    public function products(){ 
+    public function products(){  
         $payload = $this->validateJwtWebToken();
         if (!$payload) {
             return redirect()->to(base_url('admin/login'));
@@ -101,6 +101,18 @@ class WebController extends Common
         return
             view('admin/templates/header.php').
             view('admin/products.php',$resp).
+            view('admin/templates/footer.php');
+    }
+
+    /** Change Password */
+    public function changePassword(){  
+        $payload = $this->validateJwtWebToken();
+        if (!$payload) {
+            return redirect()->to(base_url('admin/login'));
+        }
+        return
+            view('admin/templates/header.php').
+            view('admin/change_password.php').
             view('admin/templates/footer.php');
     }
 
