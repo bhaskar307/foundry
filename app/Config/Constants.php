@@ -85,12 +85,16 @@ define('VENDOR_TABLE', 'vendor');
 define('CUSTOMER_TABLE', 'customer');
 define('CATEGORY_TABLE', 'category');
 define('PRODUCT_TABLE', 'product');
+define('OTP_LIST_TABLE', 'otp_list');
+
 
 
 ////////////////////
 define('ACTIVE_STATUS', 'active');
 define('INACTIVE_STATUS', 'inactive');
 define('DELETED_STATUS', 'deleted');
+
+define('OTP_LIST_FORGOT_PASSWORD', 'forgot_password');
 
 define('USER_TYPE_ADMIN', 'admin');
 define('USER_TYPE_VENDORS', 'vendor');

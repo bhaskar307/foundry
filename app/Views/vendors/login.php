@@ -199,6 +199,8 @@
                                         </svg>
                                     </span>
                                     <input type="number" class="form-control ps-0 border-start-0" style="border-radius: 0 .25rem .25rem 0;" placeholder="Enter OTP" required>
+                                    <input type="hidden" id="vendorUid" class="form-control ps-0 border-start-0" style="border-radius: 0 .25rem .25rem 0;" placeholder="Enter OTP" required>
+                                    <input type="hidden" id="otpUid" class="form-control ps-0 border-start-0" style="border-radius: 0 .25rem .25rem 0;" placeholder="Enter OTP" required>
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -274,83 +276,7 @@
             }
         });
 
-        document.getElementById("authOtpValidation").addEventListener("submit", async function(event) {
-            event.preventDefault();
-
-            const otp = document.querySelector("#authOtpValidation input[type='number']").value;
-            const email = localStorage.getItem("clinic_login_email");
-
-            const otpData = {
-                email: email,
-                otp: otp
-            };
-
-            try {
-                const response = await fetch(base_url + "clinic/otp-validation", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(otpData)
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    const apiKey = localStorage.getItem("apiKey");
-                    const clinicUid = localStorage.getItem("clinicUid");
-
-                    MessSuccess.fire({
-                        icon: 'success',
-                        title: result.message || "OTP Verified!"
-                    }).then(() => {
-                        // Create hidden form and redirect
-                        let form = document.createElement("form");
-                        form.method = "POST";
-                        form.action = base_url + "clinic/login_success";
-
-                        let inputs = {
-                            "apiKey": apiKey,
-                            "clinicUid": clinicUid
-                        };
-
-                        for (let key in inputs) {
-                            let input = document.createElement("input");
-                            input.type = "hidden";
-                            input.name = key;
-                            input.value = inputs[key];
-                            form.appendChild(input);
-                        }
-
-                        document.body.appendChild(form);
-                        form.submit();
-
-                        // Optional: clear localStorage after redirection
-                        // localStorage.removeItem("apiKey");
-                        // localStorage.removeItem("clinicUid");
-                        // localStorage.removeItem("clinic_login_email");
-                    });
-
-                } else {
-                    MessError.fire({
-                        icon: 'error',
-                        title: result.message || "Invalid OTP"
-                    });
-                }
-
-            } catch (error) {
-                console.error(error);
-                MessError.fire({
-                    icon: 'error',
-                    title: "Error verifying OTP"
-                });
-            }
-        });
-
-
-
-
-
+        
         document.getElementById("forgotPasswordForm").addEventListener("submit", function(e) {
             e.preventDefault();
             const email = document.getElementById("forgotEmailInput").value.trim();
@@ -358,8 +284,8 @@
                 alert("Please enter your email.");
                 return;
             }
-            // Replace with your API endpoint 
-            fetch(base_url + "clinic/forgot-password", {
+
+            fetch(base_url + "vendor/api/forgot-password", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -370,13 +296,13 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
-                    if (data.status == "success") {
-                        console.log(data);
+                    if (data.success == true) {
                         MessError.fire({
                             icon: 'success',
                             title: data.message,
                         });
+                        document.getElementById("vendorUid").value = data.data.data.uid;
+                        document.getElementById("otpUid").value = data.data.data.otpUid;
                         document.getElementById("loginSection").style.display = "none";
                         document.getElementById("forgotPasswordSection").style.display = "none";
                         document.getElementById("resetPasswordSection").style.display = "block";
@@ -398,11 +324,12 @@
         document.getElementById("resetPasswordForm").addEventListener("submit", function(e) {
             e.preventDefault();
 
-            const email = document.getElementById("forgotEmailInput").value.trim();
+            const vendorUid = document.getElementById("vendorUid").value;
+            const otpUid = document.getElementById("otpUid").value;
             const otp = document.querySelector('#resetPasswordForm input[type="number"]').value.trim();
             const newPassword = document.querySelectorAll('#resetPasswordForm input[type="password"]')[0].value.trim();
             const confirmPassword = document.querySelectorAll('#resetPasswordForm input[type="password"]')[1].value.trim();
-
+            
             if (!otp || !newPassword || !confirmPassword) {
                 MessError.fire({
                     icon: 'error',
@@ -419,13 +346,14 @@
                 return;
             }
 
-            fetch(base_url + "clinic/reset-password", {
+            fetch(base_url + "vendor/api/reset-password", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        email: email,
+                        otpUid: otpUid,
+                        uid: vendorUid,
                         otp: otp,
                         password: newPassword
                     })
@@ -433,15 +361,13 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
-                    if (data.status == "success") {
+                    if (data.success == true) {
                         MessError.fire({
                             icon: 'success',
                             title: data.message,
                         });
 
-                        document.getElementById("loginSection").style.display = "block";
-                        document.getElementById("forgotPasswordSection").style.display = "none";
-                        document.getElementById("resetPasswordSection").style.display = "none";
+                        location.reload();
                     } else {
                         MessError.fire({
                             icon: 'error',

@@ -104,7 +104,7 @@ class ApiController extends Common
     }
     /** Product Section */
 
-    /** Change Password */
+    /** Change Password */ 
     public function changePassword()  
     {
         $payload = $this->validateJwtApiTokenVendor();
@@ -114,6 +114,30 @@ class ApiController extends Common
         $vendorDetails['user_type'] = $payload->user_type;  
 
         $resp = $this->apiService->updatePassword($vendorDetails);
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
+    /** Change Password */
+
+    /** Forgot Password */ 
+    public function forgotPassword()  
+    {
+        $vendorDetails = $this->request->getJSON(true);
+        $resp = $this->apiService->forgotPassword($vendorDetails);
+
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
+    public function resetPassword()  
+    {
+        $vendorDetails = $this->request->getJSON(true);
+        $resp = $this->apiService->resetPassword($vendorDetails);
         if (!$resp[0]) {
             $this->apiError($resp[1], $resp[2], $resp[3]);
         } else {

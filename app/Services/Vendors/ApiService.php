@@ -292,4 +292,108 @@ class ApiService
         }
     }
     /** Update Password */
+
+    /** Forgot Password */
+    public function forgotPassword($data)   
+    {
+        $validationRules = [
+            'email'     => 'required',
+        ];
+        $validationResult = validateData($data, $validationRules);
+        if (!$validationResult['success']) {
+            return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
+        }
+        
+        try {
+            $success = $this->apiModel->checkAdminLogin($data['email']);    
+            if (!$success) {
+                return [false, 401, 'Email-Id Not Found', ['invalid_credentials']];
+            }
+            $otp = rand(111111, 999999);
+            $uid = generateUid();
+            $addData = [
+                'uid'          => $uid,
+                'user_id'      => $success['uid'],
+                'otp'          => $otp,
+                'type'         => OTP_LIST_FORGOT_PASSWORD,
+            ];  
+            $this->commonModel->insertData(OTP_LIST_TABLE, $addData);
+            $success['otpUid'] = $uid;
+            $this->sendVendorForgotPasswordOTP($success['name'],$success['email'], $otp); 
+            return [
+                true,
+                200,
+                'OTP Send successful',
+                ['data' => $success]
+            ];
+        } catch (\Throwable $e) {
+            return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
+        }
+    }
+    private function sendVendorForgotPasswordOTP($name,$email, $otp)
+    {
+        $emailService = \Config\Services::email();
+        $emailService->setTo($email);
+        $emailService->setFrom('www.bd.project@gmail.com', 'Foundry');
+        $emailService->setSubject('Your OTP Code');
+        $emailService->setMessage(
+            "Dear $name,<br>" .
+            "Your OTP Code is: <b>$otp</b><br>" .
+            "Thank you!"
+        );
+
+        if (!$emailService->send()) {
+            log_message('error', 'Failed to send password email to ' . $email);
+        }
+    }
+    public function resetPassword($data)   
+    {
+        $validationRules = [
+            'otpUid'    => 'required',
+            'uid'       => 'required',
+            'otp'       => 'required',
+            'password'  => 'required',
+        ];
+        $validationResult = validateData($data, $validationRules);
+        if (!$validationResult['success']) {
+            return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
+        }
+        
+        try {
+            $success = $this->apiModel->checkForgotOtp($data['otpUid'],$data['uid']);    
+            if (!$success) {
+                return [false, 401, 'OTP Not Matched', ['invalid_credentials']];
+            }
+            if($success['otp'] != $data['otp']){
+                return [false, 401, 'OTP Not Matched', ['invalid_credentials']];
+            }   
+
+            $plainPassword = $data['password'];
+            $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
+            $updateData = [
+                'password'      => $hashedPassword,
+                'updated_by'    => $data['user_id'] ?? NULL,
+                'updated_at'    => date('Y-m-d H:i:s')
+            ]; 
+           
+            $updateSuccess = $this->commonModel->UpdateData(VENDOR_TABLE, ['uid' => $data['uid']], $updateData);
+            if (!$updateSuccess) {
+                return [
+                    false,
+                    500,
+                    'Password Update failed.',
+                    ['error' => 'Database update failed']
+                ];
+            }
+            return [
+                true,
+                200,
+                'Password update successfully.',
+                ['data' => $success]
+            ];
+        } catch (\Throwable $e) {
+            return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
+        }
+    }
+    /** Forgot Password */
 }

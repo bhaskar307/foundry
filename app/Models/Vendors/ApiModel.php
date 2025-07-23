@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class ApiModel extends Model {
 
-    public function checkAdminLogin($email)   
+    public function checkAdminLogin($email)    
     {
         $db = \Config\Database::connect();
         $builder = $db->table(VENDOR_TABLE);
@@ -31,5 +31,19 @@ class ApiModel extends Model {
         } else {
             return false;
         }
+    }
+
+    public function checkForgotOtp($otpUid,$user_id)    
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table(OTP_LIST_TABLE);
+        $otpDetails = $builder
+            ->select('*')
+            ->where('uid', $otpUid)
+            ->where('user_id', $user_id)
+            ->where('type', OTP_LIST_FORGOT_PASSWORD)
+            ->get()
+            ->getRowArray();
+        return $otpDetails;
     }
 }

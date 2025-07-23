@@ -20,6 +20,8 @@ $routes->group('vendor', ['namespace' => 'App\Controllers\vendors'], function ($
 $routes->group('vendor/api', ['namespace' => 'App\Controllers\vendors'], function ($routes) {
     $routes->post('login', 'ApiController::login'); 
     $routes->post('change-password', 'ApiController::changePassword'); 
+    $routes->post('forgot-password', 'ApiController::forgotPassword'); 
+    $routes->post('reset-password', 'ApiController::resetPassword');
     /** Product */
     $routes->group("product", function ($routes) {
         $routes->post('created', 'ApiController::createdProduct'); 
