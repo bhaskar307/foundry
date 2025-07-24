@@ -21,7 +21,7 @@ class WebService
         $this->commonModel = new CommonModel();
     }
 
-    public function getProductsDetails($vendorId)  
+    public function getProductsDetails($vendorId)   
     {
         $data = $this->webModel->getProductsDetails($vendorId);
         return $data;
@@ -30,6 +30,12 @@ class WebService
     public function getProductsDetailsByProductId($vendorId,$productId)  
     {
         $data = $this->webModel->getProductsDetailsByProductId($vendorId,$productId);
+        return $data;
+    }
+
+    public function getRequestsDetails($vendorId,$customer,$product,$date)   
+    {
+        $data = $this->webModel->getRequestsDetails($vendorId,$customer,$product,$date);
         return $data;
     }
 }

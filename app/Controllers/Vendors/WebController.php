@@ -47,7 +47,7 @@ class WebController extends Common
             view('vendors/templates/footer.php');
     }
 
-    /** Products */
+    /** Products */ 
     public function products(){ 
         $payload = $this->validateJwtWebTokenVendor();
         if (!$payload) {
@@ -114,6 +114,28 @@ class WebController extends Common
         return
             view('vendors/templates/header.php').
             view('vendors/view_product.php',$resp).
+            view('vendors/templates/footer.php');
+    }
+
+    /** Requests */ 
+    public function requests(){ 
+        $payload = $this->validateJwtWebTokenVendor();
+        if (!$payload) {
+            return redirect()->to(base_url('vendor/login'));
+        }
+        $resp['customerUid'] = $this->request->getGet('customer');
+        $resp['productUid'] = $this->request->getGet('product');
+        $resp['date'] = $this->request->getGet('date');
+
+        $resp['resp'] = $this->webService->getRequestsDetails($payload->user_id,$resp['customerUid'],$resp['productUid'],$resp['date']);
+        $resp['customer'] = $this->commonModel->getAllData(CUSTOMER_TABLE,['status' => ACTIVE_STATUS]); 
+        $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['status' => ACTIVE_STATUS]);    
+        // echo '<pre>';
+        // print_r($resp);
+        
+        return
+            view('vendors/templates/header.php').
+            view('vendors/requests.php',$resp).
             view('vendors/templates/footer.php');
     }
 

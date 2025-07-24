@@ -119,9 +119,9 @@ class WebController extends Common
 
     /** View Product Details */
     public function view_product(){    
-        $payload = $this->validateJwtWebTokenVendor();
+        $payload = $this->validateJwtWebToken();
         if (!$payload) {
-            return redirect()->to(base_url('vendor/login'));
+            return redirect()->to(base_url('admin/login'));
         }
         $productId = $this->request->getGet('productId');
         $resp['resp'] = $this->webService->getProductsDetailsByProductId($productId);
@@ -133,15 +133,39 @@ class WebController extends Common
 
     /** View vendor Details */
     public function view_vendor_details(){    
-        $payload = $this->validateJwtWebTokenVendor();
+        $payload = $this->validateJwtWebToken();
         if (!$payload) {
-            return redirect()->to(base_url('vendor/login'));
+            return redirect()->to(base_url('admin/login'));
         }
         $vendorId = $this->request->getGet('vendorId');
         $resp['resp'] = $this->commonModel->getSingleData(VENDOR_TABLE,['uid' => $vendorId,'status !=' => DELETED_STATUS]);
         return
             view('admin/templates/header.php').
             view('admin/vendor_details.php',$resp).
+            view('admin/templates/footer.php');
+    }
+
+    /** Requests */ 
+    public function requests(){ 
+        $payload = $this->validateJwtWebToken();
+        if (!$payload) {
+            return redirect()->to(base_url('admin/login'));
+        }
+        $resp['vendorUid'] = $this->request->getGet('vendor');
+        $resp['customerUid'] = $this->request->getGet('customer');
+        $resp['productUid'] = $this->request->getGet('product');
+        $resp['date'] = $this->request->getGet('date');
+
+        $resp['resp'] = $this->webService->getRequestsDetails($resp['vendorUid'],$resp['customerUid'],$resp['productUid'],$resp['date']);
+        $resp['vendor'] = $this->commonModel->getAllData(VENDOR_TABLE,['status' => ACTIVE_STATUS]); 
+        $resp['customer'] = $this->commonModel->getAllData(CUSTOMER_TABLE,['status' => ACTIVE_STATUS]); 
+        $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['status' => ACTIVE_STATUS]);    
+        // echo '<pre>';
+        // print_r($resp);
+        
+        return
+            view('admin/templates/header.php').
+            view('admin/requests.php',$resp).
             view('admin/templates/footer.php');
     }
 

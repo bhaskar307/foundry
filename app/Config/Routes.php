@@ -19,6 +19,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], function ($rou
     $routes->get('view-product', 'WebController::view_product'); 
     $routes->get('view-vendor-details', 'WebController::view_vendor_details'); 
     $routes->get('change-password', 'WebController::changePassword'); 
+    $routes->get('requests', 'WebController::requests');  
     $routes->get('logout', 'WebController::logout'); 
 });  
 

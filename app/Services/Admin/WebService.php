@@ -41,4 +41,10 @@ class WebService
         return $data;
     }
     /** Get Single Product Details */
+
+    public function getRequestsDetails($vendorId,$customer,$product,$date)   
+    {
+        $data = $this->webModel->getRequestsDetails($vendorId,$customer,$product,$date);
+        return $data;
+    }
 }
