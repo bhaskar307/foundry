@@ -24,12 +24,42 @@ class Database extends Config
      *
      * @var array<string, mixed>
      */
+
+    /** Live */
+    // public array $default = [
+    //     'DSN'          => '',
+    //     'hostname'     => 'localhost',
+    //     'username'     => 'ylqizqeg_foundry',
+    //     'password'     => '?N4#W]KbMEe7CTN;',
+    //     'database'     => 'ylqizqeg_foundry',
+    //     'DBDriver'     => 'MySQLi',
+    //     'DBPrefix'     => '',
+    //     'pConnect'     => false,
+    //     'DBDebug'      => true,
+    //     'charset'      => 'utf8mb4',
+    //     'DBCollat'     => 'utf8mb4_general_ci',
+    //     'swapPre'      => '',
+    //     'encrypt'      => false,
+    //     'compress'     => false,
+    //     'strictOn'     => false,
+    //     'failover'     => [],
+    //     'port'         => 3306,
+    //     'numberNative' => false,
+    //     'foundRows'    => false,
+    //     'dateFormat'   => [
+    //         'date'     => 'Y-m-d',
+    //         'datetime' => 'Y-m-d H:i:s',
+    //         'time'     => 'H:i:s',
+    //     ],
+    // ];
+
+    /** Local */
     public array $default = [
         'DSN'          => '',
         'hostname'     => 'localhost',
-        'username'     => 'ylqizqeg_foundry',
-        'password'     => '?N4#W]KbMEe7CTN;',
-        'database'     => 'ylqizqeg_foundry',
+        'username'     => 'root',
+        'password'     => '',
+        'database'     => 'foundry',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
@@ -41,7 +71,7 @@ class Database extends Config
         'compress'     => false,
         'strictOn'     => false,
         'failover'     => [],
-        'port'         => 3306,
+        'port'         => 3308,
         'numberNative' => false,
         'foundRows'    => false,
         'dateFormat'   => [

@@ -19,8 +19,8 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    //public string $baseURL = 'http://localhost/foundry';
-    public string $baseURL = 'https://devs.v-xplore.com/foundry/';
+    public string $baseURL = 'http://localhost/foundry';
+    //public string $baseURL = 'https://devs.v-xplore.com/foundry/';
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.

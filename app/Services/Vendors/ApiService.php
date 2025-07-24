@@ -396,4 +396,76 @@ class ApiService
         }
     }
     /** Forgot Password */
+
+    /** Update Profile */
+    public function updateProfile($data,$file)   
+    {
+        $validationRules = [
+            'name'      => 'required',
+            'email'      => 'required',
+            'mobile'      => 'required',
+            'country'      => 'required',
+            'dob'      => 'required'
+        ];
+        $validationResult = validateData($data, $validationRules);
+        if (!$validationResult['success']) {
+            return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
+        }
+        $vendorUid = $data['user_id'];
+        // Handle file upload
+        $uploadResult = null;
+        $timestamp = timestamp();
+        $image_path = '';
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+
+            $uploadResult = uploadFile($file, 'vendor', $timestamp);
+            if (isset($uploadResult['error'])) {
+                return [
+                    'status'     => 'failed',
+                    'statusCode' => 400,
+                    'message'    => 'File upload failed',
+                    'errors'     => ['Vendor Image' => $uploadResult['error']],
+                ];
+            }
+            $image_path = $uploadResult['path'];
+        }
+        
+        try {
+            $updateData = [
+                'country'    => $data['country'],
+                'name'       => $data['name'],
+                'mobile'     => $data['mobile'],
+                'email'      => $data['email'],
+                'dob'        => $data['dob'],
+                'updated_by' => $data['user_id'] ?? NULL,
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+
+            if(!empty($image_path)){
+                $updateData['image'] = $image_path;
+            }else{
+                $updateData['image'] = $data['old_filepath'];
+            }
+
+            $success = $this->commonModel->UpdateData(VENDOR_TABLE, ['uid' => $vendorUid], $updateData);
+            if (!$success) {
+                return [
+                    false,
+                    500,
+                    'Vendor Details Update failed.',
+                    ['error' => 'Database update failed']
+                ];
+            }
+
+            return [
+                true,
+                200,
+                'Vendor details update successfully.',
+                ['data' => $success]
+            ];
+        } catch (\Throwable $e) {
+            return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
+        }
+    }
+    /** Update Profile */
 }

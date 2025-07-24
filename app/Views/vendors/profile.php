@@ -1,32 +1,44 @@
-<div class="row">
-    <div class="col-md-3 text-center">
-        <img src="<?= base_url(esc($details['employee']->profile_image ?? 'assets/images/default.png')) ?>" 
-             alt="Profile Image" 
-             class="img-fluid rounded-circle" 
-             style="max-width: 150px;">
+<div class="content-body p-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">Vendor Profile</h5>
+        <a href="<?= base_url('vendor/edit-profile') ?>" class="btn btn-primary btn-sm">
+            <i class="bi bi-pencil-fill"></i> Edit Profile
+        </a>
     </div>
+    <div class="card p-4 shadow-sm">
+        <!-- Header with title and edit button -->
+        
 
-    <div class="col-md-9">
-        <div class="row">
-            <div class="col-md-6">
-                <strong>Name:</strong> <?= esc($details['employee']->name ?? 'N/A') ?>
+        <div class="row align-items-center">
+            <!-- Vendor Profile Image -->
+            <div class="col-md-3 text-center mb-3 mb-md-0">
+                <img src="<?= base_url($resp['image']) ?>" 
+                    alt="Vendor Image" 
+                    class="img-fluid rounded-circle border border-3 border-primary shadow"
+                    style="width: 120px; height: 120px; object-fit: cover;">
             </div>
 
-            <div class="col-md-6 mt-2">
-                <strong>Email:</strong> <?= esc($details['employee']->email ?? 'N/A') ?>
-            </div>
-    
-            <div class="col-md-6 mt-2">
-                <strong>Mobile:</strong> <?= esc($details['employee']->mobile ?? 'N/A') ?>
-            </div>
-
-            <div class="col-md-6 mt-2">
-                <strong>Date of Birth:</strong> <?= esc($details['employee']->dob ?? 'N/A') ?>
-            </div>
-
-            <div class="col-md-6 mt-2">
-                <strong>Country:</strong> <?= esc($details['employee']->country ?? 'N/A') ?>
+            <!-- Vendor Details -->
+            <div class="col-md-9">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <strong>Name:</strong> <?= esc($resp['name'] ?? 'N/A') ?>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Email:</strong> <?= esc($resp['email'] ?? 'N/A') ?>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Mobile:</strong> <?= esc($resp['mobile'] ?? 'N/A') ?>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Date of Birth:</strong> <?= !empty($resp['dob']) ? esc(date('d F Y', strtotime($resp['dob']))) : 'N/A' ?>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Country:</strong> <?= esc($resp['country'] ?? 'N/A') ?>
+                    </div>
+                    <!-- Add more fields if needed -->
+                </div>
             </div>
         </div>
-    </div>   
-</div>
+    </div>
+</die>

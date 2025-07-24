@@ -15,6 +15,8 @@ $routes->group('vendor', ['namespace' => 'App\Controllers\Vendors'], function ($
     $routes->get('products', 'WebController::products'); 
     $routes->get('change-password', 'WebController::changePassword'); 
     $routes->get('profile', 'WebController::profile'); 
+    $routes->get('edit-profile', 'WebController::edit_profile'); 
+    
     $routes->get('logout', 'WebController::logout'); 
 });
 
@@ -23,6 +25,7 @@ $routes->group('vendor/api', ['namespace' => 'App\Controllers\Vendors'], functio
     $routes->post('change-password', 'ApiController::changePassword'); 
     $routes->post('forgot-password', 'ApiController::forgotPassword'); 
     $routes->post('reset-password', 'ApiController::resetPassword');
+    $routes->post('edit-profile', 'ApiController::edit_profile'); 
     /** Product */
     $routes->group("product", function ($routes) {
         $routes->post('created', 'ApiController::createdProduct'); 

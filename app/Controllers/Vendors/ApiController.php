@@ -4,18 +4,19 @@ namespace App\Controllers\Vendors;
 use App\Controllers\Common;
 use App\Services\Vendors\ApiService;
 //use App\Models\AdminModel;
-
+use App\Models\CommonModel;
 use CodeIgniter\API\ResponseTrait;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 class ApiController extends Common
 {
+    protected $commonModel;
     protected $apiService;
     public function __construct()
     {
         $this->session = session();
         $this->apiService = new ApiService();
-        //$this->AdminModel = new AdminModel();
+        $this->commonModel = new CommonModel();;
     }
 
     /** Login */
@@ -145,4 +146,33 @@ class ApiController extends Common
         }
     }
     /** Change Password */
+
+    /** Update Profile */
+    public function edit_profile(){   
+        $payload = $this->validateJwtApiTokenVendor();
+        if (!$payload) {
+            return redirect()->to(base_url('vendor/login'));
+        }
+        $vendorDetails = $this->request->getPost();
+        $imageFile = $this->request->getFile('image');
+        $vendorDetails['user_id'] = $payload->user_id;
+        $resp = $this->apiService->updateProfile($vendorDetails,$imageFile);
+
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $profile = $this->commonModel->getSingleData(VENDOR_TABLE,['uid' => $payload->user_id,'status !=' => DELETED_STATUS]);
+            $data['user_id'] = $profile['uid'];
+            $data['user_name'] = $profile['name'];
+            $data['user_image'] = $profile['image'];
+            $data['user_type'] = USER_TYPE_VENDORS;
+            list($auth_token, $auth_cookie) = generateJwtTokenVendor($data);
+            $this
+                ->response
+                ->setStatusCode(200)
+                ->setCookie($auth_cookie);
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
+    /** Update Profile Data */
 }
