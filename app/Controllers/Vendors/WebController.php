@@ -31,14 +31,14 @@ class WebController extends Common
         if (!$data) {
             return view('vendors/login.php');
         }
-        return redirect()->to(base_url('vendors/dashboard'));
+        return redirect()->to(base_url('vendor/dashboard'));
     }
 
     /** Dashboard */
     public function dashboard(){ 
         $payload = $this->validateJwtWebTokenVendor();
         if (!$payload) {
-            return redirect()->to(base_url('vendors/login'));
+            return redirect()->to(base_url('vendor/login'));
         }
 
         return
@@ -51,7 +51,7 @@ class WebController extends Common
     public function products(){ 
         $payload = $this->validateJwtWebTokenVendor();
         if (!$payload) {
-            return redirect()->to(base_url('vendors/login'));
+            return redirect()->to(base_url('vendor/login'));
         }
         $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status' => ACTIVE_STATUS]);
         $resp['resp'] = $this->webService->getProductsDetails();
@@ -65,7 +65,7 @@ class WebController extends Common
     public function changePassword(){  
         $payload = $this->validateJwtWebTokenVendor();
         if (!$payload) {
-            return redirect()->to(base_url('vendors/login'));
+            return redirect()->to(base_url('vendor/login'));
         }
         return
             view('vendors/templates/header.php').
@@ -77,12 +77,12 @@ class WebController extends Common
     public function profile(){  
         $payload = $this->validateJwtWebTokenVendor();
         if (!$payload) {
-            return redirect()->to(base_url('vendors/login'));
+            return redirect()->to(base_url('vendor/login'));
         }
         //$resp['resp'] = $this->commonModel->getSingleData(VENDOR_TABLE,['uid' => $payload->user_id,'status !=' => DELETED_STATUS]);
-        echo '<pre>';
-        print_r($payload);
-        die;
+        // echo '<pre>';
+        // print_r($payload);
+        // die;
         return
             view('vendors/templates/header.php').
             view('vendors/profile.php').
