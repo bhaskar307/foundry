@@ -63,3 +63,7 @@ $routes->group('admin/api', ['namespace' => 'App\Controllers\Admin'], function (
 if (file_exists(APPPATH . 'Config/VendorRoutes.php')) {
     require APPPATH . 'Config/VendorRoutes.php';
 }
+
+if (file_exists(APPPATH . 'Config/CustomerRoutes.php')) {
+    require APPPATH . 'Config/CustomerRoutes.php';
+}

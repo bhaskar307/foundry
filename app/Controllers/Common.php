@@ -115,4 +115,25 @@ class Common extends BaseController {
         }
     }
     /** Check Admin JWT Tocken */
+
+    /** Check Customer JWT Tocken */
+    public function validateJwtApiTokenCustomer()
+    {
+        $jwt  = $this->request->getCookie(CUSTOMER_JWT_TOKEN);
+
+        if (empty($jwt)) {
+            $this->apiError(401, 'Unauthorize access', ['auth_token_missing_401']);
+            exit;
+        } else {
+            $data = validateJWT($jwt);
+
+            if (!$data) {
+                $this->apiError(401, 'Unauthorize access', ['auth_token_invalid_401']);
+                exit;
+            } else {
+                return $data;
+            }
+        }
+    }
+    /** Check Customer JWT Tocken */
 }

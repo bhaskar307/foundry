@@ -86,6 +86,7 @@ define('CUSTOMER_TABLE', 'customer');
 define('CATEGORY_TABLE', 'category');
 define('PRODUCT_TABLE', 'product');
 define('OTP_LIST_TABLE', 'otp_list');
+define('REQUEST_LIST_TABLE', 'request');
 
 
 
@@ -98,6 +99,10 @@ define('OTP_LIST_FORGOT_PASSWORD', 'forgot_password');
 
 define('USER_TYPE_ADMIN', 'admin');
 define('USER_TYPE_VENDORS', 'vendor');
+define('USER_TYPE_CUSTOMER', 'customer');
+
 define('ADMIN_JWT_TOKEN', 'admin_jwt_token');
 define('VENDOR_JWT_TOKEN', 'vendor_jwt_token');
+define('CUSTOMER_JWT_TOKEN', 'customer_jwt_token');
+
 
