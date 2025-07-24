@@ -1,8 +1,6 @@
 <?php
-$currentUrl = $_SERVER['REQUEST_URI'];
-$urlSegments = explode('/', trim($currentUrl, '/')); // Split URL into segments
-$lastSegment = end($urlSegments); // Get the last segment
-$user_role = session()->get('user_role');
+$uri = service('uri');
+$lastSegment = $uri->getSegment($uri->getTotalSegments());
 ?>
 <div class="sidebar">
     <div class="sidebar-inner">
@@ -54,7 +52,7 @@ $user_role = session()->get('user_role');
                     </a>
                 </li>
                 <li>
-                    <a href="<?= base_url('admin/vendors') ?>" <?= ($lastSegment == 'vendors') ? 'class="active"' : '' ?>>
+                    <a href="<?= base_url('admin/vendors') ?>" <?= ($lastSegment == 'vendors' || $lastSegment == "view-vendor-details") ? 'class="active"' : '' ?>>
                         <i>
                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M17.1201 3.66836L17.4726 3.31378L17.1201 3.66836C17.275 3.82233 17.3803 4.04087 17.4386 4.47195C17.4989 4.91782 17.5 5.51044 17.5 6.36841C17.5 6.56095 17.4992 6.67542 17.4922 6.75505C17.4112 6.76236 17.2952 6.76314 17.1 6.76314H0.9C0.704654 6.76314 0.58867 6.76237 0.507877 6.7551C0.500782 6.67534 0.5 6.56083 0.5 6.36841C0.5 5.51044 0.501076 4.91782 0.561409 4.47195C0.619743 4.04087 0.725044 3.82233 0.879915 3.66836C1.03519 3.514 1.25621 3.40877 1.69123 3.35059C2.14043 3.29051 2.73723 3.28946 3.6 3.28946H14.4C15.2628 3.28946 15.8596 3.29051 16.3088 3.35059C16.7438 3.40877 16.9648 3.514 17.1201 3.66836Z" fill="#6C757D" stroke="#6C757D" />
@@ -80,7 +78,7 @@ $user_role = session()->get('user_role');
                     </a>
                 </li>
                 <li>
-                    <a href="<?= base_url('admin/products') ?>" <?= ($lastSegment == 'products') ? 'class="active"' : '' ?>>
+                    <a href="<?= base_url('admin/products') ?>" <?= ($lastSegment == 'products' || $lastSegment == 'view-product') ? 'class="active"' : '' ?>>
                         <i>
                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M17.1201 3.66836L17.4726 3.31378L17.1201 3.66836C17.275 3.82233 17.3803 4.04087 17.4386 4.47195C17.4989 4.91782 17.5 5.51044 17.5 6.36841C17.5 6.56095 17.4992 6.67542 17.4922 6.75505C17.4112 6.76236 17.2952 6.76314 17.1 6.76314H0.9C0.704654 6.76314 0.58867 6.76237 0.507877 6.7551C0.500782 6.67534 0.5 6.56083 0.5 6.36841C0.5 5.51044 0.501076 4.91782 0.561409 4.47195C0.619743 4.04087 0.725044 3.82233 0.879915 3.66836C1.03519 3.514 1.25621 3.40877 1.69123 3.35059C2.14043 3.29051 2.73723 3.28946 3.6 3.28946H14.4C15.2628 3.28946 15.8596 3.29051 16.3088 3.35059C16.7438 3.40877 16.9648 3.514 17.1201 3.66836Z" fill="#6C757D" stroke="#6C757D" />

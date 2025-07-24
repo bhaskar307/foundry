@@ -26,11 +26,19 @@ class WebService
         return $data;
     }
 
-    /** Get Product Details */
+    /** Get All Product Details */
     public function getProductsDetails()  
     {
         $data = $this->webModel->getProductsDetails();
         return $data;
     }
-    /** Get Product Details */    
+    /** Get Product Details */ 
+    
+    /** Get Single Product Details */
+    public function getProductsDetailsByProductId($productId)  
+    {
+        $data = $this->webModel->getProductsDetailsByProductId($productId);
+        return $data;
+    }
+    /** Get Single Product Details */
 }

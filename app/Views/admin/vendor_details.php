@@ -1,9 +1,9 @@
 <div class="content-body p-3">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="mb-0">Vendor Profile</h5>
-        <a href="<?= base_url('vendor/edit-profile') ?>" class="btn btn-primary btn-sm">
+        <h5 class="mb-0">Vendor Details</h5>
+        <!-- <a href="<?= base_url('vendor/edit-profile') ?>" class="btn btn-primary btn-sm">
             <i class="bi bi-pencil-fill"></i> Edit Profile
-        </a>
+        </a> -->
     </div>
     <div class="card p-4 shadow-sm">
         <!-- Header with title and edit button -->
@@ -34,6 +34,9 @@
                     </div>
                     <div class="col-md-6">
                         <strong>Country:</strong> <?= esc($resp['country'] ?? 'N/A') ?>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Status:</strong> <?= ucfirst($resp['status'] ?? 'N/A') ?>
                     </div>
                     <!-- Add more fields if needed -->
                 </div>

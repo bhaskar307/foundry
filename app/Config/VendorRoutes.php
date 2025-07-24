@@ -16,7 +16,7 @@ $routes->group('vendor', ['namespace' => 'App\Controllers\Vendors'], function ($
     $routes->get('change-password', 'WebController::changePassword'); 
     $routes->get('profile', 'WebController::profile'); 
     $routes->get('edit-profile', 'WebController::edit_profile'); 
-    
+    $routes->get('view-product/(:any)', 'WebController::view_product/$1'); 
     $routes->get('logout', 'WebController::logout'); 
 });
 
