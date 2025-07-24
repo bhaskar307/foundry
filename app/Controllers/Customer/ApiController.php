@@ -52,4 +52,17 @@ class ApiController extends Common
         }
     }
     /** Request */
+
+    public function createdRating()
+    {
+        $payload = $this->validateJwtApiTokenCustomer();
+        $details = $this->request->getJSON(true);
+        $details['user_id'] = $payload->user_id;
+        $resp = $this->apiService->createdRating($details);
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
 }

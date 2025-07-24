@@ -24,6 +24,13 @@ $routes->group('customer/api', ['namespace' => 'App\Controllers\Customer'], func
         // $routes->post('delete', 'ApiController::deleteProduct');
     });
     /** Product */
+
+    $routes->group("rating", function ($routes) {
+        $routes->post('created', 'ApiController::createdRating'); 
+        // $routes->post('update', 'ApiController::updateProduct'); 
+        // $routes->post('update-status', 'ApiController::updateProductStatus'); 
+        // $routes->post('delete', 'ApiController::deleteProduct');
+    });
 });
 /** Vendor */
 

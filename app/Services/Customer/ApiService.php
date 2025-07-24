@@ -97,6 +97,50 @@ class ApiService
     }
     /** Request Section */
 
+    public function createdRating($data)  
+    {
+        $validationRules = [
+            'productId'  => 'required',
+            'rating'  => 'required',
+            'review'     => 'required',
+        ];
+        $validationResult = validateData($data, $validationRules);
+        if (!$validationResult['success']) {
+            return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
+        }
+        $ratingUid = generateUid();
+        
+        try {
+            $addData = [
+                'uid'          => $ratingUid,
+                'product_id'   => $data['productId'],
+                'customer_id'  => $data['user_id'],
+                'rating'       => $data['rating'],
+                'review'       => $data['review'],
+            ];
+            $success = $this->commonModel->insertData(PRODUCT_RATING_LIST_TABLE, $addData);
+            if (!$success) {
+                return [
+                    false,
+                    500,
+                    'Rating failed.',
+                    ['error' => 'Database insert failed']
+                ];
+            }
+
+            //$this->sendCustomerPasswordToEmail($data['name'],$data['email'], $plainPassword);
+
+            return [
+                true,
+                200,
+                'Rating successfully.',
+                ['data' => $success]
+            ];
+        } catch (\Throwable $e) {
+            return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
+        }
+    }
+
     private function sendVendorPasswordToEmail($name,$email, $plainPassword)
     {
         $emailService = \Config\Services::email();
