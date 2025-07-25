@@ -24,8 +24,9 @@ class WebController extends Common
     {
         $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status' => ACTIVE_STATUS]);
         $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['status' => ACTIVE_STATUS]);
+        $resp['review'] = $this->webService->getCustomerReview();
         // echo '<pre>';
-        // print_r($resp);
+        // print_r($resp['review']);
         // die;
         return view('customer/home.php',$resp);
     }

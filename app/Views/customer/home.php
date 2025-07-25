@@ -527,16 +527,19 @@
             <div class="fadeUp">
                 <div class="swiper testimonialsSlider">
                     <div class="swiper-wrapper">
+                        <?php if(!empty($review)){
+                            foreach($review as $row){
+                            ?>
                         <div class="swiper-slide">
                             <div class="h-100 rounded-10 border bg-light p-3 p-lg-4">
                                 <div class="d-flex align-itens-center gap-3 mb-3">
                                     <div>
-                                        <img src="<?= base_url('assets/customer/images/testi2.webp') ?>" alt="" width="" height="" class="rounded-circle">
+                                        <img src="<?= base_url($row['customer_image']) ?>"  alt="Customer" width="50" height="50" class="rounded-circle">
                                     </div>
                                     <div class="d-flex flex-column gap-1">
-                                        <h5 class="text-dark fw-600">Rahul Sharma</h5>
+                                        <h5 class="text-dark fw-600"><?= $row['customer_name'] ?></h5>
                                         <?php
-                                            $rating = 3.5; 
+                                            $rating = $row['rating']; 
                                             $fullStars = floor($rating);
                                             $halfStar = ($rating - $fullStars) >= 0.5;
                                             $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
@@ -549,12 +552,7 @@
                                                 };
                                                 return <<<SVG
                                             <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                                            <defs>
-                                                <linearGradient id="halfGradient">
-                                                <stop offset="50%" stop-color="#F6AB27"/>
-                                                <stop offset="50%" stop-color="#E0E0E0"/>
-                                                </linearGradient>
-                                            </defs>
+                                            <defs> <linearGradient id="halfGradient"> <stop offset="50%" stop-color="#F6AB27"/> <stop offset="50%" stop-color="#E0E0E0"/> </linearGradient></defs>
                                             <path d="M50 5L61 35H95L67 57L78 90L50 70L22 90L33 57L5 35H39L50 5Z" fill="$color"/>
                                             </svg>
                                             SVG;
@@ -570,9 +568,9 @@
                                     </div>
                                 </div>
                                 <i class="d-block mb-3 textiText">
-                                    “Absolutely love this phone! The camera quality is exceptional and battery life is impressive. Worth every penny spent. Fast delivery and excellent packaging too.”
+                                    <?= $row['review'] ?>
                                 </i>
-                                <small class="d-flex align-items-center gap-1">
+                                <!-- <small class="d-flex align-items-center gap-1">
                                     <i style="line-height: 0;">
                                         <svg version="1.1" width="14" height="14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                             viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
@@ -585,123 +583,10 @@
                                         </svg>
                                     </i>
                                     <span>Purchased 2 months ago</span>
-                                </small>
+                                </small> -->
                             </div>
                         </div>
-                        <div class="swiper-slide">
-                            <div class="h-100 rounded-10 border bg-light p-3 p-lg-4">
-                                <div class="d-flex align-itens-center gap-3 mb-3">
-                                    <div>
-                                        <img src="<?= base_url('assets/customer/images/testi1.webp') ?>" alt="" width="" height="" class="rounded-circle">
-                                    </div>
-                                    <div class="d-flex flex-column gap-1">
-                                        <h5 class="text-dark fw-600">Priya Patel</h5>
-                                        <i style="line-height: 0;">
-                                            <svg width="100" height="16" viewBox="0 0 100 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M3.03371 15.8625L4.32255 9.99755L0 6.05281L5.71052 5.531L7.93128 0L10.152 5.531L15.8626 6.05281L11.54 9.99755L12.8288 15.8625L7.93128 12.7526L3.03371 15.8625Z" fill="#F6AB27"/>
-                                            <path d="M24.1839 15.8625L25.4727 9.99755L21.1501 6.05281L26.8607 5.531L29.0814 0L31.3022 5.531L37.0127 6.05281L32.6902 9.99755L33.979 15.8625L29.0814 12.7526L24.1839 15.8625Z" fill="#F6AB27"/>
-                                            <path d="M45.3335 15.8625L46.6224 9.99755L42.2998 6.05281L48.0103 5.531L50.2311 0L52.4518 5.531L58.1624 6.05281L53.8398 9.99755L55.1286 15.8625L50.2311 12.7526L45.3335 15.8625Z" fill="#F6AB27"/>
-                                            <path d="M66.4839 15.8625L67.7727 9.99755L63.4502 6.05281L69.1607 5.531L71.3815 0L73.6022 5.531L79.3128 6.05281L74.9902 9.99755L76.279 15.8625L71.3815 12.7526L66.4839 15.8625Z" fill="#F6AB27"/>
-                                            <path d="M87.1712 15.8625L88.46 9.99755L84.1375 6.05281L89.848 5.531L92.0687 0L94.2895 5.531L100 6.05281L95.6775 9.99755L96.9663 15.8625L92.0687 12.7526L87.1712 15.8625Z" fill="#F6AB27"/>
-                                            </svg>
-                                        </i>
-                                    </div>
-                                </div>
-                                <i class="d-block mb-3 textiText">
-                                    “Absolutely love this phone! The camera quality is exceptional and battery life is impressive. Worth every penny spent. Fast delivery and excellent packaging too.”
-                                </i>
-                                <small class="d-flex align-items-center gap-1">
-                                    <i style="line-height: 0;">
-                                        <svg version="1.1" width="14" height="14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                            viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
-                                                <path d="M347.216,301.211l-71.387-53.54V138.609c0-10.966-8.864-19.83-19.83-19.83c-10.966,0-19.83,8.864-19.83,19.83v118.978
-                                                    c0,6.246,2.935,12.136,7.932,15.864l79.318,59.489c3.569,2.677,7.734,3.966,11.878,3.966c6.048,0,11.997-2.717,15.884-7.952
-                                                    C357.766,320.208,355.981,307.775,347.216,301.211z"/>
-                                                <path d="M256,0C114.833,0,0,114.833,0,256s114.833,256,256,256s256-114.833,256-256S397.167,0,256,0z M256,472.341
-                                                    c-119.275,0-216.341-97.066-216.341-216.341S136.725,39.659,256,39.659c119.295,0,216.341,97.066,216.341,216.341
-                                                    S375.275,472.341,256,472.341z"/>
-                                        </svg>
-                                    </i>
-                                    <span>Purchased 2 months ago</span>
-                                </small>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="h-100 rounded-10 border bg-light p-3 p-lg-4">
-                                <div class="d-flex align-itens-center gap-3 mb-3">
-                                    <div>
-                                        <img src="<?= base_url('assets/customer/images/testi3.webp') ?>" alt="" width="" height="" class="rounded-circle">
-                                    </div>
-                                    <div class="d-flex flex-column gap-1">
-                                        <h5 class="text-dark fw-600">Vikram Singh</h5>
-                                        <i style="line-height: 0;">
-                                            <svg width="100" height="16" viewBox="0 0 100 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M3.03371 15.8625L4.32255 9.99755L0 6.05281L5.71052 5.531L7.93128 0L10.152 5.531L15.8626 6.05281L11.54 9.99755L12.8288 15.8625L7.93128 12.7526L3.03371 15.8625Z" fill="#F6AB27"/>
-                                            <path d="M24.1839 15.8625L25.4727 9.99755L21.1501 6.05281L26.8607 5.531L29.0814 0L31.3022 5.531L37.0127 6.05281L32.6902 9.99755L33.979 15.8625L29.0814 12.7526L24.1839 15.8625Z" fill="#F6AB27"/>
-                                            <path d="M45.3335 15.8625L46.6224 9.99755L42.2998 6.05281L48.0103 5.531L50.2311 0L52.4518 5.531L58.1624 6.05281L53.8398 9.99755L55.1286 15.8625L50.2311 12.7526L45.3335 15.8625Z" fill="#F6AB27"/>
-                                            <path d="M66.4839 15.8625L67.7727 9.99755L63.4502 6.05281L69.1607 5.531L71.3815 0L73.6022 5.531L79.3128 6.05281L74.9902 9.99755L76.279 15.8625L71.3815 12.7526L66.4839 15.8625Z" fill="#F6AB27"/>
-                                            <path d="M87.1712 15.8625L88.46 9.99755L84.1375 6.05281L89.848 5.531L92.0687 0L94.2895 5.531L100 6.05281L95.6775 9.99755L96.9663 15.8625L92.0687 12.7526L87.1712 15.8625Z" fill="#F6AB27"/>
-                                            </svg>
-                                        </i>
-                                    </div>
-                                </div>
-                                <i class="d-block mb-3 textiText">
-                                    “Absolutely love this phone! The camera quality is exceptional and battery life is impressive. Worth every penny spent. Fast delivery and excellent packaging too.”
-                                </i>
-                                <small class="d-flex align-items-center gap-1">
-                                    <i style="line-height: 0;">
-                                        <svg version="1.1" width="14" height="14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                            viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
-                                                <path d="M347.216,301.211l-71.387-53.54V138.609c0-10.966-8.864-19.83-19.83-19.83c-10.966,0-19.83,8.864-19.83,19.83v118.978
-                                                    c0,6.246,2.935,12.136,7.932,15.864l79.318,59.489c3.569,2.677,7.734,3.966,11.878,3.966c6.048,0,11.997-2.717,15.884-7.952
-                                                    C357.766,320.208,355.981,307.775,347.216,301.211z"/>
-                                                <path d="M256,0C114.833,0,0,114.833,0,256s114.833,256,256,256s256-114.833,256-256S397.167,0,256,0z M256,472.341
-                                                    c-119.275,0-216.341-97.066-216.341-216.341S136.725,39.659,256,39.659c119.295,0,216.341,97.066,216.341,216.341
-                                                    S375.275,472.341,256,472.341z"/>
-                                        </svg>
-                                    </i>
-                                    <span>Purchased 2 months ago</span>
-                                </small>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="h-100 rounded-10 border bg-light p-3 p-lg-4">
-                                <div class="d-flex align-itens-center gap-3 mb-3">
-                                    <div>
-                                        <img src="<?= base_url('assets/customer/images/testi1.webp') ?>" alt="" width="" height="" class="rounded-circle">
-                                    </div>
-                                    <div class="d-flex flex-column gap-1">
-                                        <h5 class="text-dark fw-600">Pooja Thakur</h5>
-                                        <i style="line-height: 0;">
-                                            <svg width="100" height="16" viewBox="0 0 100 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M3.03371 15.8625L4.32255 9.99755L0 6.05281L5.71052 5.531L7.93128 0L10.152 5.531L15.8626 6.05281L11.54 9.99755L12.8288 15.8625L7.93128 12.7526L3.03371 15.8625Z" fill="#F6AB27"/>
-                                            <path d="M24.1839 15.8625L25.4727 9.99755L21.1501 6.05281L26.8607 5.531L29.0814 0L31.3022 5.531L37.0127 6.05281L32.6902 9.99755L33.979 15.8625L29.0814 12.7526L24.1839 15.8625Z" fill="#F6AB27"/>
-                                            <path d="M45.3335 15.8625L46.6224 9.99755L42.2998 6.05281L48.0103 5.531L50.2311 0L52.4518 5.531L58.1624 6.05281L53.8398 9.99755L55.1286 15.8625L50.2311 12.7526L45.3335 15.8625Z" fill="#F6AB27"/>
-                                            <path d="M66.4839 15.8625L67.7727 9.99755L63.4502 6.05281L69.1607 5.531L71.3815 0L73.6022 5.531L79.3128 6.05281L74.9902 9.99755L76.279 15.8625L71.3815 12.7526L66.4839 15.8625Z" fill="#F6AB27"/>
-                                            <path d="M87.1712 15.8625L88.46 9.99755L84.1375 6.05281L89.848 5.531L92.0687 0L94.2895 5.531L100 6.05281L95.6775 9.99755L96.9663 15.8625L92.0687 12.7526L87.1712 15.8625Z" fill="#F6AB27"/>
-                                            </svg>
-                                        </i>
-                                    </div>
-                                </div>
-                                <i class="d-block mb-3 textiText">
-                                    “Absolutely love this phone! The camera quality is exceptional and battery life is impressive. Worth every penny spent. Fast delivery and excellent packaging too.”
-                                </i>
-                                <small class="d-flex align-items-center gap-1">
-                                    <i style="line-height: 0;">
-                                        <svg version="1.1" width="14" height="14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                            viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
-                                                <path d="M347.216,301.211l-71.387-53.54V138.609c0-10.966-8.864-19.83-19.83-19.83c-10.966,0-19.83,8.864-19.83,19.83v118.978
-                                                    c0,6.246,2.935,12.136,7.932,15.864l79.318,59.489c3.569,2.677,7.734,3.966,11.878,3.966c6.048,0,11.997-2.717,15.884-7.952
-                                                    C357.766,320.208,355.981,307.775,347.216,301.211z"/>
-                                                <path d="M256,0C114.833,0,0,114.833,0,256s114.833,256,256,256s256-114.833,256-256S397.167,0,256,0z M256,472.341
-                                                    c-119.275,0-216.341-97.066-216.341-216.341S136.725,39.659,256,39.659c119.295,0,216.341,97.066,216.341,216.341
-                                                    S375.275,472.341,256,472.341z"/>
-                                        </svg>
-                                    </i>
-                                    <span>Purchased 2 months ago</span>
-                                </small>
-                            </div>
-                        </div>
+                        <?php } } ?>                    
                     </div>
                 </div>
                 <script>
