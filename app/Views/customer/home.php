@@ -111,7 +111,7 @@
                     <a href="" class="btn btn-white">Browse Categories</a>
                 </div>
                 <div class="fadeUp">
-                    <img src="images/xdfvbdfv.webp" alt="" width="300">
+                    <img src="<?= base_url('assets/customer/images/xdfvbdfv.webp') ?>" alt="" width="300">
                 </div>
             </div>
         </div>
@@ -440,7 +440,7 @@
 <section class="pb-5">
     <div class="container">
         <div class="rounded-15 py-5 px-4 px-lg-5 bannerCta position-relative overflow-hidden text-center text-white">
-            <video autoplay muted loop playsinline poster="images/bannerCTAbg.webp" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover" style="z-index: -2;">
+            <video autoplay muted loop playsinline poster="<?= base_url('assets/customer/images/bannerCTAbg.webp') ?>" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover" style="z-index: -2;">
                 <source src="<?= base_url('assets/customer/videos/ctaVideoBg.mp4') ?>" type="video/mp4">
                 Your browser does not support the video tag.
             </video>

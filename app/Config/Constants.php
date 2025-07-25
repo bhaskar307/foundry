@@ -88,6 +88,7 @@ define('PRODUCT_TABLE', 'product');
 define('OTP_LIST_TABLE', 'otp_list');
 define('REQUEST_LIST_TABLE', 'request');
 define('PRODUCT_RATING_LIST_TABLE', 'product_rating');
+define('PRODUCT_IMAGE_TABLE', 'product_image');
 
 
 

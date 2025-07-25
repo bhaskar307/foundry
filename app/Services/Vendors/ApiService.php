@@ -64,33 +64,50 @@ class ApiService
         $productUid = generateUid();
         $timestamp = timestamp();   
         // Handle file upload
-        $uploadResult = null;
-        $image_path = '';
-        if ($file && $file->isValid() && !$file->hasMoved()) {
-
-            $uploadResult = uploadFile($file, 'products', $timestamp);
-            if (isset($uploadResult['error'])) {
-                return [
-                    'status'     => 'failed',
-                    'statusCode' => 400,
-                    'message'    => 'File upload failed',
-                    'errors'     => ['products Image' => $uploadResult['error']],
-                ];
+        $image_paths = [];
+        if (isset($file['images']) && is_array($file['images'])) {
+            foreach ($file['images'] as $singleFile) {
+                if ($singleFile->isValid() && !$singleFile->hasMoved()) {
+                    $uploadResult = uploadFile($singleFile, 'products', generateUid());
+                    if (isset($uploadResult['error'])) {
+                        return [
+                            'status'     => 'failed',
+                            'statusCode' => 400,
+                            'message'    => 'One or more file uploads failed',
+                            'errors'     => ['products Image' => $uploadResult['error']],
+                        ];
+                    }
+                    $image_paths[] = $uploadResult['path'];
+                }
             }
-            $image_path = $uploadResult['path'];
         }
-        
+
         try {
+            $image_path = $image_paths[0] ?? '';
             $addData = [
-                'uid'          => $productUid,
-                'name'         => $data['name'],
-                'description'  => $data['description'],
-                'vendor_id'    => $data['user_id'],
-                'category_id'  => $data['category'],
-                'image'        => $image_path,
-                'created_by'   => $data['user_id'] ?? NULL,
+                'uid'               => $productUid,
+                'name'              => $data['name'],
+                'description'       => $data['description'],
+                'price'             => $data['product_price'],
+                'brand'             => $data['product_brand'],
+                'html_description'  => $data['content'],
+                'vendor_id'         => $data['user_id'],
+                'category_id'       => $data['category'],
+                'image'             => $image_path,
+                'created_by'        => $data['user_id'] ?? NULL,
             ];
             $success = $this->commonModel->insertData(PRODUCT_TABLE, $addData);
+            if (!empty($image_paths)) {
+                foreach ($image_paths as $imgPath) {
+                    $addImage = [
+                        'uid'         => generateUid(), 
+                        'product_id'  => $productUid,   
+                        'image'       => $imgPath,   
+                        'created_by'  => $data['user_id'] ?? NULL,
+                    ];
+                    $this->commonModel->insertData(PRODUCT_IMAGE_TABLE, $addImage);
+                }
+            }
             if (!$success) {
                 return [
                     false,

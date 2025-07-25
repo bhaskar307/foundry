@@ -46,12 +46,12 @@ class ApiController extends Common
     public function createdProduct()
     {
         $payload = $this->validateJwtApiTokenVendor();
-        
         $productDetails = $this->request->getPost();
-        $imageFile = $this->request->getFile('image');
+        $files = $this->request->getFiles('images');
+
         $productDetails['user_id'] = $payload->user_id;
         $productDetails['user_type'] = $payload->user_type;
-        $resp = $this->apiService->createdProduct($productDetails,$imageFile);
+        $resp = $this->apiService->createdProduct($productDetails,$files);
         if (!$resp[0]) {
             $this->apiError($resp[1], $resp[2], $resp[3]);
         } else {

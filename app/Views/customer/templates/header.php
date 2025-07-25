@@ -1,3 +1,9 @@
+
+<?php
+    $uri = service('uri');
+    $totalSegments = $uri->getTotalSegments();
+    $lastSegment = $totalSegments > 0 ? $uri->getSegment($totalSegments) : null;
+?>
 <!doctype html>
 <html lang="en">
 
@@ -63,3 +69,8 @@
             </div>
         </div>
     </header>
+    <?php if (!empty($lastSegment)): ?>
+        <div class="py-lg-5 py-4">
+            <!-- Inner page content -->
+        </div>
+    <?php endif; ?>

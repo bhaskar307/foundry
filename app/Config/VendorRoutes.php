@@ -13,6 +13,7 @@ $routes->group('vendor', ['namespace' => 'App\Controllers\Vendors'], function ($
     $routes->get('login', 'WebController::index');
     $routes->get('dashboard', 'WebController::dashboard'); 
     $routes->get('products', 'WebController::products'); 
+    $routes->get('add-product', 'WebController::add_product'); 
     $routes->get('change-password', 'WebController::changePassword'); 
     $routes->get('profile', 'WebController::profile'); 
     $routes->get('edit-profile', 'WebController::edit_profile'); 

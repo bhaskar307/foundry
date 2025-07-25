@@ -33,17 +33,23 @@ class WebController extends Common
 
     /** Product List */
     public function product_list(){  
+        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status' => ACTIVE_STATUS]);
+        $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['status' => ACTIVE_STATUS]);
+        $resp['review'] = $this->webService->getCustomerReview();
         return
             view('customer/templates/header.php') .
-            view('customer/product_list.php') .
+            view('customer/product_list.php',$resp) .
             view('customer/templates/footer.php');
     }
 
     /** Category Product */
     public function category_product(){  
+        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status' => ACTIVE_STATUS]);
+        $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['status' => ACTIVE_STATUS]);
+        $resp['review'] = $this->webService->getCustomerReview();
         return
             view('customer/templates/header.php') .
-            view('customer/category.php') .
+            view('customer/category.php',$resp) .
             view('customer/templates/footer.php');
     }
 
