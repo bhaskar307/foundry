@@ -130,15 +130,28 @@ class WebController extends Common
         $resp['resp'] = $this->webService->getRequestsDetails($payload->user_id,$resp['customerUid'],$resp['productUid'],$resp['date']);
         $resp['customer'] = $this->commonModel->getAllData(CUSTOMER_TABLE,['status' => ACTIVE_STATUS]); 
         $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['status' => ACTIVE_STATUS]);    
-        // echo '<pre>';
-        // print_r($resp);
-        
         return
             view('vendors/templates/header.php').
             view('vendors/requests.php',$resp).
             view('vendors/templates/footer.php');
     }
 
+    /** Ratings */ 
+    public function ratings(){  
+        $payload = $this->validateJwtWebTokenVendor();
+        if (!$payload) {
+            return redirect()->to(base_url('vendor/login'));
+        }
+        $resp['customerUid'] = $this->request->getGet('customer');
+        $resp['productUid'] = $this->request->getGet('product'); 
+        $resp['customer'] = $this->commonModel->getAllData(CUSTOMER_TABLE,['status' => ACTIVE_STATUS]);
+        $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['status' => ACTIVE_STATUS]);     
+        $resp['resp'] = $this->webService->getCustomerReview($payload->user_id,$resp['customerUid'],$resp['productUid']);
+        return
+            view('vendors/templates/header.php').
+            view('vendors/ratings.php',$resp).
+            view('vendors/templates/footer.php');
+    }
 
     /** Logout */
     public function logout()

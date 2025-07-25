@@ -90,4 +90,29 @@ class WebModel extends Model {
         $result = $builder->get()->getResultArray();
         return $result;
     }
+
+    public function getCustomerReview($customerId=null,$productId=null)  
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('product_rating pr');
+        $builder->select('
+            pr.*, 
+            c.name AS customer_name, 
+            c.image AS customer_image, 
+            c.mobile AS customer_mobile, 
+            c.email AS customer_email, 
+            p.name AS product_name
+        ');
+        $builder->join('customer c', 'c.uid = pr.customer_id', 'left');
+        $builder->join('product p', 'p.uid = pr.product_id', 'left');
+        $builder->where('pr.status', ACTIVE_STATUS);
+        if($customerId != null){
+            $builder->where('pr.customer_id', $customerId);
+        }
+        if($productId != null){
+            $builder->where('pr.product_id', $productId);
+        }
+        $result = $builder->get()->getResultArray();
+        return $result;
+    }
 }

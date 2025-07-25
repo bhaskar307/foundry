@@ -146,7 +146,7 @@ class WebController extends Common
     }
 
     /** Requests */ 
-    public function requests(){ 
+    public function requests(){  
         $payload = $this->validateJwtWebToken();
         if (!$payload) {
             return redirect()->to(base_url('admin/login'));
@@ -166,6 +166,27 @@ class WebController extends Common
         return
             view('admin/templates/header.php').
             view('admin/requests.php',$resp).
+            view('admin/templates/footer.php');
+    }
+
+    /** Ratings */ 
+    public function ratings(){  
+        $payload = $this->validateJwtWebToken();
+        if (!$payload) {
+            return redirect()->to(base_url('admin/login'));
+        }
+        $resp['customerUid'] = $this->request->getGet('customer');
+        $resp['productUid'] = $this->request->getGet('product'); 
+        $resp['customer'] = $this->commonModel->getAllData(CUSTOMER_TABLE,['status' => ACTIVE_STATUS]);
+        $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['status' => ACTIVE_STATUS]);     
+        $resp['resp'] = $this->webService->getCustomerReview($resp['customerUid'],$resp['productUid']);
+        // echo '<pre>';
+        // print_r($resp);
+        // die;
+        
+        return
+            view('admin/templates/header.php').
+            view('admin/ratings.php',$resp).
             view('admin/templates/footer.php');
     }
 

@@ -47,4 +47,10 @@ class WebService
         $data = $this->webModel->getRequestsDetails($vendorId,$customer,$product,$date);
         return $data;
     }
+
+    public function getCustomerReview($customerId,$productId)  
+    {
+        $data = $this->webModel->getCustomerReview($customerId,$productId);
+        return $data;
+    }
 }
