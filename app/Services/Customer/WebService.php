@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Services\Customer;
 
 use CodeIgniter\Validation\Validation;
 
 //use App\Models\PerformanceModule\ReviewModel;
-use App\Models\Admin\WebModel;
+use App\Models\Customer\WebModel;
 
 class WebService
 {

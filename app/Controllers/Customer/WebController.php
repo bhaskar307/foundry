@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controllers\Admin;
+namespace App\Controllers\Customer;
 use App\Controllers\Common;
-use App\Services\Admin\WebService;
+use App\Services\Customer\WebService;
 use App\Models\CommonModel;
 
 use CodeIgniter\API\ResponseTrait;
@@ -22,15 +22,12 @@ class WebController extends Common
     /** Index */
     public function index()
     {
-        $jwt = $this->request->getCookie(ADMIN_JWT_TOKEN);
-        if (empty($jwt)) {
-            return view('admin/login.php');
-        }
-        $data = validateJWT($jwt);
-        if (!$data) {
-            return view('admin/login.php');
-        }
-        return redirect()->to(base_url('admin/dashboard'));
+        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status' => ACTIVE_STATUS]);
+        $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['status' => ACTIVE_STATUS]);
+        // echo '<pre>';
+        // print_r($resp);
+        // die;
+        return view('customer/home.php',$resp);
     }
 
     /** Dashboard */

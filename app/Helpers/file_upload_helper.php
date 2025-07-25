@@ -1,7 +1,7 @@
 <?php
 function uploadFile($file, $folder, $fileId)
 {
-    $allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf', 'docx'];
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf', 'docx','webp'];
     $maxSize = 5 * 1024 * 1024; // 5MB
 
     if (!$file->isValid()) {
