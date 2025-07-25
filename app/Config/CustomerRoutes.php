@@ -7,6 +7,10 @@ use CodeIgniter\Router\RouteCollection;
 /** Customer */
 $routes->group('', ['namespace' => 'App\Controllers\Customer'], function ($routes) {
     $routes->get('/', 'WebController::index');
+    $routes->get('product-list', 'WebController::product_list');
+    $routes->get('category/product', 'WebController::category_product');
+    $routes->get('product-details', 'WebController::product_details');
+    $routes->get('registration', 'WebController::registration');
     //$routes->get('logout', 'WebController::logout'); 
 });
 

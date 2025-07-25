@@ -25,23 +25,43 @@ class WebController extends Common
         $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status' => ACTIVE_STATUS]);
         $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['status' => ACTIVE_STATUS]);
         $resp['review'] = $this->webService->getCustomerReview();
-        // echo '<pre>';
-        // print_r($resp['review']);
-        // die;
-        return view('customer/home.php',$resp);
+        return
+            view('customer/templates/header.php') .
+            view('customer/home.php',$resp) .
+            view('customer/templates/footer.php');
     }
 
-    /** Dashboard */
-    public function dashboard(){ 
-        $payload = $this->validateJwtWebToken();
-        if (!$payload) {
-            return redirect()->to(base_url('admin/login'));
-        }
-
+    /** Product List */
+    public function product_list(){  
         return
-            view('admin/templates/header.php') .
-            view('admin/dashboard.php') .
-            view('admin/templates/footer.php');
+            view('customer/templates/header.php') .
+            view('customer/product_list.php') .
+            view('customer/templates/footer.php');
+    }
+
+    /** Category Product */
+    public function category_product(){  
+        return
+            view('customer/templates/header.php') .
+            view('customer/category.php') .
+            view('customer/templates/footer.php');
+    }
+
+    /** Product Details */
+    public function product_details(){  
+        return
+            view('customer/templates/header.php') .
+            view('customer/product_details.php') .
+            view('customer/templates/footer.php');
+    }
+
+
+    /** Register */
+    public function registration(){  
+        return
+            view('customer/templates/header.php') .
+            view('customer/registration.php') .
+            view('customer/templates/footer.php');
     }
 
     /** Vendor */
