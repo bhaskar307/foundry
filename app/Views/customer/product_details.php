@@ -94,25 +94,46 @@
                 <div class="stkysec position-sticky" style="top: 100px;">
                     <h1 class="h2 mb-2"><?= $resp['name']; ?></h1>
                     <div class="mb-2 d-flex items-center gap-2">
-                        <i style="line-height: 0;">
-                            <svg width="100" height="16" viewBox="0 0 100 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3.03371 15.8625L4.32255 9.99755L0 6.05281L5.71052 5.531L7.93128 0L10.152 5.531L15.8626 6.05281L11.54 9.99755L12.8288 15.8625L7.93128 12.7526L3.03371 15.8625Z" fill="#F6AB27"/>
-                                <path d="M24.1839 15.8625L25.4727 9.99755L21.1501 6.05281L26.8607 5.531L29.0814 0L31.3022 5.531L37.0127 6.05281L32.6902 9.99755L33.979 15.8625L29.0814 12.7526L24.1839 15.8625Z" fill="#F6AB27"/>
-                                <path d="M45.3335 15.8625L46.6224 9.99755L42.2998 6.05281L48.0103 5.531L50.2311 0L52.4518 5.531L58.1624 6.05281L53.8398 9.99755L55.1286 15.8625L50.2311 12.7526L45.3335 15.8625Z" fill="#F6AB27"/>
-                                <path d="M66.4839 15.8625L67.7727 9.99755L63.4502 6.05281L69.1607 5.531L71.3815 0L73.6022 5.531L79.3128 6.05281L74.9902 9.99755L76.279 15.8625L71.3815 12.7526L66.4839 15.8625Z" fill="#F6AB27"/>
-                                <path d="M87.1712 15.8625L88.46 9.99755L84.1375 6.05281L89.848 5.531L92.0687 0L94.2895 5.531L100 6.05281L95.6775 9.99755L96.9663 15.8625L92.0687 12.7526L87.1712 15.8625Z" fill="#F6AB27"/>
+                        <?php
+                            $rating = $resp['total_rating_percent']; 
+                            $fullStars = floor($rating);
+                            $halfStar = ($rating - $fullStars) >= 0.5;
+                            $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+
+                            $starSvg = function($fill) {
+                                $color = match($fill) {
+                                    'full' => '#F6AB27',
+                                    'half' => 'url(#halfGradient)',
+                                    'empty' => '#E0E0E0',
+                                };
+                                return <<<SVG
+                            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <defs> <linearGradient id="halfGradient"> <stop offset="50%" stop-color="#F6AB27"/> <stop offset="50%" stop-color="#E0E0E0"/> </linearGradient></defs>
+                            <path d="M50 5L61 35H95L67 57L78 90L50 70L22 90L33 57L5 35H39L50 5Z" fill="$color"/>
                             </svg>
-                        </i>
-                        <span style="color:#666">(4.2) 12 Reviews</span>
+                            SVG;
+                            };
+                        ?>
+                            <i style="display: flex; gap: 2px; line-height: 0;">
+                                <?php
+                                for ($i = 0; $i < $fullStars; $i++) echo $starSvg('full');
+                                if ($halfStar) echo $starSvg('half');
+                                for ($i = 0; $i < $emptyStars; $i++) echo $starSvg('empty');
+                                ?>
+                            </i>
+                        <small style="color: #666;"><?= $resp['total_rating_percent'] ?> (<?= $resp['total_customer_review'] ?> reviews)</small>
                     </div>
                     <p><?= $resp['description']; ?></p>
+                    <?php if(!empty($resp['brand'])){ ?>
                     <div class="p-3 rounded-10 border d-flex align-items-center gap-3 mb-3">
+                        
                         <i style="line-height: 0;">
                             <img src="<?= base_url('assets/customer/images/ener.webp') ?>" class="rounded-10 object-fit-cover" width="80" height="80">
                         </i>
                         <div>
+                            
                             <div class="d-flex align-items-center gap-1">
-                                <h5 class="m-0">Enerzi Microwave India Pvt. Ltd.</h5>
+                                <h5 class="m-0"><?= $resp['brand'] ?></h5>
                                 <button type="button" class="btnico" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And here’s some amazing content. It’s very engaging. Right?">
                                     <svg width="18" height="18" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M10.5 21C16.299 21 21 16.299 21 10.5C21 4.70108 16.299 0 10.5 0C4.70098 0 0 4.70103 0 10.5C0 16.299 4.70098 21 10.5 21ZM10.5 2.10002C15.1318 2.10002 18.9 5.86825 18.9 10.5C18.9 15.1318 15.1318 18.9 10.5 18.9C5.8682 18.9 2.10002 15.1318 2.10002 10.5C2.10002 5.86825 5.8682 2.10002 10.5 2.10002ZM9.1852 14.7C9.1852 13.9387 9.7395 13.3875 10.4893 13.3875C11.2695 13.3875 11.8102 13.9387 11.8102 14.7146C11.8102 15.4602 11.2549 16.0125 10.4893 16.0125C9.7395 16.0125 9.1852 15.4602 9.1852 14.7ZM11.5477 11.55H9.44773V5.25001H11.5477V11.55Z" fill="#1F58BD"/>
@@ -120,7 +141,8 @@
                                 </button>
                             </div>
                             <small class="d-block mb-1">Detroit, Michigan, USA</small>
-                            <div class="d-flex items-center gap-2">
+                            
+                            <!-- <div class="d-flex items-center gap-2">
                                 <i style="line-height: 0;">
                                     <svg width="100" height="16" viewBox="0 0 100 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M3.03371 15.8625L4.32255 9.99755L0 6.05281L5.71052 5.531L7.93128 0L10.152 5.531L15.8626 6.05281L11.54 9.99755L12.8288 15.8625L7.93128 12.7526L3.03371 15.8625Z" fill="#F6AB27"/>
@@ -131,9 +153,11 @@
                                     </svg>
                                 </i>
                                 <span style="color:#666">(4.2) 12 Reviews</span>
-                            </div>
+                            </div> -->
                         </div>
+                        
                     </div>
+                    <?php } ?>
                     <div class="d-flex gap-3">
                         <button class="btn btn-primary d-inline-flex gap-2" data-bs-toggle="modal" data-bs-target="#requestAQuote">
                             <i style="line-height: 0;">

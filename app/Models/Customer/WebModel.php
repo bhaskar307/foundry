@@ -59,7 +59,7 @@ class WebModel extends Model {
         return $result;
     }
 
-    public function getProductDetailsByProductId($productId)
+    public function getProductDetailsByProductId_old($productId)
     {
         $db = \Config\Database::connect();
         $builder = $db->table('product p');
@@ -108,6 +108,7 @@ class WebModel extends Model {
         return $result;
     }
 
+
     public function getFilteredProductDetails($categoryUid = [], $priceFrom = 0, $priceTo = 50000)  
     {
         $db = \Config\Database::connect();
@@ -145,5 +146,49 @@ class WebModel extends Model {
         return $result;
     }
 
+    public function getProductDetailsByProductId($productId)
+    {
+        $db = \Config\Database::connect();
 
+        // Product + Vendor + Category + Ratings
+        $builder = $db->table('product p');
+        $builder->select('
+            p.*, 
+            v.name AS vendor_name, 
+            v.mobile AS vendor_mobile, 
+            v.email AS vendor_email, 
+            cat.title AS category_name,
+            (
+                SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid
+            ) AS total_customer_review,
+            (
+                SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid
+            ) AS total_rating,
+            (
+                CASE 
+                    WHEN (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) > 0 
+                    THEN ROUND(
+                        (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) /
+                        (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid), 1
+                    )
+                    ELSE 0
+                END
+            ) AS total_rating_percent
+        ');
+        $builder->join('vendor v', 'v.uid = p.vendor_id', 'left');
+        $builder->join('category cat', 'cat.uid = p.category_id', 'left');
+        $builder->where('p.uid', $productId);
+        $product = $builder->get()->getRowArray();
+
+        // Get product images
+        $imageBuilder = $db->table('product_image');
+        $imageBuilder->select('*');
+        $imageBuilder->where('product_id', $productId);
+        $images = $imageBuilder->get()->getResultArray();
+
+        // Append images to product
+        $product['images'] = $images;
+
+        return $product;
+    }
 }
