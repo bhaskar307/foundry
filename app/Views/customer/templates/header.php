@@ -35,10 +35,10 @@
                     <nav class="d-none d-lg-block">
                         <ul class="mainMenu">
                             <li>
-                                <a href="" class="active">Home</a>
+                                <a href="<?= base_url('') ?>" <?php if(empty($lastSegment)){ ?>class="active" <?php } ?>>Home</a>
                             </li>
                             <li>
-                                <a href="">Shop</a>
+                                <a href="<?= base_url('product-list') ?>" <?php if($lastSegment == 'product-list'){ ?>class="active" <?php } ?>>Shop</a>
                             </li>
                             <li>
                                 <a href="">Podcast</a>

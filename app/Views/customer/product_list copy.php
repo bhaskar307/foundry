@@ -19,26 +19,21 @@
                                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ion-rangeslider@2.3.1/css/ion.rangeSlider.min.css"/>
                                 <script src="https://cdn.jsdelivr.net/npm/ion-rangeslider@2.3.1/js/ion.rangeSlider.min.js"></script>
                                 <script>
-                                    let priceRange = { 
-                                        from: <?= isset($priceFrom) ? $priceFrom : 1000 ?>, 
-                                        to: <?= isset($priceTo) ? $priceTo : 50000 ?>
-                                    };
-
                                     $(document).ready(function () {
                                         $("#priceRange").ionRangeSlider({
-                                            type: "double",
-                                            min: 0,
-                                            max: 100000,
-                                            from: priceRange.from,
-                                            to: priceRange.to,
-                                            step: 100,
-                                            prefix: "₹",
-                                            grid: true,
-                                            onFinish: function (data) {
-                                                priceRange.from = data.from;
-                                                priceRange.to = data.to;
-                                                handleCategoryChange(); // Call same function on price change
-                                            }
+                                        type: "double",
+                                        min: 0,
+                                        max: 100000,
+                                        from: 1000,
+                                        to: 50000,
+                                        step: 100,
+                                        prefix: "₹",
+                                        grid: true,
+                                        onFinish: function (data) {
+                                            // You can trigger product filter here using data.from & data.to
+                                            console.log("Min Price: ₹" + data.from);
+                                            console.log("Max Price: ₹" + data.to);
+                                        }
                                         });
                                     });
                                 </script>
@@ -46,30 +41,14 @@
                             <div class="">
                                 <h6 class="mb-2">Categories</h6>
                                 <div class="d-flex flex-column gap-1">
-                                    <?php 
-                                    if ($category) {
-                                        foreach ($category as $row) {
-                                            $catId = $row['uid'];
-                                            // Check if this UID is selected
-                                            $isChecked = (isset($categoryUid) && in_array($catId, $categoryUid)) ? 'checked' : '';
+                                    <?php if($category){
+                                        foreach($category as $row){
                                     ?>
                                     <div class="form-check m-0">
-                                        <input 
-                                            class="form-check-input category-checkbox" 
-                                            type="checkbox" 
-                                            value="<?= $catId ?>" 
-                                            id="category<?= $catId ?>" 
-                                            onclick="handleCategoryChange(this)"
-                                            <?= $isChecked ?>
-                                        >
-                                        <label class="form-check-label" for="category<?= $catId ?>">
-                                            <?= $row['title']; ?>
-                                        </label>
+                                        <input class="form-check-input" type="checkbox" value="" id="coreMakingMachines">
+                                        <label class="form-check-label" for="coreMakingMachines"><?= $row['title']; ?></label>
                                     </div>
-                                    <?php 
-                                        }
-                                    } 
-                                    ?>
+                                    <?php } } ?>
                                 </div>
                             </div>
                             <div class="">
@@ -209,31 +188,3 @@
         </div>
     </div>
 </section>
-
-<script>
-function handleCategoryChange(checkbox) {
-    const selected = [];
-    document.querySelectorAll('.category-checkbox:checked').forEach(cb => {
-        selected.push(cb.value);
-    });
-
-    const filterData = {
-        categories: selected,
-        price: {
-            from: priceRange.from,
-            to: priceRange.to
-        }
-    };
-
-    const jsonStr = JSON.stringify(filterData);
-    const base64 = btoa(jsonStr);
-    const url = "<?= base_url('product-list?filter=') ?>" + encodeURIComponent(base64);
-    window.location.href = url;
-    //anotherFunction(selected);
-}
-
-function anotherFunction(categories) {
-    // Example use: send data via AJAX or update UI
-    console.log('Calling another function with:', categories);
-}
-</script>

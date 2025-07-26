@@ -32,9 +32,25 @@ class WebController extends Common
     }
 
     /** Product List */
-    public function product_list(){  
+    public function product_list(){
+        $filterData = [];
+        $filter = $this->request->getGet('filter');
+
+        if ($filter) {
+            $decoded = base64_decode($filter);
+            $filterData = json_decode($decoded, true); // associative array
+
+            $resp['categoryUid'] = $filterData['categories'];
+            $resp['priceFrom'] = $filterData['price']['from'];
+            $resp['priceTo'] = $filterData['price']['to'];
+        }else{
+            $resp['categoryUid'] = [];
+            $resp['priceFrom'] = 100;
+            $resp['priceTo'] = 50000;
+        }
+        
         $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status' => ACTIVE_STATUS]);
-        $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['status' => ACTIVE_STATUS]);
+        $resp['product'] = $this->webService->getProductList($resp['categoryUid'],$resp['priceFrom'],$resp['priceTo']);
         $resp['review'] = $this->webService->getCustomerReview();
         return
             view('customer/templates/header.php') .

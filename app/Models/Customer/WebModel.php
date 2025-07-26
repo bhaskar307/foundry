@@ -21,4 +21,22 @@ class WebModel extends Model {
         $result = $builder->get()->getResultArray();
         return $result;
     }
+
+    public function getProductList($categoryUid = [], $priceFrom = 0, $priceTo = 50000)
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('product');
+        $builder->select('*');
+        $builder->where('status', ACTIVE_STATUS);
+        if (!empty($categoryUid) && is_array($categoryUid)) {
+            $builder->whereIn('category_id', $categoryUid);
+        }
+        if (is_numeric($priceFrom) && is_numeric($priceTo)) {
+            $builder->where('price >=', $priceFrom);
+            $builder->where('price <=', $priceTo);
+        }
+        $result = $builder->get()->getResultArray();
+        return $result;
+    }
+
 }

@@ -14,11 +14,15 @@ class WebService
         $this->webModel = new WebModel();
     }
 
-    public function getCustomerReview()  
+    public function getCustomerReview()   
     {
         $data = $this->webModel->getCustomerReview();
         return $data;
     }
 
-    
+    public function getProductList($categoryUid,$priceFrom,$priceTo)   
+    {
+        $data = $this->webModel->getProductList($categoryUid,$priceFrom,$priceTo);
+        return $data;
+    }
 }
