@@ -11,12 +11,13 @@ $routes->group('', ['namespace' => 'App\Controllers\Customer'], function ($route
     $routes->get('category', 'WebController::category_product');
     $routes->get('product-details/(:any)', 'WebController::product_details/$1');
     $routes->get('registration', 'WebController::registration');
-    //$routes->get('logout', 'WebController::logout'); 
+    $routes->get('logout', 'WebController::logout'); 
 });
 
 $routes->group('customer/api', ['namespace' => 'App\Controllers\Customer'], function ($routes) {
     $routes->post('login', 'ApiController::login'); 
-    
+    $routes->post('ragister', 'ApiController::ragister'); 
+
     $routes->group("request", function ($routes) {
         $routes->post('created', 'ApiController::createdRequest'); 
     });

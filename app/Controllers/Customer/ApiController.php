@@ -26,6 +26,8 @@ class ApiController extends Common
         } else {
             $data['user_id'] = $resp[3]['data']['uid'];
             $data['user_name'] = $resp[3]['data']['name'];
+            $data['user_email'] = $resp[3]['data']['email'];
+            $data['user_mobile'] = $resp[3]['data']['mobile'];
             $data['user_image'] = $resp[3]['data']['image'];
             $data['user_type'] = USER_TYPE_CUSTOMER;
             list($auth_token, $auth_cookie) = generateJwtTokenCustomer($data);
@@ -34,6 +36,20 @@ class ApiController extends Common
                 ->setStatusCode(200)
                 ->setCookie($auth_cookie);
                 
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
+
+    /** ragister */
+    public function ragister()
+    {
+        $customerDetails = $this->request->getPost();
+        $imageFile = $this->request->getFile('image');
+        
+        $resp = $this->apiService->createdCustomer($customerDetails,$imageFile);
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
             $this->apiSuccess($resp[1], $resp[2], $resp[3]);
         }
     }
@@ -65,4 +81,5 @@ class ApiController extends Common
             $this->apiSuccess($resp[1], $resp[2], $resp[3]);
         }
     }
+    
 }

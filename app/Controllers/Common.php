@@ -117,6 +117,16 @@ class Common extends BaseController {
     /** Check Admin JWT Tocken */
 
     /** Check Customer JWT Tocken */
+    public function validateJwtWebTokenCustomer() 
+    {
+        $jwt = $this->request->getCookie(CUSTOMER_JWT_TOKEN);
+        if (empty($jwt)) {
+            return false;
+        }
+
+        $data = validateJWT($jwt);
+        return $data ?: false;
+    }
     public function validateJwtApiTokenCustomer()
     {
         $jwt  = $this->request->getCookie(CUSTOMER_JWT_TOKEN);

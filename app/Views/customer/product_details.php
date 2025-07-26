@@ -352,9 +352,10 @@
 </section>
 
 <!--=================Request A Quote Modal=================-->
+<?php if(!empty($customerDetails)){ ?>
 <div class="modal fade" id="requestAQuote" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <form action="#" method="post" class="modal-content">
+        <form action="#" method="post" class="modal-content" onsubmit="submitQuote(event)">
             <div class="modal-header">
                 <h5 class="modal-title">Request A Quote</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -362,14 +363,15 @@
             <div class="modal-body">
                 <div class="d-flex flex-column gap-3">
                     <div>Please fill out the form below and our team will get back to you with a customized quote tailored to your needs.</div>
+                    <input type='hidden' name="productId" id="productId" value="<?= $resp['uid'] ?>">
                     <div class="position-relative">
-                        <input type="text" class="form-control" placeholder="Name*" required>
+                        <input type="text" class="form-control" placeholder="Name*" value="<?php if(!empty($customerDetails)){ echo $customerDetails['name']; } ?>" readonly>
                     </div>
                     <div class="position-relative">
-                        <input type="email" class="form-control" placeholder="Email id*" required>
+                        <input type="email" class="form-control" placeholder="Email id*" value="<?php if(!empty($customerDetails)){ echo $customerDetails['email']; } ?>" readonly>
                     </div>
                     <div class="position-relative">
-                        <input type="tel" class="form-control" placeholder="Phone Number*" required>
+                        <input type="tel" class="form-control" placeholder="Phone Number*" value="<?php if(!empty($customerDetails)){ echo $customerDetails['phone']; } ?>" readonly>
                     </div>
                     <div class="position-relative">
                         <textarea class="form-control" rows="3" placeholder="Message"></textarea>
@@ -382,8 +384,33 @@
         </form>
     </div>
 </div>
+<?php }else{ ?>
+<div class="modal fade" id="requestAQuote" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <form class="modal-content review-form">
+            <div class="modal-header">
+                <h5 class="modal-title">Give Your Review</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
+            <div class="modal-body">
+                <!-- Actual review form -->
+                <div id="loginFirst">
+                    Please login first to submit a review.
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary w-100 justify-content-center" onclick="openLoginModal1()">OK</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<?php } ?>
 <!--=================Leave a Review Modal=================-->
+
+<?php if(!empty($customerDetails)){ ?>
 <div class="modal fade" id="giveReviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <form class="modal-content review-form" onsubmit="submitReview(event)">
@@ -392,6 +419,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <input type='hidden' name="productUid" id="productUid" value="<?= $resp['uid'] ?>">
                 <div class="d-flex flex-column gap-3">
                     <div class="position-relative">
                         <div class="star-rating">
@@ -401,9 +429,12 @@
                             <input type="radio" name="rating" id="star2" value="2"><label for="star2">★</label>
                             <input type="radio" name="rating" id="star1" value="1"><label for="star1">★</label>
                         </div>
+                        <div id="rating-error" class="text-danger small mt-1"></div>
                     </div>
+
                     <div class="position-relative">
-                        <textarea class="form-control" name="details" rows="3" placeholder="Message" required></textarea>
+                        <textarea class="form-control" name="details" rows="3" placeholder="Message"></textarea>
+                        <div id="details-error" class="text-danger small mt-1"></div>
                     </div>
                 </div>
             </div>
@@ -413,20 +444,194 @@
         </form>
     </div>
 </div>
+<?php }else{ ?>
+<div class="modal fade" id="giveReviewModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <form class="modal-content review-form">
+            <div class="modal-header">
+                <h5 class="modal-title">Give Your Review</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
+            <div class="modal-body">
+                <!-- Actual review form -->
+                <div id="loginFirst">
+                    Please login first to submit a review.
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary w-100 justify-content-center" onclick="openLoginModal()">OK</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<?php } ?>
 <script>
+    const BASE_URL1 = "<?= base_url(); ?>";
     function submitReview(event) {
-      event.preventDefault();
-      const form = event.target;
-      const rating = form.rating.value;
-      const details = form.details.value;
+        event.preventDefault();
+        document.getElementById('rating-error').textContent = '';
+        document.getElementById('details-error').textContent = '';
+        const productUid = document.getElementById('productUid')?.value;
+        const rating = document.querySelector('input[name="rating"]:checked');
+        const detailsInput = document.querySelector('textarea[name="details"]');
+        const details = detailsInput.value.trim();
+        let hasError = false;
+        if (!rating) {
+            document.getElementById('rating-error').textContent = "Please select a rating.";
+            hasError = true;
+        }
+        if (!details) {
+            document.getElementById('details-error').textContent = "Please write a review message.";
+            hasError = true;
+        }
+        if (hasError) return;
 
-      console.log("Review Submitted:", {
-        rating, details
-      });
+        const data = {
+            productId: productUid,
+            rating: rating.value,
+            review: details
+        };
 
-      alert("Thank you for your review!");
-
-      form.reset();
+        fetch(`${BASE_URL1}customer/api/rating/created`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    // Show error message from API response
+                    MessError.fire({
+                        icon: 'error',
+                        title: data.message || 'Something went wrong',
+                    });
+                    throw new Error(data.message || 'Request failed');
+                });
+            }
+            return response.json();
+        })
+        .then(result => {
+            // Success feedback
+            MessSuccess.fire({
+                icon: 'success',
+                title: 'Review submitted successfully!',
+            });
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error(error);
+            document.getElementById('details-error').textContent = "Failed to submit review. Please try again.";
+        });
     }
-  </script>
+    function openLoginModal() {
+        // Hide the review modal
+        const reviewModalEl = document.getElementById('giveReviewModal');
+        const reviewModal = bootstrap.Modal.getInstance(reviewModalEl);
+        reviewModal.hide();
+
+        // Show the login modal
+        const loginModalEl = document.getElementById('loginRegisterModal'); // make sure the ID matches
+        const loginModal = new bootstrap.Modal(loginModalEl);
+        loginModal.show();
+    }
+    function openLoginModal1() {
+        // Hide the review modal
+        const reviewModalEl = document.getElementById('requestAQuote');
+        const reviewModal = bootstrap.Modal.getInstance(reviewModalEl);
+        reviewModal.hide();
+
+        // Show the login modal
+        const loginModalEl = document.getElementById('loginRegisterModal'); // make sure the ID matches
+        const loginModal = new bootstrap.Modal(loginModalEl);
+        loginModal.show();
+    }
+
+    function submitQuote(event) {
+        event.preventDefault();
+        const productId = document.getElementById('productId').value;
+        const message = document.querySelector('textarea[placeholder="Message"]').value;
+        // console.log("Quote Request Data:", {
+        //     productId,
+        //     message
+        // });
+
+        fetch(`${BASE_URL1}customer/api/request/created`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                productId,
+                message
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                MessSuccess.fire({
+                    icon: 'success',
+                    title: 'Request submitted successfully!',
+                });
+                window.location.reload();
+            } else {
+                MessError.fire({
+                    icon: 'error',
+                    title: data.message || 'Failed to submit quote request.',
+                });
+            }
+        })
+        .catch(error => {
+            console.error("API Error:", error);
+            MessError.fire({
+                icon: 'error',
+                title: 'Something went wrong. Please try again.',
+            });
+        });
+    }
+</script>
+<script>
+    var MessSuccess = Swal.mixin({
+        toast: true,
+        icon: 'success',
+        title: 'General Title',
+        animation: false,
+        position: 'top-right',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    var MessError = Swal.mixin({
+        toast: true,
+        icon: 'error',
+        title: 'General Title',
+        animation: false,
+        position: 'top-right',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    setTimeout(function() {
+        let alertBox = document.getElementById("flashAlert");
+        if (alertBox) {
+            let bsAlert = new bootstrap.Alert(alertBox);
+            bsAlert.close();
+        }
+    }, 3000);
+    
+</script>
+  

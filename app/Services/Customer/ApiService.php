@@ -53,6 +53,76 @@ class ApiService
     }
     /** Login */
 
+    /** Register */
+    public function createdCustomer($data,$file)  
+    {
+        $validationRules = [
+            'name'      => 'required',
+            'email'     => 'required',
+            'mobile'    => 'required',
+            'dob'       => 'required',
+            'password'  => 'required'
+        ];
+        $validationResult = validateData($data, $validationRules);
+        if (!$validationResult['success']) {
+            return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
+        }
+        $vendorUid = generateUid();
+        // Handle file upload
+        $uploadResult = null;
+        $timestamp = timestamp();
+        $image_path = '';
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+
+            $uploadResult = uploadFile($file, 'vendor', $timestamp);
+            if (isset($uploadResult['error'])) {
+                return [
+                    'status'     => 'failed',
+                    'statusCode' => 400,
+                    'message'    => 'File upload failed',
+                    'errors'     => ['Vendor Image' => $uploadResult['error']],
+                ];
+            }
+            $image_path = $uploadResult['path'];
+        }
+        
+        try {
+            $plainPassword = $data['password'];
+            $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
+
+            $addData = [
+                'uid'        => $vendorUid,
+                'image'      => $image_path,
+                'name'       => $data['name'],
+                'mobile'     => $data['mobile'],
+                'email'      => $data['email'],
+                'password'   => $hashedPassword,
+                'dob'        => $data['dob'],
+            ];
+            $success = $this->commonModel->insertData(CUSTOMER_TABLE, $addData);
+            if (!$success) {
+                return [
+                    false,
+                    500,
+                    'Customer registration failed.',
+                    ['error' => 'Database insert failed']
+                ];
+            }
+
+            $this->sendCustomerPasswordToEmail($data['name'],$data['email'], $plainPassword);
+
+            return [
+                true,
+                200,
+                'Customer registered successfully.',
+                ['data' => $success]
+            ];
+        } catch (\Throwable $e) {
+            return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
+        }
+    }
+    /** Register */
+
     /** Request Section */
     public function createdRequest($data)  
     {
@@ -70,6 +140,7 @@ class ApiService
             $addData = [
                 'uid'          => $requestUid,
                 'customer_id'  => $data['user_id'],
+                'message'      => $data['message'],
                 'product_id'   => $data['productId'],
                 'vendor_id'    => $productDetails['vendor_id'],
             ];
@@ -82,8 +153,12 @@ class ApiService
                     ['error' => 'Database insert failed']
                 ];
             }
+            $vendor = $this->commonModel->getSingleData(VENDOR_TABLE,['uid' => $productDetails['vendor_id'],'status !=' => DELETED_STATUS]);
+            $product = $this->commonModel->getSingleData(PRODUCT_TABLE,['uid' => $data['productId'],'status !=' => DELETED_STATUS]);
+            $customer = $this->commonModel->getSingleData(CUSTOMER_TABLE,['uid' => $data['user_id'],'status !=' => DELETED_STATUS]);
 
-            //$this->sendCustomerPasswordToEmail($data['name'],$data['email'], $plainPassword);
+            $this->sendCustomerProductRequestEmail($customer['name'],$customer['email'],$product['name']);
+            $this->sendVendorProductRequestEmail($vendor['name'],$vendor['email'],$data['user_id'],$customer['name'],$customer['email'], $product['name']);
 
             return [
                 true,
@@ -141,23 +216,53 @@ class ApiService
         }
     }
 
-    private function sendVendorPasswordToEmail($name,$email, $plainPassword)
+    private function sendCustomerProductRequestEmail($name, $email, $product_name)
     {
         $emailService = \Config\Services::email();
         $emailService->setTo($email);
         $emailService->setFrom('www.bd.project@gmail.com', 'Foundry');
-        $emailService->setSubject('Your Account Password');
-        $emailService->setMessage(
-            "Dear $name,<br>" .
-            "Your account has been created.<br>" .
-            "Login Email: <b>$email</b><br>" .
-            "Password: <b>$plainPassword</b><br>" .
-            "You can log in here: <a href='http://localhost/foundry/admin/'>Login Page</a><br>" .
-            "Thank you."
-        );
+        $emailService->setSubject('Product Request Confirmation');
+
+        $message = "
+            Dear $name,<br><br>
+            Thank you for your interest in our product.<br>
+            We have received your request for: <b>$product_name</b>.<br><br>
+            Our team will review your request and get back to you shortly.<br><br>
+            Regards,<br>
+            Foundry Team
+        ";
+
+        $emailService->setMessage($message);
 
         if (!$emailService->send()) {
-            log_message('error', 'Failed to send password email to ' . $email);
+            log_message('error', 'Failed to send product request confirmation email to ' . $email);
+        }
+    }
+
+    private function sendVendorProductRequestEmail($vendor_name, $vendor_email, $customer_id, $customer_name, $customer_email, $product_name)
+    {
+        $emailService = \Config\Services::email();
+        $emailService->setTo($vendor_email);
+        $emailService->setFrom('www.bd.project@gmail.com', 'Foundry');
+        $emailService->setSubject('New Product Request from a Customer');
+
+        $message = "
+            Dear $vendor_name,<br><br>
+            You have received a new product request.<br><br>
+
+            <b>Product:</b> $product_name<br>
+            <b>Requested by:</b> $customer_name<br>
+            <b>Customer Email:</b> $customer_email<br><br>
+
+            Please login to your dashboard to view the details.<br><br>
+            Regards,<br>
+            Foundry Team
+        ";
+
+        $emailService->setMessage($message);
+
+        if (!$emailService->send()) {
+            log_message('error', 'Failed to send product request notification to vendor ' . $vendor_email);
         }
     }
 
@@ -172,7 +277,7 @@ class ApiService
             "Your account has been created.<br>" .
             "Login Email: <b>$email</b><br>" .
             "Password: <b>$plainPassword</b><br>" .
-            "You can log in here: <a href='http://localhost/foundry/customer/'>Login Page</a><br>" .
+            "You can log in here: <a href='http://localhost/foundry'>Login Page</a><br>" .
             "Thank you."
         );
 

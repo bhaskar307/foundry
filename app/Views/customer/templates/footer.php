@@ -128,3 +128,43 @@
     </footer>
 </body>
 </html>
+<script>
+    var MessSuccess = Swal.mixin({
+        toast: true,
+        icon: 'success',
+        title: 'General Title',
+        animation: false,
+        position: 'top-right',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    var MessError = Swal.mixin({
+        toast: true,
+        icon: 'error',
+        title: 'General Title',
+        animation: false,
+        position: 'top-right',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    setTimeout(function() {
+        let alertBox = document.getElementById("flashAlert");
+        if (alertBox) {
+            let bsAlert = new bootstrap.Alert(alertBox);
+            bsAlert.close();
+        }
+    }, 3000);
+    const BASE_URL = "<?= base_url(); ?>";
+</script>

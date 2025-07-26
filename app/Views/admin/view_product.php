@@ -8,13 +8,12 @@
     <div class="card p-4 shadow-sm">
         <!-- Header with title and edit button -->
         
-        <div class="row align-items-center">
+        <div class="row g-4 align-items-center">
             <!-- Vendor Profile Image -->
-            <div class="col-md-3 text-center mb-3 mb-md-0">
+            <div class="col-md-3">
                 <img src="<?= base_url($resp['image']) ?>" 
                     alt="Vendor Image" 
-                    class="img-fluid rounded-circle border border-3 border-primary shadow"
-                    style="width: 120px; height: 120px; object-fit: cover;">
+                    class="img-fluid rounded w-100">
             </div>
 
             <!-- Vendor Details -->
@@ -33,7 +32,7 @@
                 </div>
             </div>
         </div>
-        <br>
+
         <div class="row align-items-center">
             <div class="col-md-12">
                 <div class="row g-3">
@@ -43,6 +42,31 @@
                 </div>
             </div>
         </div>
+
+        <!-- <div class="row g-4">
+            <div class="col-md-4 col-lg-3">
+                <img src="<?= base_url($resp['image']) ?>" alt="" class="w-100 rounded">
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <img src="<?= base_url($resp['image']) ?>" alt="" class="w-100 rounded">
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <img src="<?= base_url($resp['image']) ?>" alt="" class="w-100 rounded">
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <img src="<?= base_url($resp['image']) ?>" alt="" class="w-100 rounded">
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <img src="<?= base_url($resp['image']) ?>" alt="" class="w-100 rounded">
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <img src="<?= base_url($resp['image']) ?>" alt="" class="w-100 rounded">
+            </div>
+        </div> -->
+
+
     </div>
     
 </die>
+
+

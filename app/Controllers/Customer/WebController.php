@@ -71,6 +71,18 @@ class WebController extends Common
 
     /** Product Details */
     public function product_details($productId){ 
+        $payload = $this->validateJwtWebTokenCustomer();
+
+        if(!empty($payload)){
+            $resp['customerDetails'] = [
+                'name' => $payload->user_name,
+                'email' => $payload->user_email,
+                'phone' => $payload->user_mobile
+            ];
+        }else{
+            $resp['customerDetails'] = [];
+        }
+        
         $resp['resp'] = $this->webService->getProductDetailsByProductId($productId); 
         $resp['reviews'] = $this->webService->getCustomerReviewByProductId($productId);
         $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['category_id' => $resp['resp']['category_id'],'status' => ACTIVE_STATUS]);
@@ -194,9 +206,9 @@ class WebController extends Common
     /** Logout */
     public function logout()
     {
-        $auth_cookie   = deleteJwtToken(ADMIN_JWT_TOKEN);
+        $auth_cookie   = deleteJwtToken(CUSTOMER_JWT_TOKEN);
         return redirect()
-            ->to(base_url('admin/login'))
+            ->to(base_url())
             ->setCookie($auth_cookie);
     }
 }
