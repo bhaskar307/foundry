@@ -57,6 +57,9 @@
                                 <a href="<?= base_url('product-list') ?>" <?php if($lastSegment == 'product-list'){ ?>class="active" <?php } ?>>Shop</a>
                             </li>
                             <li>
+                                <a href="<?= base_url('category') ?>" <?php if($lastSegment == 'category'){ ?>class="active" <?php } ?>>Category</a>
+                            </li>
+                            <li>
                                 <a href="">Podcast</a>
                             </li>
                             <li>
@@ -126,11 +129,14 @@
                 <a href="<?= base_url('product-list') ?>" <?php if($lastSegment == 'product-list'){ ?>class="active" <?php } ?>>Shop</a>
             </li>
             <li>
+                <a href="<?= base_url('category') ?>" <?php if($lastSegment == 'category'){ ?>class="active" <?php } ?>>Category</a>
+            </li>
+            <li>
                 <a href="">Podcast</a>
             </li>
             <li>
                 <a href="">Skool</a>
-            </li>
+            </li>   
         </ul>
     </div>
     <div class="offcanvas-footer bg-dark d-flex flex-column gap-4 p-4">

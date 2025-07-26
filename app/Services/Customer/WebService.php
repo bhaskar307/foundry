@@ -20,6 +20,12 @@ class WebService
         return $data;
     }
 
+    public function getAllProductDetails()   
+    {
+        $data = $this->webModel->getAllProductDetails();
+        return $data;
+    }
+
     public function getCustomerReviewByProductId($productId)   
     {
         $data = $this->webModel->getCustomerReviewByProductId($productId);

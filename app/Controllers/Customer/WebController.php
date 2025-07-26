@@ -23,7 +23,8 @@ class WebController extends Common
     public function index()
     {
         $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status' => ACTIVE_STATUS]);
-        $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['status' => ACTIVE_STATUS]);
+        //$resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['status' => ACTIVE_STATUS]);
+        $resp['product'] = $this->webService->getAllProductDetails();
         $resp['review'] = $this->webService->getCustomerReview();
         return
             view('customer/templates/header.php') .

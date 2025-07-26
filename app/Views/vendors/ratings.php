@@ -113,7 +113,7 @@
             function handleFilterChange() {
                 const customer = $('#search_customer').val();
                 const product = $('#search_product').val();
-                window.location.href = `<?= base_url('admin/ratings') ?>?customer=${customer}&product=${product}`;
+                window.location.href = `<?= base_url('vendor/ratings') ?>?customer=${customer}&product=${product}`;
             }
 
             $('#search_customer').on('change', handleFilterChange);

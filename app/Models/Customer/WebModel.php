@@ -85,4 +85,28 @@ class WebModel extends Model {
         return $product;
     }
 
+    public function getAllProductDetails()  
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('product p');
+
+        $builder->select('
+            p.*, 
+            (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) AS total_customer_review,
+            (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) AS total_rating,
+            (
+                CASE 
+                    WHEN (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) > 0 
+                    THEN ROUND((SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) / (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid), 1)
+                    ELSE 0
+                END
+            ) AS total_rating_percent
+        ');
+
+        $builder->where('p.status', ACTIVE_STATUS);
+        $result = $builder->get()->getResultArray();
+        return $result;
+    }
+
+
 }

@@ -166,5 +166,5 @@
             bsAlert.close();
         }
     }, 3000);
-    const BASE_URL = "<?= base_url(); ?>";
+    
 </script>
