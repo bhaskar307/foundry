@@ -97,7 +97,7 @@ class WebController extends Common
             return redirect()->to(base_url('admin/login'));
         }
         $resp['resp'] = $this->webService->getProductsDetails();
-        
+
         return
             view('admin/templates/header.php').
             view('admin/products.php',$resp).

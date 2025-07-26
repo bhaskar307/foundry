@@ -70,10 +70,16 @@ class WebController extends Common
     }
 
     /** Product Details */
-    public function product_details(){  
+    public function product_details($productId){ 
+        $resp['resp'] = $this->webService->getProductDetailsByProductId($productId); 
+        $resp['reviews'] = $this->webService->getCustomerReviewByProductId($productId);
+        $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['category_id' => $resp['resp']['category_id'],'status' => ACTIVE_STATUS]);
+
+        $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['category_id' => $resp['resp']['category_id'],'status' => ACTIVE_STATUS]);
+
         return
             view('customer/templates/header.php') .
-            view('customer/product_details.php') .
+            view('customer/product_details.php',$resp) .
             view('customer/templates/footer.php');
     }
 

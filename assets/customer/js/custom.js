@@ -182,6 +182,8 @@ jQuery(document).ready(function($){
   $window.on('scroll resize', check_if_in_view);
   $window.trigger('scroll');
 
+  const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
 
 
     

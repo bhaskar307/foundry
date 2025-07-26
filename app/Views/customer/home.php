@@ -155,7 +155,12 @@
                         foreach($category as $row){
                         ?>
                     <div class="swiper-slide">
-                        <a href="<?= base_url('category') ?>" class="position-relative rounded-10 overflow-hidden d-block topCatThmb">
+                        <a
+                            href="javascript:void(0);" 
+                            class="position-relative rounded-10 overflow-hidden d-block topCatThmb" 
+                            onclick="handleCategoryClick(this)"
+                            data-uid="<?= $row['uid'] ?>"
+                            class="position-relative rounded-10 overflow-hidden d-block topCatThmb">
                             <img src="<?= base_url($row['image']) ?>" alt="" class="w-100 object-fit-cover" style="height: 350px;">
                             <div class="position-absolute rounded-10 p-3 text-center topCatmask">
                                 <h5 class="mb-2"><?= $row['title']; ?></h5>
@@ -307,7 +312,7 @@
                 foreach($product as $row){
                 ?>
             <div class="col-6 col-lg-3 fadeUp">
-                <a href="#" class="h-100 rounded-10 border bg-white overflow-hidden d-block">
+                <a href="<?= base_url('product-details/'.$row['uid']) ?>" class="h-100 rounded-10 border bg-white overflow-hidden d-block">
                     <img src="<?= base_url($row['image']) ?>" alt="" class="w-100 object-fit-cover" style="height:250px;">
                     <div class="p-lg-3 p-2">
                         <h5 class="mb-1" style="height:50px;">
@@ -453,6 +458,27 @@
                 }); 
             </script>
         </div>
+
     </div>
 </section>
+<script>
+function handleCategoryClick(element) {
+    const uid = element.getAttribute('data-uid');
+
+    const categoryData = [uid];
+
+    const filterData = {
+        categories: categoryData,
+        price: {
+            from: 100,
+            to: 50000
+        }
+    };
+
+    const jsonStr = JSON.stringify(filterData);
+    const base64 = btoa(jsonStr);
+    const url = "<?= base_url('product-list?filter=') ?>" + encodeURIComponent(base64);
+    window.location.href = url;
+}
+</script>
     

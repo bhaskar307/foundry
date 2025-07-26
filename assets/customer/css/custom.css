@@ -237,6 +237,11 @@ input[type=number] {
 .homeHreo h1 span{
     color: #1F58BD;
 }
+.innerHero{
+  background: linear-gradient(99.34deg, #358167 10.31%, #B3E2D5 28.43%, #C1E2D9 63.22%, #358167 90.93%);
+    padding: 53px 0 50px;
+    border-radius: 0 0 30px 30px;
+}
 .headerBg{
   background-color: rgba(0,0,0,0.8);
   backdrop-filter: blur(8px);
@@ -337,6 +342,80 @@ input[type=number] {
 }
 .copyRight a{
   color: #000;
+}
+.product-main-slider .swiper-slide img{
+    width: 100%;
+    height: auto;
+    object-fit: cover;  
+}
+.product-main-slider .swiper-slide img {
+    border-radius: 6px;
+    cursor: zoom-in;
+}
+.thumb-slider .swiper-slide {
+  width: 80px;
+  opacity: 0.5;
+  cursor: pointer;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.thumb-slider .swiper-slide img{
+  max-height: 100px;
+  object-fit: cover;
+  width: 100%;
+}
+.thumb-slider .swiper-slide-thumb-active {
+  opacity: 1;
+  border: 2px solid #000;
+}
+.zoom-wrapper-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+  }
+  .drift-zoom-pane {
+    z-index: 99 !important;
+    pointer-events: none;
+  }
+.listStyle ul{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.listStyle ul > li{
+  position: relative;
+  padding-left: 20px;
+}
+.listStyle ul > li:after{
+  content: '';
+  height: 15px;
+  width: 15px;
+  position: absolute;
+  left: 0;
+  top: 2px;
+  background-repeat: no-repeat;
+  background-size: 15px auto;
+  background-position: center;
+  background-image: url("data:image/svg+xml,%3Csvg height='15' viewBox='0 0 480 480' width='15' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m432 240c0 106.039062-85.960938 192-192 192s-192-85.960938-192-192 85.960938-192 192-192 192 85.960938 192 192zm0 0' fill='%23cfd2fc'/%3E%3Cpath d='m240 480c-132.546875 0-240-107.453125-240-240s107.453125-240 240-240 240 107.453125 240 240c-.148438 132.484375-107.515625 239.851562-240 240zm0-464c-123.710938 0-224 100.289062-224 224s100.289062 224 224 224 224-100.289062 224-224c-.140625-123.652344-100.347656-223.859375-224-224zm0 0' fill='%238690fa'/%3E%3Cpath d='m352 240c0 61.855469-50.144531 112-112 112s-112-50.144531-112-112 50.144531-112 112-112 112 50.144531 112 112zm0 0' fill='%235153ff'/%3E%3C/svg%3E");
+}
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: start;
+}
+.star-rating input[type="radio"] {
+  display: none;
+}
+.star-rating label {
+  font-size: 25px;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.star-rating input[type="radio"]:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+  color: gold;
 }
 
 @media screen and (max-width: 991px) {

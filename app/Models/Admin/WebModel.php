@@ -29,6 +29,8 @@ class WebModel extends Model {
         $builder->select('
             p.*, 
             v.name AS vendor_name, 
+            v.email AS vendor_email, 
+            v.mobile AS vendor_mobile, 
             c.title AS category_name
         ');
         $builder->join('vendor v', 'v.uid = p.vendor_id', 'left');

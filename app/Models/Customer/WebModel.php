@@ -22,7 +22,27 @@ class WebModel extends Model {
         return $result;
     }
 
-    public function getProductList($categoryUid = [], $priceFrom = 0, $priceTo = 50000)
+    public function getCustomerReviewByProductId($productId)  
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('product_rating pr');
+        $builder->select('
+            pr.*, 
+            c.name AS customer_name, 
+            c.image AS customer_image, 
+            c.mobile AS customer_mobile, 
+            c.email AS customer_email, 
+            p.name AS product_name
+        ');
+        $builder->join('customer c', 'c.uid = pr.customer_id', 'left');
+        $builder->join('product p', 'p.uid = pr.product_id', 'left');
+        $builder->where('pr.product_id', $productId);
+        $builder->where('pr.status', ACTIVE_STATUS);
+        $result = $builder->get()->getResultArray();
+        return $result;
+    }
+
+    public function getProductList($categoryUid = [], $priceFrom = 0, $priceTo = 50000) 
     {
         $db = \Config\Database::connect();
         $builder = $db->table('product');
@@ -37,6 +57,32 @@ class WebModel extends Model {
         }
         $result = $builder->get()->getResultArray();
         return $result;
+    }
+
+    public function getProductDetailsByProductId($productId)
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('product p');
+        $builder->select('
+            p.*, 
+            v.name AS vendor_name, 
+            v.mobile AS vendor_mobile, 
+            v.email AS vendor_email, 
+            cat.title AS category_name
+        ');
+        $builder->join('vendor v', 'v.uid = p.vendor_id', 'left');
+        $builder->join('category cat', 'cat.uid = p.category_id', 'left');
+        $builder->where('p.uid', $productId);
+        $product = $builder->get()->getRowArray(); 
+
+        $imageBuilder = $db->table('product_image');
+        $imageBuilder->select('*');
+        $imageBuilder->where('product_id', $productId);
+        $images = $imageBuilder->get()->getResultArray();
+
+        $product['images'] = $images;
+
+        return $product;
     }
 
 }

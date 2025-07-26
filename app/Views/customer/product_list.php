@@ -72,7 +72,7 @@
                                     ?>
                                 </div>
                             </div>
-                            <div class="">
+                            <!-- <div class="">
                                 <h6 class="mb-2">All Brands</h6>
                                 <div class="d-flex flex-column gap-1">
                                     <div class="form-check m-0">
@@ -88,8 +88,8 @@
                                         <label class="form-check-label" for="schneiderElectric">Schneider Electric</label>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="">
+                            </div> -->
+                            <!-- <div class="">
                                 <h6 class="mb-2">Filter by Rating</h6>
                                 <div class="d-flex flex-column gap-1">
                                     <div class="form-check m-0">
@@ -105,7 +105,7 @@
                                         <label class="form-check-label" for="3star">★★★ 3+ Stars</label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <script>
@@ -158,7 +158,7 @@
                     foreach($product as $row){
                     ?>
                     <div class="col-lg-4 col-6">
-                        <a href="#" class="h-100 rounded-10 border bg-white overflow-hidden d-block">
+                        <a href="<?= base_url('product-details/'.$row['uid']) ?>" class="h-100 rounded-10 border bg-white overflow-hidden d-block">
                             <img src="<?= base_url($row['image']) ?>" alt="" class="w-100 object-fit-cover" style="height:250px;">
                             <div class="p-lg-3 p-2">
                                 <h5 class="mb-1" style="height:50px;">
@@ -191,7 +191,7 @@
                         </a>
                     </div>
                     <?php } } ?>  
-                    <div class="col-12">
+                    <!-- <div class="col-12">
                         <nav aria-label="...">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item"><a href="#" class="page-link">Previous</a></li>
@@ -203,7 +203,7 @@
                                 <li class="page-item"><a class="page-link" href="#">Next</a></li>
                             </ul>
                         </nav>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

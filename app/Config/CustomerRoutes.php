@@ -9,7 +9,7 @@ $routes->group('', ['namespace' => 'App\Controllers\Customer'], function ($route
     $routes->get('/', 'WebController::index');
     $routes->get('product-list', 'WebController::product_list');
     $routes->get('category', 'WebController::category_product');
-    $routes->get('product-details', 'WebController::product_details');
+    $routes->get('product-details/(:any)', 'WebController::product_details/$1');
     $routes->get('registration', 'WebController::registration');
     //$routes->get('logout', 'WebController::logout'); 
 });

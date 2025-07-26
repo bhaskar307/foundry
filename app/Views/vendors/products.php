@@ -27,9 +27,11 @@
             <table class="dataTableNoSearch display border">
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>Product Name</th>
                         <th>Image</th>
                         <th>Category</th>
+                        <th>Price</th>
+                        <th>Brand</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -40,7 +42,7 @@
                     ?>
                             <tr>
                                 <td>
-                                    <div class="fw-600 h6 m-0"><?= $row['name']; ?></div>
+                                    <div><?= $row['name']; ?></div>
                                 </td>
                                 <td>
                                     <?php if(!empty($row['image'])) { ?>
@@ -50,7 +52,13 @@
                                     <?php } ?>
                                 </td>
                                 <td>
-                                    <div class="fw-600 h6 m-0"><?= $row['category_name']; ?></div>
+                                    <div><?= $row['category_name']; ?></div>
+                                </td>
+                                <td>
+                                    <div><?= $row['price']; ?></div>
+                                </td>
+                                <td>
+                                    <div><?= $row['brand']; ?></div>
                                 </td>
                                 <td>
                                     <div class="form-check form-switch d-flex justify-content-center">

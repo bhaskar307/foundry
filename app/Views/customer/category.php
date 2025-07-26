@@ -65,8 +65,8 @@ function handleCategoryClick(element) {
     const filterData = {
         categories: categoryData,
         price: {
-            from: '0',
-            to: '50000'
+            from: 100,
+            to: 50000
         }
     };
 
