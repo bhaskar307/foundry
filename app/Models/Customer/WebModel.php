@@ -108,5 +108,42 @@ class WebModel extends Model {
         return $result;
     }
 
+    public function getFilteredProductDetails($categoryUid = [], $priceFrom = 0, $priceTo = 50000)  
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('product p');
+
+        $builder->select('
+            p.*, 
+            (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) AS total_customer_review,
+            (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) AS total_rating,
+            (
+                CASE 
+                    WHEN (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) > 0 
+                    THEN ROUND(
+                        (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) / 
+                        (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid), 1)
+                    ELSE 0
+                END
+            ) AS total_rating_percent
+        ');
+
+        $builder->where('p.status', ACTIVE_STATUS);
+
+        // Category filter
+        if (!empty($categoryUid) && is_array($categoryUid)) {
+            $builder->whereIn('p.category_id', $categoryUid);
+        }
+
+        // Price range filter
+        if (is_numeric($priceFrom) && is_numeric($priceTo)) {
+            $builder->where('p.price >=', $priceFrom);
+            $builder->where('p.price <=', $priceTo);
+        }
+
+        $result = $builder->get()->getResultArray();
+        return $result;
+    }
+
 
 }

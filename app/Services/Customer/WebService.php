@@ -38,6 +38,12 @@ class WebService
         return $data;
     }
 
+    public function getFilteredProductDetails($categoryUid,$priceFrom,$priceTo)   
+    {
+        $data = $this->webModel->getFilteredProductDetails($categoryUid,$priceFrom,$priceTo);
+        return $data;
+    }
+
     public function getProductDetailsByProductId($productId)   
     {
         $data = $this->webModel->getProductDetailsByProductId($productId);
