@@ -12,6 +12,8 @@ $routes->group('', ['namespace' => 'App\Controllers\Customer'], function ($route
     $routes->get('product-details/(:any)', 'WebController::product_details/$1');
     $routes->get('registration', 'WebController::registration');
     $routes->get('logout', 'WebController::logout'); 
+
+    $routes->get('vendor-register', 'WebController::vendor_register');
 });
 
 $routes->group('customer/api', ['namespace' => 'App\Controllers\Customer'], function ($routes) {

@@ -33,7 +33,7 @@ class WebController extends Common
     }
 
     /** Product List */
-    public function product_list(){
+    public function product_list(){ 
         $filterData = [];
         $filter = $this->request->getGet('filter');
 
@@ -201,6 +201,14 @@ class WebController extends Common
             view('admin/templates/header.php').
             view('admin/vendor_details.php',$resp).
             view('admin/templates/footer.php');
+    }
+
+    /** Product List */
+    public function vendor_register(){ 
+        return
+            view('customer/templates/header.php') .
+            view('customer/vendor_register.php') .
+            view('customer/templates/footer.php');
     }
 
     /** Logout */
