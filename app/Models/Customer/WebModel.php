@@ -1,9 +1,13 @@
-<?php 
+<?php
+
 namespace App\Models\Customer;
+
 use CodeIgniter\Model;
-class WebModel extends Model {
-    
-    public function getCustomerReview()  
+
+class WebModel extends Model
+{
+
+    public function getCustomerReview()
     {
         $db = \Config\Database::connect();
         $builder = $db->table('product_rating pr');
@@ -22,7 +26,7 @@ class WebModel extends Model {
         return $result;
     }
 
-    public function getCustomerReviewByProductId($productId)  
+    public function getCustomerReviewByProductId($productId)
     {
         $db = \Config\Database::connect();
         $builder = $db->table('product_rating pr');
@@ -42,7 +46,7 @@ class WebModel extends Model {
         return $result;
     }
 
-    public function getProductList($categoryUid = [], $priceFrom = 0, $priceTo = 50000) 
+    public function getProductList($categoryUid = [], $priceFrom = 0, $priceTo = 50000)
     {
         $db = \Config\Database::connect();
         $builder = $db->table('product');
@@ -73,7 +77,7 @@ class WebModel extends Model {
         $builder->join('vendor v', 'v.uid = p.vendor_id', 'left');
         $builder->join('category cat', 'cat.uid = p.category_id', 'left');
         $builder->where('p.uid', $productId);
-        $product = $builder->get()->getRowArray(); 
+        $product = $builder->get()->getRowArray();
 
         $imageBuilder = $db->table('product_image');
         $imageBuilder->select('*');
@@ -85,7 +89,7 @@ class WebModel extends Model {
         return $product;
     }
 
-    public function getAllProductDetails()  
+    public function getAllProductDetails()
     {
         $db = \Config\Database::connect();
         $builder = $db->table('product p');
@@ -109,26 +113,27 @@ class WebModel extends Model {
     }
 
 
-    public function getFilteredProductDetails($categoryUid = [], $priceFrom = 0, $priceTo = 50000)  
+    public function getFilteredProductDetails($categoryUid = [], $priceFrom = 0, $priceTo = 50000)
     {
         $db = \Config\Database::connect();
         $builder = $db->table('product p');
 
         $builder->select('
-            p.*, 
-            (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) AS total_customer_review,
-            (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) AS total_rating,
-            (
-                CASE 
-                    WHEN (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) > 0 
-                    THEN ROUND(
-                        (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) / 
-                        (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid), 1)
-                    ELSE 0
-                END
-            ) AS total_rating_percent
-        ');
-
+                        p.*, 
+                        v.name AS vendor_name,
+                        (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) AS total_customer_review,
+                        (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) AS total_rating,
+                        (
+                            CASE 
+                                WHEN (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) > 0 
+                                THEN ROUND(
+                                    (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) / 
+                                    (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid), 1)
+                                ELSE 0
+                            END
+                        ) AS total_rating_percent
+                    ');
+        $builder->join('vendor v', 'v.uid = p.vendor_id');
         $builder->where('p.status', ACTIVE_STATUS);
 
         // Category filter

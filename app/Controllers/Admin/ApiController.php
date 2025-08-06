@@ -107,12 +107,12 @@ class ApiController extends Common
     /** Vendor Section */
     public function createdVendor()
     {
-        $payload = $this->validateJwtApiToken();
+        // $payload = $this->validateJwtApiToken();
         
         $vendorDetails = $this->request->getPost();
         $imageFile = $this->request->getFile('image');
-        $vendorDetails['user_id'] = $payload->user_id;
-        $vendorDetails['user_type'] = $payload->user_type;
+        // $vendorDetails['user_id'] = $payload->user_id;
+        // $vendorDetails['user_type'] = $payload->user_type;
         
         $resp = $this->apiService->createdVendor($vendorDetails,$imageFile);
         if (!$resp[0]) {

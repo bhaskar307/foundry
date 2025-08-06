@@ -53,6 +53,7 @@ class WebController extends Common
         $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status' => ACTIVE_STATUS]);
         //$resp['product'] = $this->webService->getProductList($resp['categoryUid'],$resp['priceFrom'],$resp['priceTo']);
         $resp['product'] = $this->webService->getFilteredProductDetails($resp['categoryUid'],$resp['priceFrom'],$resp['priceTo']);
+        // print "<pre>" ; print_r($resp) ; die ; 
         $resp['review'] = $this->webService->getCustomerReview();
        
         return

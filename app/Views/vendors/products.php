@@ -187,7 +187,7 @@
                         <input type="hidden" id="editProductUid" name="productUid">
                         <div class="mb-3">
                             <label class="form-label">Product Name</label>
-                            <input type="text" id="editName" class="form-control" name="name" required>
+                            <textarea type="text" id="editName" class="form-control" name="name" required></textarea>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Category</label>
