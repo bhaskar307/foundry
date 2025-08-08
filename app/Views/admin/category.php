@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="px-3 pb-3">
-            <table class="dataTableNoSearch display border">
+            <table class="dataTable display border">
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -42,7 +42,7 @@
                                     <?php } ?>
                                 </td>
                                 <td>
-                                    <div class="fw-600 h6 m-0"><?= $row['path_name']; ?></div>
+                                    <div class="fw-600 h6 m-0"><?= $row['path_name'] ?? "--" ; ?></div>
                                 </td>    
                                 <td>
                                     <div class="form-check form-switch d-flex justify-content-center">
@@ -68,7 +68,7 @@
                                             onclick="openEditModal(this)"
                                             data-uid="<?= $row['uid']; ?>"
                                             data-name="<?= htmlspecialchars($row['title']); ?>"
-                                            data-path="<?= htmlspecialchars($row['path']); ?>"
+                                            data-path="<?= htmlspecialchars($row['path']);   ?>"
                                             data-image="<?= htmlspecialchars($row['image']); ?>"
                                         >
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none"

@@ -306,7 +306,7 @@ class ApiService
                 'name'       => $data['name'],
                 'mobile'     => $data['mobile'],
                 'email'      => $data['email'],
-                'password'   => $hashedPassword,
+                // 'password'   => $hashedPassword,
                 'dob'        => $data['dob'] ?? "",
                 'created_by' => $data['user_id'] ?? NULL,
                 'company' => $data['company'] ?? null,
@@ -316,7 +316,7 @@ class ApiService
                 'states' => $data['states'] ?? null,
                 'gst' => $data['gst'] ?? null,
                 'created_by' => "",
-                'status' => 'inactive' , 
+                'status' => 'inactive',
             ];
 
             $success = $this->apiModel->createdVendor($addData);
@@ -329,12 +329,13 @@ class ApiService
                     ['error' => 'Database insert failed']
                 ];
             }
+            $subject  = 'Thank you for registering with Foundry as a vendor';
             $message = "🎉 Thank you for registering with Foundry as a vendor!
                         We’re reviewing your account, 
                         and once it’s activated, 
                         your login credentials will be shared with you via email.";
 
-            $this->sendVendorPasswordToEmail($data['email'], $message);
+            $this->sendVendorPasswordToEmail($data['email'], $subject,   $message);
 
             return [
                 true,
@@ -431,6 +432,8 @@ class ApiService
                 'updated_at' => date('Y-m-d H:i:s')
             ];
 
+            $this->sendPasswordAfterVendor($vendorUid);
+
             $success = $this->commonModel->UpdateData(VENDOR_TABLE, ['uid' => $vendorUid], $updateData);
             if (!$success) {
                 return [
@@ -451,6 +454,66 @@ class ApiService
             return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
         }
     }
+
+    public function sendPasswordAfterVendor($vendorUid)
+    {
+        $db = \Config\Database::connect();
+
+        $getVendor = $db->table('vendor')
+            ->select('name , email , is_verify')
+            ->where('uid', $vendorUid)
+            ->get()
+            ->getRow();
+
+        if (!$getVendor) {
+            return false; // Vendor not found
+        }
+
+        $email = $getVendor->email ?? "";
+        $name = $getVendor->name ?? "N/A";
+        $isVerify = $getVendor->is_verify ?? 0;
+
+        // Correct comparison
+        if ((int)$isVerify === 0) {
+            $plainPassword = generateRandomPassword(8);
+            $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
+
+            $updatedPayload = [
+                'is_verify' => 1,
+                'password' => $hashedPassword,
+            ];
+
+            try {
+                $db->table('vendor')
+                    ->set($updatedPayload)
+                    ->where('uid', $vendorUid)
+                    ->update();
+
+                $subject = "Your account is active – please log in";
+                $message = "
+                Dear $name,<br><br>
+                Your account has been successfully created and activated.<br><br>
+                <b>Login Email:</b> $email<br>
+                <b>Password:</b> $plainPassword<br><br>
+                You can log in here: <a href='https://devs.v-xplore.com/foundry/vendor/login'>Login Page</a><br><br>
+                Thank you for registering with Mlodin Foundry.<br><br>
+                Regards,<br>
+                Team Mlodin Foundry
+            ";
+
+                $this->sendVendorPasswordToEmail($email, $subject, $message);
+                return true;
+            } catch (\Throwable $th) {
+                log_message('error', 'Password send error: ' . $th->getMessage());
+                return false;
+            }
+        }
+
+        return true; // already verified, do nothing
+    }
+
+
+
     public function deleteVendor($data)
     {
         $validationRules = [
@@ -809,12 +872,12 @@ class ApiService
     }
     /** Update Password */
 
-    private function sendVendorPasswordToEmail($email, $message)
+    private function sendVendorPasswordToEmail($email, $subject,  $message)
     {
         $emailService = \Config\Services::email();
         $emailService->setTo($email);
         $emailService->setFrom('www.bd.project@gmail.com', 'Foundry');
-        $emailService->setSubject('Thank you for registering with Foundry as a vendor');
+        $emailService->setSubject($subject);
         $emailService->setMessage(
             $message
         );
