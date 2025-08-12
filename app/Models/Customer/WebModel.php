@@ -96,6 +96,7 @@ class WebModel extends Model
 
         $builder->select('
             p.*, 
+            v.name AS vendor_name,
             (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) AS total_customer_review,
             (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) AS total_rating,
             (
@@ -106,7 +107,7 @@ class WebModel extends Model
                 END
             ) AS total_rating_percent
         ');
-
+        $builder->join('vendor v', 'v.uid = p.vendor_id', 'inner');
         $builder->where('p.status', ACTIVE_STATUS);
         $result = $builder->get()->getResultArray();
         return $result;

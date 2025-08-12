@@ -165,7 +165,10 @@
                                         <h5 class="mb-1" style="height:50px;">
                                             <?= substr(strip_tags($row['name']), 0, 40) ?><?= strlen(strip_tags($row['name'])) > 40 ? '...' : '' ?>
                                         </h5>
+                                        <!--  verify components -->
+                                        <?= view('components/verify_badge', ['is_verify' => $row['is_verify']]) ?>
                                         <small class="d-flex align-items-center gap-1">
+
                                             <!-- <span class="fw-600">Price: <?= $row['price']; ?></span> // vendor_name -->
                                             <span class="fw-600">Supllier Name: <?= $row['vendor_name']; ?></span>
                                         </small>

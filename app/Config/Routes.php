@@ -57,6 +57,7 @@ $routes->group('admin/api', ['namespace' => 'App\Controllers\Admin'], function (
     $routes->group("product", function ($routes) {
         $routes->post('update-status', 'ApiController::updateProductStatus'); 
         $routes->post('delete', 'ApiController::deleteProduct');
+        $routes->post('verify', 'ApiController::verifyProduct');
     });
     /** Product */
 });

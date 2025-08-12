@@ -906,4 +906,47 @@ class ApiService
             log_message('error', 'Failed to send password email to ' . $email);
         }
     }
+
+
+    public function verifyProduct($data)
+    {
+        $validationRules = [
+            'uid'     => 'required',
+            'is_verify'     => 'required',
+
+        ];
+        $validationResult = validateData($data, $validationRules);
+        if (!$validationResult['success']) {
+            return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
+        }
+        $productUid = $data['uid'];
+
+        try {
+
+            $updateData = [
+                'is_verify'      => $data['is_verify'],
+                'updated_by'    => $data['user_id'] ?? NULL,
+                'updated_at'    => date('Y-m-d H:i:s')
+            ];
+
+            $success = $this->commonModel->UpdateData('product', ['uid' => $productUid], $updateData);
+            if (!$success) {
+                return [
+                    false,
+                    500,
+                    'Password Update failed.',
+                    ['error' => 'Database update failed']
+                ];
+            }
+
+            return [
+                true,
+                200,
+                'product verify successfully.',
+                ['data' => $success]
+            ];
+        } catch (\Throwable $e) {
+            return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
+        }
+    }
 }

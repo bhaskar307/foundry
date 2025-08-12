@@ -40,10 +40,10 @@
                                     <div><?= $row['name']; ?></div>
                                 </td>
                                 <td>
-                                    <?php if(!empty($row['image'])) { ?>
+                                    <?php if (!empty($row['image'])) { ?>
                                         <img src="<?= base_url($row['image']) ?>" alt="Vendor Image" style="width: 40px; height: 40px;">
-                                    <?php }else{ ?>
-                                        
+                                    <?php } else { ?>
+
                                     <?php } ?>
                                 </td>
                                 <td>
@@ -55,21 +55,30 @@
                                 <td>
                                     <div><?= $row['brand']; ?></div>
                                 </td>
-                                <td>--</td>
                                 <td>
                                     <div class="form-check form-switch d-flex justify-content-center">
-                                        <?php if($row['status'] != 'deleted'){ ?>
                                         <input class="form-check-input" type="checkbox" role="switch"
-                                            id="flexSwitchCheckChecked_<?= $row['id']; ?>"
-                                            onchange="handleStatusChange(this, '<?= $row['uid']; ?>')"
-                                            <?= ($row['status'] == ACTIVE_STATUS) ? 'checked' : ''; ?>>
-                                        <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                                            id="productVerify_<?= $row['uid']; ?>"
+                                            onchange="productVerify(this, '<?= $row['uid']; ?>')"
+                                            <?= $row['is_verify'] == 1 ? 'checked' : '' ?>>
+                                        <label class="form-check-label" for="productVerify_<?= $row['uid']; ?>"></label>
+                                    </div>
+
+                                </td>
+                                <td>
+                                    <div class="form-check form-switch d-flex justify-content-center">
+                                        <?php if ($row['status'] != 'deleted') { ?>
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckChecked_<?= $row['id']; ?>"
+                                                onchange="handleStatusChange(this, '<?= $row['uid']; ?>')"
+                                                <?= ($row['status'] == ACTIVE_STATUS) ? 'checked' : ''; ?>>
+                                            <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                                         <?php } ?>
                                     </div>
                                     <!-- <?php
-                                    $bgColor = ($row['status'] === 'Active') ? '#FFE4E3' : '#D1FAE5';
-                                    $textColor = ($row['status'] === 'Active') ? '#AB3D3C' : '#065F46';
-                                    ?>
+                                            $bgColor = ($row['status'] === 'Active') ? '#FFE4E3' : '#D1FAE5';
+                                            $textColor = ($row['status'] === 'Active') ? '#AB3D3C' : '#065F46';
+                                            ?>
                                     <button class="btn rounded-pill" style="background-color: <?= $bgColor ?>; color: <?= $textColor ?>;">
                                         <?= $row['status']; ?>
                                     </button> -->
@@ -77,7 +86,7 @@
 
                                 <td style="max-width: 120px;">
                                     <div class="d-flex align-items-center gap-3">
-                                        <a href="<?php echo base_url('admin/view-product?productId='.$row['uid']) ?>" class="btnico">
+                                        <a href="<?php echo base_url('admin/view-product?productId=' . $row['uid']) ?>" class="btnico">
                                             <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M22 8C22 7.52133 21.7567 7.208 21.27 6.57867C19.4889 4.28 15.5605 0 11 0C6.43945 0 2.51106 4.28 0.729989 6.57867C0.24333 7.208 0 7.52133 0 8C0 8.47867 0.24333 8.792 0.729989 9.42133C2.51106 11.72 6.43945 16 11 16C15.5605 16 19.4889 11.72 21.27 9.42133C21.7567 8.792 22 8.47867 22 8ZM11 12C11.998 12 12.9551 11.5786 13.6607 10.8284C14.3664 10.0783 14.7628 9.06087 14.7628 8C14.7628 6.93913 14.3664 5.92172 13.6607 5.17157C12.9551 4.42143 11.998 4 11 4C10.002 4 9.04495 4.42143 8.33928 5.17157C7.63361 5.92172 7.23717 6.93913 7.23717 8C7.23717 9.06087 7.63361 10.0783 8.33928 10.8284C9.04495 11.5786 10.002 12 11 12Z" fill="#0D9488" />
                                             </svg>
@@ -99,73 +108,134 @@
             </table>
         </div>
     </div>
+    <script>
+        function productVerify(checkbox, uid) {
 
-<script>
-    /** Deleted */
-    function deleteProduct(uid) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'Do you really want to delete this Product?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel',
-            reverseButtons: true,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                deleteProductDetails(uid);
-            }
-        });
-    }
-    function deleteProductDetails(uid) {
-        const formData = new FormData();
-        formData.append('uid', uid); 
+            let willBeVerified = checkbox.checked;
 
-        $.ajax({
-            url: BASE_URL + '/admin/api/product/delete',
-            method: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                MessSuccess.fire({
-                    icon: 'success',
-                    title: response.message || 'product deleted successfully',
-                });
-                location.reload();
-            },
-            error: function (xhr) {
-                console.error('Error:', xhr.responseText);
-                MessError.fire({
-                    icon: 'error',
-                    title: 'An error occurred. Please try again.',
-                });
-            }
-        });
-    }
-    /** Deleted */
 
-    /** Update Status */
-    function handleStatusChange(checkbox, uid) {
-        const status = checkbox.checked ? 'active' : 'inactive';
-        fetch(BASE_URL + '/admin/api/product/update-status', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
+            let title = willBeVerified ? "Are you sure?" : "Are you sure?";
+            let text = willBeVerified ?
+                "Do you want to verify this product?" :
+                "Do you want to mark this product as NOT verified?";
+
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: willBeVerified ? 'Yes, verify it!' : 'Yes, unverify it!',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    submitProductVerify(checkbox, uid);
+                } else {
+                    checkbox.checked = !willBeVerified;
+                }
+            });
+        }
+
+        function submitProductVerify(checkbox, uid) {
+            const isChecked = checkbox.checked;
+
+            const updateValue = JSON.stringify({
                 uid: uid,
-                status: status
-            }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            
-        })
-        .catch(error => {
-            console.error("Error updating status:", error);
-            alert("Failed to update status");
-        });
-    }
-    /** Update Status */
+                is_verify: isChecked ? 1 : 0
+            });
+
+            fetch(BASE_URL + '/admin/api/product/verify', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: updateValue,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        MessSuccess.fire({
+                            icon: 'success',
+                            title: isChecked ? 'Product verified successfully!' : 'Product unverified successfully!',
+                        });
+                    } else {
+                        console.error("Failed to update product verification status:", data.message);
+                        checkbox.checked = !isChecked; 
+                    }
+                })
+                .catch(error => {
+                    console.error("Error updating product verification status:", error);
+                    checkbox.checked = !isChecked; 
+                });
+        }
+    </script>
+    <script>
+        /** Deleted */
+        function deleteProduct(uid) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Do you really want to delete this Product?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteProductDetails(uid);
+                }
+            });
+        }
+
+        function deleteProductDetails(uid) {
+            const formData = new FormData();
+            formData.append('uid', uid);
+
+            $.ajax({
+                url: BASE_URL + '/admin/api/product/delete',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    MessSuccess.fire({
+                        icon: 'success',
+                        title: response.message || 'product deleted successfully',
+                    });
+                    location.reload();
+                },
+                error: function(xhr) {
+                    console.error('Error:', xhr.responseText);
+                    MessError.fire({
+                        icon: 'error',
+                        title: 'An error occurred. Please try again.',
+                    });
+                }
+            });
+        }
+        /** Deleted */
+
+        /** Update Status */
+        function handleStatusChange(checkbox, uid) {
+            const status = checkbox.checked ? 'active' : 'inactive';
+            fetch(BASE_URL + '/admin/api/product/update-status', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        uid: uid,
+                        status: status
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+
+                })
+                .catch(error => {
+                    console.error("Error updating status:", error);
+                    alert("Failed to update status");
+                });
+        }
+        /** Update Status */
     </script>

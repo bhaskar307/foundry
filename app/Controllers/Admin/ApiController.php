@@ -18,7 +18,7 @@ class ApiController extends Common
         $this->session = session();
         $this->apiService = new ApiService();
         //$this->AdminModel = new AdminModel();
-      
+
     }
 
     /** Login */
@@ -278,6 +278,23 @@ class ApiController extends Common
         $adminDetails['user_type'] = $payload->user_type;
 
         $resp = $this->apiService->updatePassword($adminDetails);
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
+
+
+    public function verifyProduct()
+    {
+        $payload = $this->validateJwtApiToken();
+
+        $productDetails = $this->request->getJSON(true);
+        $productDetails['user_id'] = $payload->user_id;
+        $productDetails['user_type'] = $payload->user_type;
+
+        $resp = $this->apiService->verifyProduct($productDetails);
         if (!$resp[0]) {
             $this->apiError($resp[1], $resp[2], $resp[3]);
         } else {
