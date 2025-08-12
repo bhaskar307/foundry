@@ -15,6 +15,7 @@
                         <th>Category</th>
                         <th>Price</th>
                         <th>Brand</th>
+                        <th>Veify</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -54,6 +55,7 @@
                                 <td>
                                     <div><?= $row['brand']; ?></div>
                                 </td>
+                                <td>--</td>
                                 <td>
                                     <div class="form-check form-switch d-flex justify-content-center">
                                         <?php if($row['status'] != 'deleted'){ ?>

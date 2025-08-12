@@ -15,8 +15,8 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center justify-content-center gap-3 mb-3 fadeUp">
-                    <a href="" class="btn btn-primary">Shop Foundry Tech</a>
-                    <a href="" class="btn btn-white">Browse Categories</a>
+                    <a href="<?= base_url('/product-list') ?>" class="btn btn-primary">Shop Foundry Tech</a>
+                    <a href="<?= base_url('/category') ?>" class="btn btn-white">Browse Categories</a>
                 </div>
                 <div class="fadeUp">
                     <img src="<?= base_url('assets/customer/images/xdfvbdfv.webp') ?>" alt="" width="300">
@@ -304,7 +304,7 @@
 <section class="pb-5">
     <div class="container">
         <div class="p-0 col-md-6 mx-auto mb-4 titsec text-center fadeUp">
-            <h2 class="mb-2">Today,s Top <span> Picks</span></h2>
+            <h2 class="mb-2">Today's Top <span> Picks</span></h2>
             <div>Browse through our wide range of curated categories, from smartphones and laptops to smart home gadgets and audio gear.</div>
         </div>
         <div class="row g-lg-4 g-3">
