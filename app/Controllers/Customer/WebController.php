@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers\Customer;
+
 use App\Controllers\Common;
 use App\Services\Customer\WebService;
 use App\Models\CommonModel;
@@ -8,6 +9,7 @@ use App\Models\CommonModel;
 use CodeIgniter\API\ResponseTrait;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+
 class WebController extends Common
 {
     protected $webService;
@@ -18,22 +20,24 @@ class WebController extends Common
         $this->webService = new WebService();
         $this->commonModel = new CommonModel();
     }
-    
+
     /** Index */
     public function index()
     {
-        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status' => ACTIVE_STATUS]);
+        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE, ['status' => ACTIVE_STATUS]);
         //$resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['status' => ACTIVE_STATUS]);
         $resp['product'] = $this->webService->getAllProductDetails();
         $resp['review'] = $this->webService->getCustomerReview();
+        // print_r($resp); die ; 
         return
             view('customer/templates/header.php') .
-            view('customer/home.php',$resp) .
+            view('customer/home.php', $resp) .
             view('customer/templates/footer.php');
     }
 
     /** Product List */
-    public function product_list(){ 
+    public function product_list()
+    {
         $filterData = [];
         $filter = $this->request->getGet('filter');
 
@@ -44,61 +48,102 @@ class WebController extends Common
             $resp['categoryUid'] = $filterData['categories'];
             $resp['priceFrom'] = $filterData['price']['from'];
             $resp['priceTo'] = $filterData['price']['to'];
-        }else{
+        } else {
             $resp['categoryUid'] = [];
             $resp['priceFrom'] = 100;
             $resp['priceTo'] = 50000;
         }
-        
-        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status' => ACTIVE_STATUS]);
+        $db = \Config\Database::connect();
+
+
+        // $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE, ['status' => ACTIVE_STATUS]);
+        $builder = $db->table(CATEGORY_TABLE);
+        $builder->select('*');
+        $builder->where('status', ACTIVE_STATUS);
+        $query = $builder->get();
+        $categories = $query->getResultArray();
+
+        // Organize into parent → children structure
+        $categoryTree = [];
+        foreach ($categories as $category) {
+            if (empty($category['path'])) {
+                // This is a main category
+                $categoryTree[$category['uid']] = $category;
+                $categoryTree[$category['uid']]['subcategories'] = [];
+            }
+        }
+
+        foreach ($categories as $subcategory) {
+            if (!empty($subcategory['path']) && isset($categoryTree[$subcategory['path']])) {
+                $categoryTree[$subcategory['path']]['subcategories'][] = $subcategory;
+            }
+        }
+
+        $resp['category'] =  $categoryTree;
         //$resp['product'] = $this->webService->getProductList($resp['categoryUid'],$resp['priceFrom'],$resp['priceTo']);
-        $resp['product'] = $this->webService->getFilteredProductDetails($resp['categoryUid'],$resp['priceFrom'],$resp['priceTo']);
-        // print "<pre>" ; print_r($resp) ; die ; 
+        $resp['product'] = $this->webService->getFilteredProductDetails($resp['categoryUid'], $resp['priceFrom'], $resp['priceTo']);
+
         $resp['review'] = $this->webService->getCustomerReview();
-       
+
+
+        // print_r($resp) ; die ; 
+
         return
             view('customer/templates/header.php') .
-            view('customer/product_list.php',$resp) .
+            view('customer/product_list.php', $resp) .
             view('customer/templates/footer.php');
     }
 
     /** Category Product */
-    public function category_product(){  
-        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status' => ACTIVE_STATUS]);
-        $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['status' => ACTIVE_STATUS]);
+    public function category_product()
+    {
+        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE, ['status' => ACTIVE_STATUS]);
+        $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE, ['status' => ACTIVE_STATUS]);
         $resp['review'] = $this->webService->getCustomerReview();
         return
             view('customer/templates/header.php') .
-            view('customer/category.php',$resp) .
+            view('customer/category.php', $resp) .
             view('customer/templates/footer.php');
     }
 
     /** Product Details */
-    public function product_details($productId){ 
+    public function product_details($productId)
+    {
         $payload = $this->validateJwtWebTokenCustomer();
 
-        if(!empty($payload)){
+        if (!empty($payload)) {
             $resp['customerDetails'] = [
                 'name' => $payload->user_name,
                 'email' => $payload->user_email,
                 'phone' => $payload->user_mobile
             ];
-        }else{
+        } else {
             $resp['customerDetails'] = [];
         }
-        
-        $resp['resp'] = $this->webService->getProductDetailsByProductId($productId); 
+
+        $resp['resp'] = $this->webService->getProductDetailsByProductId($productId);
         $resp['reviews'] = $this->webService->getCustomerReviewByProductId($productId);
-        $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['category_id' => $resp['resp']['category_id'],'status' => ACTIVE_STATUS]);
+        // print_r($resp['reviews']) ; die ; 
+        $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE, ['category_id' => $resp['resp']['category_id'], 'status' => ACTIVE_STATUS]);
+        $vendorUid = $resp['product'][0]['vendor_id'] ?? null;
+
+        if (!empty($vendorUid)) {
+            $resp['vendor'] = $this->commonModel->getAllData(
+                VENDOR_TABLE,
+                ['uid' => $vendorUid],
+            );
+        }
+
         return
             view('customer/templates/header.php') .
-            view('customer/product_details.php',$resp) .
+            view('customer/product_details.php', $resp) .
             view('customer/templates/footer.php');
     }
 
 
     /** Register */
-    public function registration(){  
+    public function registration()
+    {
         return
             view('customer/templates/header.php') .
             view('customer/registration.php') .
@@ -106,78 +151,84 @@ class WebController extends Common
     }
 
     /** Vendor */
-    public function vendors(){ 
+    public function vendors()
+    {
         $payload = $this->validateJwtWebToken();
         if (!$payload) {
             return redirect()->to(base_url('admin/login'));
         }
 
-        $resp['resp'] = $this->commonModel->getAllData(VENDOR_TABLE,['status !=' => DELETED_STATUS]);
+        $resp['resp'] = $this->commonModel->getAllData(VENDOR_TABLE, ['status !=' => DELETED_STATUS]);
         return
-            view('admin/templates/header.php').
-            view('admin/vendor.php',$resp).
+            view('admin/templates/header.php') .
+            view('admin/vendor.php', $resp) .
             view('admin/templates/footer.php');
     }
 
     /** customers */
-    public function customers(){  
+    public function customers()
+    {
         $payload = $this->validateJwtWebToken();
         if (!$payload) {
             return redirect()->to(base_url('admin/login'));
         }
 
-        $resp['resp'] = $this->commonModel->getAllData(CUSTOMER_TABLE,['status !=' => DELETED_STATUS]);
+        $resp['resp'] = $this->commonModel->getAllData(CUSTOMER_TABLE, ['status !=' => DELETED_STATUS]);
         return
-            view('admin/templates/header.php').
-            view('admin/customer.php',$resp).
+            view('admin/templates/header.php') .
+            view('admin/customer.php', $resp) .
             view('admin/templates/footer.php');
     }
 
     /** category */
-    public function category(){  
+    public function category()
+    {
         $payload = $this->validateJwtWebToken();
         if (!$payload) {
             return redirect()->to(base_url('admin/login'));
         }
 
-        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status' => ACTIVE_STATUS]);
+        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE, ['status' => ACTIVE_STATUS]);
         //$resp['resp'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status !=' => DELETED_STATUS]);
         $resp['resp'] = $this->webService->getCategoryData();
         return
-            view('admin/templates/header.php').
-            view('admin/category.php',$resp).
+            view('admin/templates/header.php') .
+            view('admin/category.php', $resp) .
             view('admin/templates/footer.php');
     }
 
     /** Products */
-    public function products(){  
+    public function products()
+    {
         $payload = $this->validateJwtWebToken();
         if (!$payload) {
             return redirect()->to(base_url('admin/login'));
         }
         $resp['resp'] = $this->webService->getProductsDetails();
-        
+
         return
-            view('admin/templates/header.php').
-            view('admin/products.php',$resp).
+            view('admin/templates/header.php') .
+            view('admin/products.php', $resp) .
             view('admin/templates/footer.php');
     }
 
-    
+
     /** Change Password */
-    public function changePassword(){  
+    public function changePassword()
+    {
         $payload = $this->validateJwtWebToken();
         if (!$payload) {
             return redirect()->to(base_url('admin/login'));
         }
         return
-            view('admin/templates/header.php').
-            view('admin/change_password.php').
+            view('admin/templates/header.php') .
+            view('admin/change_password.php') .
             view('admin/templates/footer.php');
     }
 
     /** View Product Details */
-    public function view_product(){    
+    public function view_product()
+    {
         $payload = $this->validateJwtWebTokenVendor();
         if (!$payload) {
             return redirect()->to(base_url('vendor/login'));
@@ -185,27 +236,29 @@ class WebController extends Common
         $productId = $this->request->getGet('productId');
         $resp['resp'] = $this->webService->getProductsDetailsByProductId($productId);
         return
-            view('admin/templates/header.php').
-            view('admin/view_product.php',$resp).
+            view('admin/templates/header.php') .
+            view('admin/view_product.php', $resp) .
             view('admin/templates/footer.php');
     }
 
     /** View vendor Details */
-    public function view_vendor_details(){    
+    public function view_vendor_details()
+    {
         $payload = $this->validateJwtWebTokenVendor();
         if (!$payload) {
             return redirect()->to(base_url('vendor/login'));
         }
         $vendorId = $this->request->getGet('vendorId');
-        $resp['resp'] = $this->commonModel->getSingleData(VENDOR_TABLE,['uid' => $vendorId,'status !=' => DELETED_STATUS]);
+        $resp['resp'] = $this->commonModel->getSingleData(VENDOR_TABLE, ['uid' => $vendorId, 'status !=' => DELETED_STATUS]);
         return
-            view('admin/templates/header.php').
-            view('admin/vendor_details.php',$resp).
+            view('admin/templates/header.php') .
+            view('admin/vendor_details.php', $resp) .
             view('admin/templates/footer.php');
     }
 
     /** Product List */
-    public function vendor_register(){ 
+    public function vendor_register()
+    {
         return
             view('customer/templates/header.php') .
             view('customer/vendor_register.php') .

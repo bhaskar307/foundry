@@ -1,12 +1,14 @@
 <?php
+
 namespace App\Services\Customer;
+
 use CodeIgniter\Validation\Validation;
 
 use App\Models\CommonModel;
 use App\Models\Customer\ApiModel;
 
 class ApiService
-{   
+{
     protected $validation;
     protected $apiModel;
     protected $commonModel;
@@ -19,7 +21,7 @@ class ApiService
     }
 
     /** Login */
-    public function login($data) 
+    public function login($data)
     {
         $validationRules = [
             'email'      => 'required',
@@ -29,22 +31,22 @@ class ApiService
         if (!$validationResult['success']) {
             return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
         }
-        
+
         try {
             $success = $this->apiModel->checkCustomerLogin($data['email']);
             if (!$success) {
                 return [false, 401, 'Invalid email', ['invalid_credentials']];
             }
 
-            if($success['status'] == INACTIVE_STATUS){
+            if ($success['status'] == INACTIVE_STATUS) {
                 return [false, 401, 'Account Inactive. Please contact Admin.', ['account_inactive']];
             }
 
-            $plainPassword = $data['password']; 
+            $plainPassword = $data['password'];
             $hashedPassword = $success['password'];
             if (!password_verify($plainPassword, $hashedPassword)) {
                 return [false, 401, 'Invalid Password', ['invalid_credentials']];
-            } 
+            }
 
             return [true, 200, "Login successfully", ["data" => $success]];
         } catch (\Throwable $e) {
@@ -54,7 +56,7 @@ class ApiService
     /** Login */
 
     /** Register */
-    public function createdCustomer($data,$file)  
+    public function createdCustomer($data, $file)
     {
         $validationRules = [
             'name'      => 'required',
@@ -85,7 +87,7 @@ class ApiService
             }
             $image_path = $uploadResult['path'];
         }
-        
+
         try {
             $plainPassword = $data['password'];
             $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
@@ -109,7 +111,7 @@ class ApiService
                 ];
             }
 
-            $this->sendCustomerPasswordToEmail($data['name'],$data['email'], $plainPassword);
+            $this->sendCustomerPasswordToEmail($data['name'], $data['email'], $plainPassword);
 
             return [
                 true,
@@ -124,7 +126,7 @@ class ApiService
     /** Register */
 
     /** Request Section */
-    public function createdRequest($data)  
+    public function createdRequest($data)
     {
         $validationRules = [
             'productId'  => 'required',
@@ -134,9 +136,9 @@ class ApiService
             return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
         }
         $requestUid = generateUid();
-        
+
         try {
-            $productDetails = $this->commonModel->getSingleData(PRODUCT_TABLE,['uid' => $data['productId'],'status' => ACTIVE_STATUS]);
+            $productDetails = $this->commonModel->getSingleData(PRODUCT_TABLE, ['uid' => $data['productId'], 'status' => ACTIVE_STATUS]);
             $addData = [
                 'uid'          => $requestUid,
                 'customer_id'  => $data['user_id'],
@@ -153,12 +155,12 @@ class ApiService
                     ['error' => 'Database insert failed']
                 ];
             }
-            $vendor = $this->commonModel->getSingleData(VENDOR_TABLE,['uid' => $productDetails['vendor_id'],'status !=' => DELETED_STATUS]);
-            $product = $this->commonModel->getSingleData(PRODUCT_TABLE,['uid' => $data['productId'],'status !=' => DELETED_STATUS]);
-            $customer = $this->commonModel->getSingleData(CUSTOMER_TABLE,['uid' => $data['user_id'],'status !=' => DELETED_STATUS]);
+            $vendor = $this->commonModel->getSingleData(VENDOR_TABLE, ['uid' => $productDetails['vendor_id'], 'status !=' => DELETED_STATUS]);
+            $product = $this->commonModel->getSingleData(PRODUCT_TABLE, ['uid' => $data['productId'], 'status !=' => DELETED_STATUS]);
+            $customer = $this->commonModel->getSingleData(CUSTOMER_TABLE, ['uid' => $data['user_id'], 'status !=' => DELETED_STATUS]);
 
-            $this->sendCustomerProductRequestEmail($customer['name'],$customer['email'],$product['name']);
-            $this->sendVendorProductRequestEmail($vendor['name'],$vendor['email'],$data['user_id'],$customer['name'],$customer['email'], $product['name']);
+            $this->sendCustomerProductRequestEmail($customer['name'], $customer['email'], $product['name']);
+            $this->sendVendorProductRequestEmail($vendor['name'], $vendor['email'], $data['user_id'], $customer['name'], $customer['email'], $product['name']);
 
             return [
                 true,
@@ -172,7 +174,7 @@ class ApiService
     }
     /** Request Section */
 
-    public function createdRating($data)  
+    public function createdRating($data)
     {
         $validationRules = [
             'productId'  => 'required',
@@ -184,7 +186,7 @@ class ApiService
             return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
         }
         $ratingUid = generateUid();
-        
+
         try {
             $addData = [
                 'uid'          => $ratingUid,
@@ -266,7 +268,7 @@ class ApiService
         }
     }
 
-    private function sendCustomerPasswordToEmail($name,$email, $plainPassword)
+    private function sendCustomerPasswordToEmail($name, $email, $plainPassword)
     {
         $emailService = \Config\Services::email();
         $emailService->setTo($email);
@@ -274,15 +276,33 @@ class ApiService
         $emailService->setSubject('Your Account Password');
         $emailService->setMessage(
             "Dear $name,<br>" .
-            "Your account has been created.<br>" .
-            "Login Email: <b>$email</b><br>" .
-            "Password: <b>$plainPassword</b><br>" .
-            "You can log in here: <a href='http://localhost/foundry'>Login Page</a><br>" .
-            "Thank you."
+                "Your account has been created.<br>" .
+                "Login Email: <b>$email</b><br>" .
+                "Password: <b>$plainPassword</b><br>" .
+                "You can log in here: <a href='http://localhost/foundry'>Login Page</a><br>" .
+                "Thank you."
         );
 
         if (!$emailService->send()) {
             log_message('error', 'Failed to send password email to ' . $email);
         }
+    }
+
+
+    public function productSearch($search)
+    {
+        $search = trim($search);
+        $db = \Config\Database::connect();
+        $products = $db->table(PRODUCT_TABLE)
+            ->select('uid, name')
+            ->where('status', ACTIVE_STATUS)
+            ->like('name', $search)
+            ->orLike('description', $search)
+            ->get()
+            ->getResultArray();
+        if (empty($products)) {
+            return [false, 404, 'No products found', []];
+        }
+        return [true, 200, 'Products found', ['products' => $products]];
     }
 }

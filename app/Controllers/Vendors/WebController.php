@@ -142,6 +142,8 @@ class WebController extends Common
         $resp['resp'] = $this->webService->getRequestsDetails($payload->user_id,$resp['customerUid'],$resp['productUid'],$resp['date']);
         $resp['customer'] = $this->commonModel->getAllData(CUSTOMER_TABLE,['status' => ACTIVE_STATUS]); 
         $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['status' => ACTIVE_STATUS]);    
+        // print_r($resp['resp']);
+        // die;
         return
             view('vendors/templates/header.php').
             view('vendors/requests.php',$resp).

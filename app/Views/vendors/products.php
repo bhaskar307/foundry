@@ -32,7 +32,7 @@
                         <th>Category</th>
                         <th>Price</th>
                         <th>Brand</th>
-                        <th>Veify</th>
+                        <th>Sponsored</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -64,9 +64,9 @@
                                 </td>
                                 <?php
                                 if ($row['is_verify'] == 1) {
-                                    $verifyStatus = '<span style="color: green; font-weight: bold;">Verified</span>';
+                                    $verifyStatus = '<span style="color: green; font-weight: bold;">Sponsored</span>';
                                 } else {
-                                    $verifyStatus = '<span style="color: red; font-weight: bold;">Not Verified</span>';
+                                    $verifyStatus = '<span style="color: red; font-weight: bold;">Not Sponsored</span>';
                                 }
                                 ?>
                                 <td><?= $verifyStatus ?></td>

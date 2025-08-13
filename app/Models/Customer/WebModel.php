@@ -43,8 +43,38 @@ class WebModel extends Model
         $builder->where('pr.product_id', $productId);
         $builder->where('pr.status', ACTIVE_STATUS);
         $result = $builder->get()->getResultArray();
+        $result = array_map(function ($row) {
+            $row['created_at'] = $this->timeAgo($row['created_at']);
+            return $row;
+        }, $result);
         return $result;
     }
+
+
+
+
+    function timeAgo($datetime)
+    {
+        $time = strtotime($datetime); // convert date string to timestamp
+        $diff = time() - $time; // difference in seconds
+
+        if ($diff < 60) {
+            return 'Just now';
+        } elseif ($diff < 3600) {
+            return floor($diff / 60) . ' minute' . (floor($diff / 60) > 1 ? 's' : '') . ' ago';
+        } elseif ($diff < 86400) {
+            return floor($diff / 3600) . ' hour' . (floor($diff / 3600) > 1 ? 's' : '') . ' ago';
+        } elseif ($diff < 604800) {
+            return floor($diff / 86400) . ' day' . (floor($diff / 86400) > 1 ? 's' : '') . ' ago';
+        } elseif ($diff < 2628000) { // about 1 month
+            return floor($diff / 604800) . ' week' . (floor($diff / 604800) > 1 ? 's' : '') . ' ago';
+        } elseif ($diff < 31536000) { // about 1 year
+            return floor($diff / 2628000) . ' month' . (floor($diff / 2628000) > 1 ? 's' : '') . ' ago';
+        } else {
+            return floor($diff / 31536000) . ' year' . (floor($diff / 31536000) > 1 ? 's' : '') . ' ago';
+        }
+    }
+
 
     public function getProductList($categoryUid = [], $priceFrom = 0, $priceTo = 50000)
     {
@@ -97,6 +127,8 @@ class WebModel extends Model
         $builder->select('
             p.*, 
             v.name AS vendor_name,
+            v.is_verify AS is_vendor_verify,
+            v.company AS vendor_company,
             (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) AS total_customer_review,
             (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) AS total_rating,
             (
@@ -109,7 +141,10 @@ class WebModel extends Model
         ');
         $builder->join('vendor v', 'v.uid = p.vendor_id', 'inner');
         $builder->where('p.status', ACTIVE_STATUS);
+        $builder->orderBy('p.is_verify', 'DESC');
+        $builder->orderBy('p.uid', 'DESC');
         $result = $builder->get()->getResultArray();
+
         return $result;
     }
 
@@ -122,6 +157,8 @@ class WebModel extends Model
         $builder->select('
                         p.*, 
                         v.name AS vendor_name,
+                        v.is_verify AS is_vendor_verify,
+                        v.company AS vendor_company,
                         (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) AS total_customer_review,
                         (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) AS total_rating,
                         (
@@ -147,7 +184,8 @@ class WebModel extends Model
             $builder->where('p.price >=', $priceFrom);
             $builder->where('p.price <=', $priceTo);
         }
-
+        $builder->orderBy('p.is_verify', 'DESC');
+        $builder->orderBy('p.uid', 'DESC');
         $result = $builder->get()->getResultArray();
         return $result;
     }

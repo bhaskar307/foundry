@@ -21,6 +21,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], function ($rou
     $routes->get('change-password', 'WebController::changePassword'); 
     $routes->get('requests', 'WebController::requests');  
     $routes->get('ratings', 'WebController::ratings');  
+    $routes->get('header-content', 'WebController::headerContent');
     $routes->get('logout', 'WebController::logout'); 
 });  
 

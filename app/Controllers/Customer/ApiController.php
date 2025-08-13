@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Controllers\Customer;
+
 use App\Controllers\Common;
 use App\Services\Customer\ApiService;
 
 use CodeIgniter\API\ResponseTrait;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+
 class ApiController extends Common
 {
     protected $apiService;
@@ -20,7 +22,7 @@ class ApiController extends Common
     public function login()
     {
         $loginDetails = $this->request->getJSON(true);
-        $resp = $this->apiService->login($loginDetails);   
+        $resp = $this->apiService->login($loginDetails);
         if (!$resp[0]) {
             $this->apiError($resp[1], $resp[2], $resp[3]);
         } else {
@@ -35,7 +37,7 @@ class ApiController extends Common
                 ->response
                 ->setStatusCode(200)
                 ->setCookie($auth_cookie);
-                
+
             $this->apiSuccess($resp[1], $resp[2], $resp[3]);
         }
     }
@@ -45,8 +47,8 @@ class ApiController extends Common
     {
         $customerDetails = $this->request->getPost();
         $imageFile = $this->request->getFile('image');
-        
-        $resp = $this->apiService->createdCustomer($customerDetails,$imageFile);
+
+        $resp = $this->apiService->createdCustomer($customerDetails, $imageFile);
         if (!$resp[0]) {
             $this->apiError($resp[1], $resp[2], $resp[3]);
         } else {
@@ -81,5 +83,17 @@ class ApiController extends Common
             $this->apiSuccess($resp[1], $resp[2], $resp[3]);
         }
     }
-    
+
+
+
+    public function product_search()
+    {
+        $search = $this->request->getGet('search');
+        $resp = $this->apiService->productSearch($search);
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
 }

@@ -15,7 +15,7 @@
                         <th>Category</th>
                         <th>Price</th>
                         <th>Brand</th>
-                        <th>Veify</th>
+                        <th>Sponsored</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>

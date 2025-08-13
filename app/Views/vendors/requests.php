@@ -56,6 +56,7 @@
                         <th>Customer Name</th>
                         <th>Product Name</th>
                         <th>Date</th>
+                        <th>Message</th>
                         <th>Status</th>
                         <!-- <th>Actions</th> -->
                     </tr>
@@ -82,6 +83,7 @@
                                 <td>
                                      <?= date('d M Y, h:i A', strtotime($row['created_at'])); ?>
                                 </td>
+                                <td><?= $row['message'] ?></td>
                                 <td>
                                     <?php
                                         $bgColor = ($row['status'] === 'Active') ? '#FFE4E3' : '#D1FAE5';
