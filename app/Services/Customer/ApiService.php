@@ -305,4 +305,41 @@ class ApiService
         }
         return [true, 200, 'Products found', ['products' => $products]];
     }
+
+
+    public function productSearchInProductList($search)
+    {
+        $search = trim($search);
+        $db = \Config\Database::connect();
+        $builder = $db->table('product p');
+
+        $builder->select('
+                        p.*, 
+                        v.name AS vendor_name,
+                        v.is_verify AS is_vendor_verify,
+                        v.company AS vendor_company,
+                        (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) AS total_customer_review,
+                        (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) AS total_rating,
+                        (
+                            CASE 
+                                WHEN (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) > 0 
+                                THEN ROUND(
+                                    (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) / 
+                                    (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid), 1)
+                                ELSE 0
+                            END
+                        ) AS total_rating_percent
+                    ');
+        $builder->join('vendor v', 'v.uid = p.vendor_id');
+        $builder->where('p.status', ACTIVE_STATUS);
+
+        $builder->groupStart()
+            ->like('p.name', $search)
+            ->orLike('p.description', $search)
+            ->orLike('v.name', $search)
+            ->groupEnd();
+        $result = $builder->get()->getResultArray();
+        return [true, 200, 'Products found', ['products' => $result]];
+        // return $result;
+    }
 }

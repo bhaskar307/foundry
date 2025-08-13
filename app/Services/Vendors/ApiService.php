@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Services\Vendors;
+
 use CodeIgniter\Validation\Validation;
 
 use App\Models\CommonModel;
@@ -19,7 +21,7 @@ class ApiService
     }
 
     /** Login */
-    public function login($data) 
+    public function login($data)
     {
         $validationRules = [
             'email'      => 'required',
@@ -29,18 +31,18 @@ class ApiService
         if (!$validationResult['success']) {
             return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
         }
-        
+
         try {
             $success = $this->apiModel->checkAdminLogin($data['email']);
             if (!$success) {
                 return [false, 401, 'Invalid email', ['invalid_credentials']];
             }
 
-            $plainPassword = $data['password']; 
+            $plainPassword = $data['password'];
             $hashedPassword = $success['password'];
             if (!password_verify($plainPassword, $hashedPassword)) {
                 return [false, 401, 'Invalid Password', ['invalid_credentials']];
-            } 
+            }
 
             return [true, 200, "Login successfully", ["data" => $success]];
         } catch (\Throwable $e) {
@@ -50,7 +52,7 @@ class ApiService
     /** Login */
 
     /** Product Section */
-    public function createdProduct($data,$file)  
+    public function createdProduct($data, $file)
     {
         $validationRules = [
             'name'        => 'required',
@@ -62,7 +64,7 @@ class ApiService
             return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
         }
         $productUid = generateUid();
-        $timestamp = timestamp();   
+        $timestamp = timestamp();
         // Handle file upload
         $image_paths = [];
         if (isset($file['images']) && is_array($file['images'])) {
@@ -93,6 +95,7 @@ class ApiService
                 'html_description'  => $data['content'],
                 'vendor_id'         => $data['user_id'],
                 'category_id'       => $data['category'],
+                'subcategory_id'    => $data['subcategory'] ?? null,
                 'image'             => $image_path,
                 'created_by'        => $data['user_id'] ?? NULL,
             ];
@@ -100,9 +103,9 @@ class ApiService
             if (!empty($image_paths)) {
                 foreach ($image_paths as $imgPath) {
                     $addImage = [
-                        'uid'         => generateUid(), 
-                        'product_id'  => $productUid,   
-                        'image'       => $imgPath,   
+                        'uid'         => generateUid(),
+                        'product_id'  => $productUid,
+                        'image'       => $imgPath,
                         'created_by'  => $data['user_id'] ?? NULL,
                     ];
                     $this->commonModel->insertData(PRODUCT_IMAGE_TABLE, $addImage);
@@ -126,7 +129,7 @@ class ApiService
             return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
         }
     }
-    public function updateProduct($data,$file)    
+    public function updateProduct($data, $file)
     {
         $validationRules = [
             'name'        => 'required',
@@ -138,7 +141,7 @@ class ApiService
             return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
         }
         $productUid = $data['productUid'];
-        $timestamp = timestamp();   
+        $timestamp = timestamp();
         // Handle file upload
         $uploadResult = null;
         $image_path = '';
@@ -155,7 +158,7 @@ class ApiService
             }
             $image_path = $uploadResult['path'];
         }
-        
+
         try {
             $updateData = [
                 'name'         => $data['name'],
@@ -165,10 +168,10 @@ class ApiService
                 'updated_by'   => $data['user_id'] ?? NULL,
                 'updated_at'   => date('Y-m-d H:i:s')
             ];
-            if(!empty($image_path)){
+            if (!empty($image_path)) {
                 $updateData['image'] = $image_path;
-            }   
-           
+            }
+
             $success = $this->commonModel->UpdateData(PRODUCT_TABLE, ['uid' => $productUid], $updateData);
             if (!$success) {
                 return [
@@ -189,7 +192,7 @@ class ApiService
             return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
         }
     }
-    public function updateProductStatus($data)   
+    public function updateProductStatus($data)
     {
         $validationRules = [
             'status'     => 'required',
@@ -199,14 +202,14 @@ class ApiService
             return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
         }
         $productUid = $data['uid'];
-        
+
         try {
             $updateData = [
                 'status'      => $data['status'],
                 'updated_by' => $data['user_id'] ?? NULL,
                 'updated_at' => date('Y-m-d H:i:s')
-            ]; 
-           
+            ];
+
             $success = $this->commonModel->UpdateData(PRODUCT_TABLE, ['uid' => $productUid], $updateData);
             if (!$success) {
                 return [
@@ -227,7 +230,7 @@ class ApiService
             return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
         }
     }
-    public function deleteProduct($data)   
+    public function deleteProduct($data)
     {
         $validationRules = [
             'uid'      => 'required'
@@ -237,7 +240,7 @@ class ApiService
             return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
         }
         $productUid = $data['uid'];
-        
+
         try {
             $updateData = [
                 'status'     => DELETED_STATUS,
@@ -268,7 +271,7 @@ class ApiService
     /** Product Section */
 
     /** Update Password */
-    public function updatePassword($data)   
+    public function updatePassword($data)
     {
         $validationRules = [
             'password'     => 'required',
@@ -278,7 +281,7 @@ class ApiService
             return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
         }
         $vendorUid = $data['user_id'];
-        
+
         try {
             $plainPassword = $data['password'];
             $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
@@ -286,8 +289,8 @@ class ApiService
                 'password'      => $hashedPassword,
                 'updated_by'    => $data['user_id'] ?? NULL,
                 'updated_at'    => date('Y-m-d H:i:s')
-            ]; 
-           
+            ];
+
             $success = $this->commonModel->UpdateData(VENDOR_TABLE, ['uid' => $vendorUid], $updateData);
             if (!$success) {
                 return [
@@ -311,7 +314,7 @@ class ApiService
     /** Update Password */
 
     /** Forgot Password */
-    public function forgotPassword($data)   
+    public function forgotPassword($data)
     {
         $validationRules = [
             'email'     => 'required',
@@ -320,9 +323,9 @@ class ApiService
         if (!$validationResult['success']) {
             return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
         }
-        
+
         try {
-            $success = $this->apiModel->checkAdminLogin($data['email']);    
+            $success = $this->apiModel->checkAdminLogin($data['email']);
             if (!$success) {
                 return [false, 401, 'Email-Id Not Found', ['invalid_credentials']];
             }
@@ -333,10 +336,10 @@ class ApiService
                 'user_id'      => $success['uid'],
                 'otp'          => $otp,
                 'type'         => OTP_LIST_FORGOT_PASSWORD,
-            ];  
+            ];
             $this->commonModel->insertData(OTP_LIST_TABLE, $addData);
             $success['otpUid'] = $uid;
-            $this->sendVendorForgotPasswordOTP($success['name'],$success['email'], $otp); 
+            $this->sendVendorForgotPasswordOTP($success['name'], $success['email'], $otp);
             return [
                 true,
                 200,
@@ -347,7 +350,7 @@ class ApiService
             return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
         }
     }
-    private function sendVendorForgotPasswordOTP($name,$email, $otp)
+    private function sendVendorForgotPasswordOTP($name, $email, $otp)
     {
         $emailService = \Config\Services::email();
         $emailService->setTo($email);
@@ -355,15 +358,15 @@ class ApiService
         $emailService->setSubject('Your OTP Code');
         $emailService->setMessage(
             "Dear $name,<br>" .
-            "Your OTP Code is: <b>$otp</b><br>" .
-            "Thank you!"
+                "Your OTP Code is: <b>$otp</b><br>" .
+                "Thank you!"
         );
 
         if (!$emailService->send()) {
             log_message('error', 'Failed to send password email to ' . $email);
         }
     }
-    public function resetPassword($data)   
+    public function resetPassword($data)
     {
         $validationRules = [
             'otpUid'    => 'required',
@@ -375,15 +378,15 @@ class ApiService
         if (!$validationResult['success']) {
             return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
         }
-        
+
         try {
-            $success = $this->apiModel->checkForgotOtp($data['otpUid'],$data['uid']);    
+            $success = $this->apiModel->checkForgotOtp($data['otpUid'], $data['uid']);
             if (!$success) {
                 return [false, 401, 'OTP Not Matched', ['invalid_credentials']];
             }
-            if($success['otp'] != $data['otp']){
+            if ($success['otp'] != $data['otp']) {
                 return [false, 401, 'OTP Not Matched', ['invalid_credentials']];
-            }   
+            }
 
             $plainPassword = $data['password'];
             $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
@@ -391,8 +394,8 @@ class ApiService
                 'password'      => $hashedPassword,
                 'updated_by'    => $data['user_id'] ?? NULL,
                 'updated_at'    => date('Y-m-d H:i:s')
-            ]; 
-           
+            ];
+
             $updateSuccess = $this->commonModel->UpdateData(VENDOR_TABLE, ['uid' => $data['uid']], $updateData);
             if (!$updateSuccess) {
                 return [
@@ -415,7 +418,7 @@ class ApiService
     /** Forgot Password */
 
     /** Update Profile */
-    public function updateProfile($data,$file)   
+    public function updateProfile($data, $file)
     {
         $validationRules = [
             'name'      => 'required',
@@ -446,7 +449,7 @@ class ApiService
             }
             $image_path = $uploadResult['path'];
         }
-        
+
         try {
             $updateData = [
                 'country'    => $data['country'],
@@ -458,9 +461,9 @@ class ApiService
                 'updated_at' => date('Y-m-d H:i:s')
             ];
 
-            if(!empty($image_path)){
+            if (!empty($image_path)) {
                 $updateData['image'] = $image_path;
-            }else{
+            } else {
                 $updateData['image'] = $data['old_filepath'];
             }
 
@@ -480,6 +483,21 @@ class ApiService
                 'Vendor details update successfully.',
                 ['data' => $success]
             ];
+        } catch (\Throwable $e) {
+            return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
+        }
+    }
+
+
+    public function getSubCategories($categoryId)
+    {
+
+        try {
+            $subCategories = $this->commonModel->getAllData(CATEGORY_TABLE, ['path' => $categoryId, 'status' => ACTIVE_STATUS]);
+            if (empty($subCategories)) {
+                return [true, 200, 'No subcategories found', []];
+            }
+            return [true, 200, 'Subcategories retrieved successfully', ['data' => $subCategories]];
         } catch (\Throwable $e) {
             return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
         }

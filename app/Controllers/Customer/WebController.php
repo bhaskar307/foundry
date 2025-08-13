@@ -48,7 +48,9 @@ class WebController extends Common
             $resp['categoryUid'] = $filterData['categories'];
             $resp['priceFrom'] = $filterData['price']['from'];
             $resp['priceTo'] = $filterData['price']['to'];
+            $resp['name'] = $filterData['name'] ?? '';
         } else {
+            $resp['name'] = '';
             $resp['categoryUid'] = [];
             $resp['priceFrom'] = 100;
             $resp['priceTo'] = 50000;

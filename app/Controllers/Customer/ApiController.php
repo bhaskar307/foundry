@@ -96,4 +96,15 @@ class ApiController extends Common
             $this->apiSuccess($resp[1], $resp[2], $resp[3]);
         }
     }
+
+    public function product_search_in_product_list()
+    {
+        $search = $this->request->getGet('product_search');
+        $resp = $this->apiService->productSearchInProductList($search);
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
 }

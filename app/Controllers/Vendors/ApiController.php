@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers\Vendors;
+
 use App\Controllers\Common;
 use App\Services\Vendors\ApiService;
 //use App\Models\AdminModel;
@@ -8,6 +9,7 @@ use App\Models\CommonModel;
 use CodeIgniter\API\ResponseTrait;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+
 class ApiController extends Common
 {
     protected $commonModel;
@@ -23,7 +25,7 @@ class ApiController extends Common
     public function login()
     {
         $loginDetails = $this->request->getJSON(true);
-        $resp = $this->apiService->login($loginDetails);   
+        $resp = $this->apiService->login($loginDetails);
         if (!$resp[0]) {
             $this->apiError($resp[1], $resp[2], $resp[3]);
         } else {
@@ -36,7 +38,7 @@ class ApiController extends Common
                 ->response
                 ->setStatusCode(200)
                 ->setCookie($auth_cookie);
-                
+
             $this->apiSuccess($resp[1], $resp[2], $resp[3]);
         }
     }
@@ -51,23 +53,23 @@ class ApiController extends Common
 
         $productDetails['user_id'] = $payload->user_id;
         $productDetails['user_type'] = $payload->user_type;
-        $resp = $this->apiService->createdProduct($productDetails,$files);
+        $resp = $this->apiService->createdProduct($productDetails, $files);
         if (!$resp[0]) {
             $this->apiError($resp[1], $resp[2], $resp[3]);
         } else {
             $this->apiSuccess($resp[1], $resp[2], $resp[3]);
         }
     }
-    public function updateProduct() 
+    public function updateProduct()
     {
         $payload = $this->validateJwtApiTokenVendor();
-        
+
         $productDetails = $this->request->getPost();
         $imageFile = $this->request->getFile('image');
         $productDetails['user_id'] = $payload->user_id;
         $productDetails['user_type'] = $payload->user_type;
-        
-        $resp = $this->apiService->updateProduct($productDetails,$imageFile);
+
+        $resp = $this->apiService->updateProduct($productDetails, $imageFile);
         if (!$resp[0]) {
             $this->apiError($resp[1], $resp[2], $resp[3]);
         } else {
@@ -77,11 +79,11 @@ class ApiController extends Common
     public function deleteProduct()
     {
         $payload = $this->validateJwtApiTokenVendor();
-        
+
         $productDetails = $this->request->getPost();
         $productDetails['user_id'] = $payload->user_id;
         $productDetails['user_type'] = $payload->user_type;
-        
+
         $resp = $this->apiService->deleteProduct($productDetails);
         if (!$resp[0]) {
             $this->apiError($resp[1], $resp[2], $resp[3]);
@@ -89,13 +91,13 @@ class ApiController extends Common
             $this->apiSuccess($resp[1], $resp[2], $resp[3]);
         }
     }
-    public function updateProductStatus()  
+    public function updateProductStatus()
     {
         $payload = $this->validateJwtApiTokenVendor();
-        
+
         $productDetails = $this->request->getJSON(true);
         $productDetails['user_id'] = $payload->user_id;
-        $productDetails['user_type'] = $payload->user_type;  
+        $productDetails['user_type'] = $payload->user_type;
         $resp = $this->apiService->updateProductStatus($productDetails);
         if (!$resp[0]) {
             $this->apiError($resp[1], $resp[2], $resp[3]);
@@ -105,14 +107,14 @@ class ApiController extends Common
     }
     /** Product Section */
 
-    /** Change Password */ 
-    public function changePassword()  
+    /** Change Password */
+    public function changePassword()
     {
         $payload = $this->validateJwtApiTokenVendor();
-        
+
         $vendorDetails = $this->request->getPost();
         $vendorDetails['user_id'] = $payload->user_id;
-        $vendorDetails['user_type'] = $payload->user_type;  
+        $vendorDetails['user_type'] = $payload->user_type;
 
         $resp = $this->apiService->updatePassword($vendorDetails);
         if (!$resp[0]) {
@@ -123,8 +125,8 @@ class ApiController extends Common
     }
     /** Change Password */
 
-    /** Forgot Password */ 
-    public function forgotPassword()  
+    /** Forgot Password */
+    public function forgotPassword()
     {
         $vendorDetails = $this->request->getJSON(true);
         $resp = $this->apiService->forgotPassword($vendorDetails);
@@ -135,7 +137,7 @@ class ApiController extends Common
             $this->apiSuccess($resp[1], $resp[2], $resp[3]);
         }
     }
-    public function resetPassword()  
+    public function resetPassword()
     {
         $vendorDetails = $this->request->getJSON(true);
         $resp = $this->apiService->resetPassword($vendorDetails);
@@ -148,7 +150,8 @@ class ApiController extends Common
     /** Change Password */
 
     /** Update Profile */
-    public function edit_profile(){   
+    public function edit_profile()
+    {
         $payload = $this->validateJwtApiTokenVendor();
         if (!$payload) {
             return redirect()->to(base_url('vendor/login'));
@@ -156,12 +159,12 @@ class ApiController extends Common
         $vendorDetails = $this->request->getPost();
         $imageFile = $this->request->getFile('image');
         $vendorDetails['user_id'] = $payload->user_id;
-        $resp = $this->apiService->updateProfile($vendorDetails,$imageFile);
+        $resp = $this->apiService->updateProfile($vendorDetails, $imageFile);
 
         if (!$resp[0]) {
             $this->apiError($resp[1], $resp[2], $resp[3]);
         } else {
-            $profile = $this->commonModel->getSingleData(VENDOR_TABLE,['uid' => $payload->user_id,'status !=' => DELETED_STATUS]);
+            $profile = $this->commonModel->getSingleData(VENDOR_TABLE, ['uid' => $payload->user_id, 'status !=' => DELETED_STATUS]);
             $data['user_id'] = $profile['uid'];
             $data['user_name'] = $profile['name'];
             $data['user_image'] = $profile['image'];
@@ -175,4 +178,22 @@ class ApiController extends Common
         }
     }
     /** Update Profile Data */
+
+
+    public function getSubCategories()
+    {
+        // $payload = $this->validateJwtApiTokenVendor();
+        // if (!$payload) {
+        //     return redirect()->to(base_url('vendor/login'));
+        // }
+
+        $categoryId = $this->request->getGet('categoryId');
+
+        $resp = $this->apiService->getSubCategories($categoryId);
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
 }

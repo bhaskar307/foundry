@@ -1,10 +1,11 @@
-<?php 
+<?php
 
 namespace App\Models;
 
 use CodeIgniter\Model;
 
-class CommonModel extends Model {
+class CommonModel extends Model
+{
 
     public function insertData($tableName, $field)
     {
@@ -41,5 +42,18 @@ class CommonModel extends Model {
         $builder->where($whereArray);
 
         return $builder->get()->getRowArray(); // Returns only 1 row
+    }
+
+
+    public function getCategory()
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table(CATEGORY_TABLE);
+        $builder->groupStart()
+            ->where('path', '')     // Empty string
+            ->orWhere('path IS NULL', null, false) // NULL value
+            ->groupEnd();
+        $builder->where(['status' => ACTIVE_STATUS]);
+        return $builder->get()->getResultArray();
     }
 }

@@ -13,6 +13,9 @@ $routes->group('', ['namespace' => 'App\Controllers\Customer'], function ($route
     $routes->get('registration', 'WebController::registration');
     $routes->get('logout', 'WebController::logout');
     $routes->get('vendor-register', 'WebController::vendor_register');
+
+    $routes->get('product-search', 'ApiController::product_search_in_product_list');
+    
   
 });
 

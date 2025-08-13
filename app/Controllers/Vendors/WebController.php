@@ -65,8 +65,10 @@ class WebController extends Common
         if (!$payload) {
             return redirect()->to(base_url('vendor/login'));
         }
-        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status' => ACTIVE_STATUS]);
+        $resp['category'] = $this->commonModel->getCategory();
         $resp['resp'] = $this->webService->getProductsDetails($payload->user_id);
+
+       
         return
             view('vendors/templates/header.php').
             view('vendors/add_product.php',$resp).

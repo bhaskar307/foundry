@@ -4,7 +4,7 @@
             <div class="mx-auto col-md-8 p-0">
                 <h1 class="mb-3 fadeUp">India's Most Trusted <span>Foundry Equipment</span> Marketplace</h1>
                 <div class="px-lg-5 mb-3 fadeUp">Explore 25,000+ industrial-grade products from 1,200+ verified manufacturers and brands in the foundry, metallurgy, and metalworking industry.</div>
-                <div class="px-lg-5 mb-3 col-lg-10 mx-auto p-0 fadeUp">
+                <div class="mb-3 col-lg-9 mx-auto p-0 fadeUp position-relative" style="z-index: 50;">
                     <div class="input-group">
                         <input
                             type="text"
@@ -12,11 +12,14 @@
                             class="form-control"
                             placeholder="Search for machines, tools, brands, and more...">
                         <button class="btn btn-primary" id="searchBtn">
-                            🔍
+                            <svg width="20" height="20" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19.5002 19.5001L15.1572 15.1571M15.1572 15.1571C15.9001 14.4142 16.4894 13.5323 16.8914 12.5617C17.2935 11.591 17.5004 10.5507 17.5004 9.50011C17.5004 8.44951 17.2935 7.4092 16.8914 6.43857C16.4894 5.46794 15.9001 4.586 15.1572 3.84311C14.4143 3.10023 13.5324 2.51094 12.5618 2.10889C11.5911 1.70684 10.5508 1.49991 9.50021 1.49991C8.4496 1.49991 7.40929 1.70684 6.43866 2.10889C5.46803 2.51094 4.58609 3.10023 3.84321 3.84311C2.34288 5.34344 1.5 7.37833 1.5 9.50011C1.5 11.6219 2.34288 13.6568 3.84321 15.1571C5.34354 16.6574 7.37842 17.5003 9.50021 17.5003C11.622 17.5003 13.6569 16.6574 15.1572 15.1571Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
                         </button>
                     </div>
+                    <div id="searchResults" class="position-absolute w-100 start-0 text-start" style="display: none;top:100%;z-index:5;font-size:12px;">
                 </div>
-                <div id="searchResults" style="display: none; margin-top: 10px;">
+                
 
                 </div>
                 <div class="d-flex align-items-center justify-content-center gap-3 mb-3 fadeUp">
@@ -526,7 +529,7 @@
                                 ${product.name}
                             </li>`;
 
-                            });
+                    });
                     html += "</ul>";
                     searchResults.innerHTML = html;
                     searchResults.style.display = "block";
