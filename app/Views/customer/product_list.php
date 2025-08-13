@@ -312,7 +312,7 @@
                         ${row.name.length > 40 ? row.name.slice(0, 40) + '...' : row.name}
                     </h5>
                     
-                    ${row.is_verify ? `<span class="badge bg-success">Verified</span>` : ''}
+                    
 
                     <small class="d-flex align-items-center gap-1">
                         <span class="fw-600">Supplier Name: ${row.vendor_name}</span>
