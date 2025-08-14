@@ -24,14 +24,16 @@
             </div>
         </div>
         <div class="px-3 pb-3">
-            <table class="dataTableNoSearch display border">
+            <table class="dataTable display border">
                 <thead>
                     <tr>
+                        <th>#</th>
                         <th>Product Name</th>
                         <th>Image</th>
                         <th>Category</th>
+                        <th>Sub Category</th>
                         <th>Price</th>
-                        <th>Brand</th>
+                        <!-- <th>Brand</th> -->
                         <th>Sponsored</th>
                         <th>Status</th>
                         <th>Actions</th>
@@ -40,9 +42,10 @@
                 <tbody>
                     <?php if (!empty($resp)) {
 
-                        foreach ($resp as $row) {
+                        foreach ($resp as $i =>  $row) {
                     ?>
                             <tr>
+                                <td><?=  $i+1 ?> </td>
                                 <td>
                                     <div><?= $row['name']; ?></div>
                                 </td>
@@ -57,11 +60,14 @@
                                     <div><?= $row['category_name']; ?></div>
                                 </td>
                                 <td>
-                                    <div><?= $row['price']; ?></div>
+                                    <div> <?= $row['subcategory_name'] ?? '---' ?></div>
                                 </td>
                                 <td>
-                                    <div><?= $row['brand']; ?></div>
+                                    <div><?= $row['price']; ?></div>
                                 </td>
+                                <!-- <td>
+                                    <div><?= $row['brand']; ?></div>
+                                </td> -->
                                 <?php
                                 if ($row['is_verify'] == 1) {
                                     $verifyStatus = '<span style="color: green; font-weight: bold;">Sponsored</span>';

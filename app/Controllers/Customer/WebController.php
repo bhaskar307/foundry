@@ -5,6 +5,7 @@ namespace App\Controllers\Customer;
 use App\Controllers\Common;
 use App\Services\Customer\WebService;
 use App\Models\CommonModel;
+use App\Models\Customer\WebModel;
 
 use CodeIgniter\API\ResponseTrait;
 use Firebase\JWT\JWT;
@@ -14,17 +15,19 @@ class WebController extends Common
 {
     protected $webService;
     protected $commonModel;
+    protected $webmodel;
     public function __construct()
     {
         $this->session = session();
         $this->webService = new WebService();
         $this->commonModel = new CommonModel();
+        $this->webmodel = new WebModel();
     }
 
     /** Index */
     public function index()
     {
-        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE, ['status' => ACTIVE_STATUS]);
+        $resp['category'] = $this->commonModel->getCategory();
         //$resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['status' => ACTIVE_STATUS]);
         $resp['product'] = $this->webService->getAllProductDetails();
         $resp['review'] = $this->webService->getCustomerReview();
@@ -44,7 +47,9 @@ class WebController extends Common
         if ($filter) {
             $decoded = base64_decode($filter);
             $filterData = json_decode($decoded, true); // associative array
-
+            // echo '<pre>';
+            // print_r($filterData);
+            // die();
             $resp['categoryUid'] = $filterData['categories'];
             $resp['priceFrom'] = $filterData['price']['from'];
             $resp['priceTo'] = $filterData['price']['to'];
@@ -86,9 +91,9 @@ class WebController extends Common
         $resp['product'] = $this->webService->getFilteredProductDetails($resp['categoryUid'], $resp['priceFrom'], $resp['priceTo']);
 
         $resp['review'] = $this->webService->getCustomerReview();
+        $resp['vendorCountryList'] = $this->webmodel->getVendorCountryList();
 
-
-        // print_r($resp) ; die ; 
+         
 
         return
             view('customer/templates/header.php') .
@@ -99,7 +104,7 @@ class WebController extends Common
     /** Category Product */
     public function category_product()
     {
-        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE, ['status' => ACTIVE_STATUS]);
+        $resp['category'] = $this->commonModel->getCategory();
         $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE, ['status' => ACTIVE_STATUS]);
         $resp['review'] = $this->webService->getCustomerReview();
         return
@@ -125,9 +130,16 @@ class WebController extends Common
 
         $resp['resp'] = $this->webService->getProductDetailsByProductId($productId);
         $resp['reviews'] = $this->webService->getCustomerReviewByProductId($productId);
-        // print_r($resp['reviews']) ; die ; 
-        $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE, ['category_id' => $resp['resp']['category_id'], 'status' => ACTIVE_STATUS]);
+
+        // $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE, ['category_id' => $resp['resp']['category_id'], 'status' => ACTIVE_STATUS]);
+        $categoryUID = $resp['resp']['category_id'];
+
+
+
+        $resp['product'] = $this->webmodel->getAllMightBeProductDetails($categoryUID);
         $vendorUid = $resp['product'][0]['vendor_id'] ?? null;
+
+        // $isMatch = in_array($categoryUID, array_column($resp['product'], 'uid')) ? 1 : 0;
 
         if (!empty($vendorUid)) {
             $resp['vendor'] = $this->commonModel->getAllData(
@@ -135,7 +147,8 @@ class WebController extends Common
                 ['uid' => $vendorUid],
             );
         }
-
+        // print_r($resp['resp']);
+        // die;
         return
             view('customer/templates/header.php') .
             view('customer/product_details.php', $resp) .
@@ -274,5 +287,17 @@ class WebController extends Common
         return redirect()
             ->to(base_url())
             ->setCookie($auth_cookie);
+    }
+
+    public function getCategory()
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table(CATEGORY_TABLE);
+        $builder->groupStart()
+            ->where('path', '')     // Empty string
+            ->orWhere('path IS NULL', null, false) // NULL value
+            ->groupEnd();
+        $builder->where(['status' => ACTIVE_STATUS]);
+        return $builder->get()->getResultArray();
     }
 }

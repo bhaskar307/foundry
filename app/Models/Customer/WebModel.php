@@ -176,7 +176,10 @@ class WebModel extends Model
 
         // Category filter
         if (!empty($categoryUid) && is_array($categoryUid)) {
-            $builder->whereIn('p.category_id', $categoryUid);
+            $builder->groupStart()
+                ->whereIn('p.category_id', $categoryUid)
+                ->orWhereIn('p.subcategory_id', $categoryUid)
+                ->groupEnd();
         }
 
         // Price range filter
@@ -234,5 +237,50 @@ class WebModel extends Model
         $product['images'] = $images;
 
         return $product;
+    }
+
+
+
+
+    public function getAllMightBeProductDetails($categoryUid)
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('product p');
+
+        $builder->select('
+            p.*, 
+            v.name AS vendor_name,
+            v.is_verify AS is_vendor_verify,
+            v.company AS vendor_company,
+            (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) AS total_customer_review,
+            (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) AS total_rating,
+            (
+                CASE 
+                    WHEN (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) > 0 
+                    THEN ROUND((SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) / (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid), 1)
+                    ELSE 0
+                END
+            ) AS total_rating_percent
+        ');
+        $builder->join('vendor v', 'v.uid = p.vendor_id', 'inner');
+        $builder->where('p.status', ACTIVE_STATUS);
+        $builder->orderBy('p.is_verify', 'DESC');
+        $builder->orderBy('p.uid', 'DESC');
+        $builder->where('p.category_id', $categoryUid);
+        $result = $builder->get()->getResultArray();
+
+        return $result;
+    }
+
+
+    public function getVendorCountryList()
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('vendor'); // fixed typo from 'venodr'
+        $builder->select('country');
+        $builder->distinct();
+        $builder->where('status', ACTIVE_STATUS);
+        $result = $builder->get()->getResultArray();
+        return $result;
     }
 }

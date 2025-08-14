@@ -1,30 +1,33 @@
-<?php 
+<?php
 
 namespace App\Models\Vendors;
 
 use CodeIgniter\Model;
 
-class WebModel extends Model {
+class WebModel extends Model
+{
 
-    public function getProductsDetails($vendorId)  
+    public function getProductsDetails($vendorId)
     {
         $db = \Config\Database::connect();
         $builder = $db->table('product p');
         $builder->select('
             p.*, 
             v.name AS vendor_name, 
-            c.title AS category_name
+            c.title AS category_name , 
+            s.title as subcategory_name
         ');
         $builder->join('vendor v', 'v.uid = p.vendor_id', 'left');
         $builder->join('category c', 'c.uid = p.category_id', 'left');
+        $builder->join('category s', 's.uid = p.subcategory_id', 'left');
         $builder->where('p.status !=', DELETED_STATUS);
         $builder->where('p.vendor_id', $vendorId);
-        
+
         $result = $builder->get()->getResultArray();
         return $result;
     }
 
-    public function getProductsDetailsByProductId($vendorId,$productId) 
+    public function getProductsDetailsByProductId($vendorId, $productId)
     {
         $db = \Config\Database::connect();
         $builder = $db->table('product p');
@@ -38,12 +41,12 @@ class WebModel extends Model {
         $builder->where('p.status !=', DELETED_STATUS);
         $builder->where('p.vendor_id', $vendorId);
         $builder->where('p.uid', $productId);
-        
+
         $result = $builder->get()->getRowArray();
         return $result;
     }
 
-    public function getRequestsDetails($vendorId,$customer=null,$product=null,$date=null)  
+    public function getRequestsDetails($vendorId, $customer = null, $product = null, $date = null)
     {
         $db = \Config\Database::connect();
         $builder = $db->table('request r');
@@ -58,13 +61,13 @@ class WebModel extends Model {
         $builder->join('customer c', 'c.uid = r.customer_id', 'left');
         $builder->join('product p', 'p.uid = r.product_id', 'left');
         $builder->join('vendor v', 'v.uid = r.vendor_id', 'left');
-        
+
         $builder->where('r.status', ACTIVE_STATUS);
         $builder->where('r.vendor_id', $vendorId);
-        if($customer != null){
+        if ($customer != null) {
             $builder->where('r.customer_id', $customer);
         }
-        if($product != null){
+        if ($product != null) {
             $builder->where('r.product_id', $product);
         }
         if ($date != null) {
@@ -74,7 +77,7 @@ class WebModel extends Model {
         return $result;
     }
 
-    public function getCustomerReview($vendorId=null,$customerId=null,$productId=null)  
+    public function getCustomerReview($vendorId = null, $customerId = null, $productId = null)
     {
         $db = \Config\Database::connect();
         $builder = $db->table('product_rating pr');
@@ -89,15 +92,27 @@ class WebModel extends Model {
         $builder->join('customer c', 'c.uid = pr.customer_id', 'left');
         $builder->join('product p', 'p.uid = pr.product_id', 'left');
         $builder->where('pr.status', ACTIVE_STATUS);
-        if($customerId != null){
+        if ($customerId != null) {
             $builder->where('pr.customer_id', $customerId);
         }
-        if($productId != null){
+        if ($productId != null) {
             $builder->where('pr.product_id', $productId);
         }
-        if($vendorId != null){
+        if ($vendorId != null) {
             $builder->where('p.vendor_id', $vendorId);
         }
+        $result = $builder->get()->getResultArray();
+        return $result;
+    }
+
+
+    public function getProductImage($productId)
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('product_image');
+        $builder->select('*');
+        $builder->where('product_id', $productId);
+        $builder->where('status', ACTIVE_STATUS);
         $result = $builder->get()->getResultArray();
         return $result;
     }

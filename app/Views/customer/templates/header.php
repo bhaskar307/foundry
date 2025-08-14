@@ -47,7 +47,7 @@ if (!empty($jwt)) {
         <div class="container">
             <div class="headerBg p-3 rounded-10">
                 <div class="d-flex align-items-center justify-content-between gap-3">
-                    <a href="">
+                    <a href="<?= base_url() ?>">
                         <img src="<?= base_url('assets/customer/images/logo.svg') ?>" alt="" width="141" height="36">
                     </a>
                     <nav class="d-none d-lg-block">
@@ -67,13 +67,13 @@ if (!empty($jwt)) {
                                 </a>
                             </li>
                             <li>
-                                <a href="https://www.skool.com/foundryskool/about"  target="_blank" >Skool</a>
+                                <a href="https://www.skool.com/foundryskool/about" target="_blank">Skool</a>
                             </li>
                             <li>
-                                <a href="<?= base_url('vendor-register') ?>">Vendor Resgister</a>
+                                <a  href="<?= base_url('vendor-register') ?>"  <?php if ($lastSegment == 'vendor-register') { ?>class="active" <?php } ?>>Vendor Resgister</a>
                             </li>
                             <li>
-                                <a href="<?= base_url('vendor/login') ?>">Vendor Login</a>
+                                <a href="<?= base_url('vendor/login') ?>" target="_blank" >Vendor Login</a>
                             </li>
                         </ul>
                     </nav>
@@ -150,10 +150,10 @@ if (!empty($jwt)) {
                     <a href="https://www.skool.com/foundryskool/about">Skool</a>
                 </li>
                 <li>
-                    <a href="<?= base_url('vendor-register') ?>">Vendor Resgister</a>
+                    <a href="<?= base_url('vendor-register') ?>" <?php if ($lastSegment == 'vendor-register') { ?>class="active" <?php } ?>>Vendor Resgister</a>
                 </li>
                 <li>
-                    <a href="<?= base_url('vendor/login') ?>">Vendor Login</a>
+                    <a href="<?= base_url('vendor/login') ?>" <?php if ($lastSegment == 'login') { ?>class="active" <?php } ?>>Vendor Login</a>
                 </li>
             </ul>
         </div>
@@ -349,8 +349,9 @@ if (!empty($jwt)) {
                                         <small class="text-danger d-block" id="error-phone"></small>
                                     </div>
                                     <div>
-                                        <input type="date" id="dob" name="dob" class="form-control" placeholder="ented dob*" required>
-                                        <small class="text-danger d-block" id="error-dob"></small>
+                                        <lebel for="dob" class="form-label">Date of Birth*</label>
+                                            <input type="date" id="dob" name="dob" class="form-control" placeholder="ented dob*" required>
+                                            <small class="text-danger d-block" id="error-dob"></small>
                                     </div>
                                     <div>
                                         <input type="password" id="password" name="password" class="form-control" placeholder="Enter Password*" required>

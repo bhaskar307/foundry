@@ -138,6 +138,7 @@
                         </i>
                         <small style="color: #666;"><?= $resp['total_rating_percent'] ?> (<?= $resp['total_customer_review'] ?> reviews)</small>
                     </div>
+
                     <p><?= $resp['description']; ?></p>
 
 
@@ -192,14 +193,19 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12">
-                <div class="card text-bg-dark m-0">
-                    <h5 class="card-header">Description</h5>
-                    <div class="card-body listStyle">
-                        <?= $resp['html_description']; ?>
+            <?php if (!empty($resp['html_description'])): ?>
+                <div class="col-12">
+                    <div class="card text-bg-dark m-0">
+                        <h5 class="card-header">Description</h5>
+                        <div class="card-body listStyle">
+
+                            <?= $resp['html_description']; ?>
+
+
+                        </div>
                     </div>
                 </div>
-            </div>
+            <?php endif; ?>
             <div class="col-12">
                 <div class="card text-bg-dark m-0 fadeUp">
                     <h5 class="card-header">Customer Reviews</h5>
@@ -255,7 +261,7 @@
                         <div class="text-center fadeUp">
                             <button class="btn btn-primary d-inline-flex gap-2" data-bs-toggle="modal" data-bs-target="#giveReviewModal">
                                 <?php if (!empty($customerDetails)) { ?>
-                                    <span>leave a Review</span>
+                                    <span>Leave A Review</span>
                                 <?php } else { ?>
                                     <span>Sign in to leave a Review</span>
                                 <?php } ?>
@@ -264,17 +270,26 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12">
-                <h2 class="mb-3">You Might Also Like</h2>
-                <div class="px-3 position-relative fadeUp">
-                    <div class="swiper slide4">
-                        <div class="swiper-wrapper">
-                            <?php if (!empty($product)) {
-                                foreach ($product as $row) {
+
+            <?php
+            
+            $filteredProducts = array_filter($product, function ($row) use ($resp) {
+                return $row['uid'] !== $resp['uid'];
+            });
+
+            ?>
+            <?php if (!empty($filteredProducts)) { ?>
+                <div class="col-12">
+                    <h2 class="mb-3">You Might Also Like</h2>
+                    <div class="px-3 position-relative fadeUp">
+                        <div class="swiper slide4">
+                            <div class="swiper-wrapper">
+                                <?php foreach ($filteredProducts as $row) {
+
                                     if ($row['uid'] == $resp['uid']) {
                                         continue;
                                     }
-                            ?>
+                                ?>
                                     <div class="swiper-slide">
                                         <a href="<?= base_url('product-details/' . $row['uid']) ?>" class="h-100 rounded-10 border bg-white overflow-hidden d-block">
                                             <img src="<?= base_url($row['image']) ?>" alt="" class="w-100 object-fit-cover" style="height:250px;">
@@ -282,11 +297,34 @@
                                                 <h5 class="mb-1" style="height:50px;">
                                                     <?= substr(strip_tags($row['name']), 0, 40) ?><?= strlen(strip_tags($row['name'])) > 40 ? '...' : '' ?>
                                                 </h5>
+
                                                 <?php if (!empty($row['is_verify']) && $vendor['is_verify'] == 1): ?>
                                                     <span class="badge bg-success">
                                                         <i class="bi bi-check-circle-fill"></i> Sponsored
                                                     </span>
                                                 <?php endif; ?>
+
+                                                <?php
+                                                // Rating display
+                                                $rating = $row['total_rating_percent'];
+                                                $fullStars = floor($rating);
+                                                $halfStar = ($rating - $fullStars) >= 0.5;
+                                                $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+
+                                                $starSvg = function ($fill) {
+                                                    $color = match ($fill) {
+                                                        'full' => '#F6AB27',
+                                                        'half' => 'url(#halfGradient)',
+                                                        'empty' => '#E0E0E0',
+                                                    };
+                                                    return <<<SVG
+                                    <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                    <defs><linearGradient id="halfGradient"><stop offset="50%" stop-color="#F6AB27"/><stop offset="50%" stop-color="#E0E0E0"/></linearGradient></defs>
+                                    <path d="M50 5L61 35H95L67 57L78 90L50 70L22 90L33 57L5 35H39L50 5Z" fill="$color"/>
+                                    </svg>
+                                    SVG;
+                                                };
+                                                ?>
                                                 <i style="display: flex; gap: 2px; line-height: 0;">
                                                     <?php
                                                     for ($i = 0; $i < $fullStars; $i++) echo $starSvg('full');
@@ -294,10 +332,12 @@
                                                     for ($i = 0; $i < $emptyStars; $i++) echo $starSvg('empty');
                                                     ?>
                                                 </i>
-                                                <small style="color: #666;"><?= $resp['total_rating_percent'] ?> (<?= $resp['total_customer_review'] ?> reviews)</small>
+                                                <small style="color: #666;"><?= $row['total_rating_percent'] ?> (<?= $row['total_rating_percent'] ?> reviews)</small>
+
                                                 <div class="my-1" style="color: #666;">
                                                     <?= substr(strip_tags($row['description']), 0, 95) ?><?= strlen(strip_tags($row['description'])) > 95 ? '...' : '' ?>
                                                 </div>
+
                                                 <div class="text-dark fw-600 d-flex gap-2 justify-content-between align-items-center">
                                                     <span><?= $vendor['company'] ?></span>
                                                     <?php if (!empty($vendor['is_verify']) && $vendor['is_verify'] == 1): ?>
@@ -314,88 +354,92 @@
                                             </div>
                                         </a>
                                     </div>
-                            <?php }
-                            } ?>
+                                <?php } ?>
+                            </div>
                         </div>
                     </div>
-                    <div class="slide4Swiper-button-next position-absolute top-50 translate-middle-y end-0" style="z-index: 1;">
-                        <svg width="40" height="40" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g filter="url(#filter0_dd_126_1253)">
-                                <rect x="4" y="3" width="44" height="44" rx="10" fill="white" />
-                                <path d="M34.2148 25L34.6079 24.5822L35 25L34.6079 25.4178L34.2148 25ZM17.5553 25.5902C17.408 25.5902 17.2668 25.528 17.1626 25.4173C17.0585 25.3066 17 25.1565 17 25C17 24.8435 17.0585 24.6934 17.1626 24.5827C17.2668 24.472 17.408 24.4098 17.5553 24.4098V25.5902ZM27.9442 17.5L34.6079 24.5822L33.8216 25.4178L27.1578 18.3357L27.9442 17.5ZM34.6079 25.4178L27.9442 32.5L27.1578 31.6643L33.8216 24.5822L34.6079 25.4178ZM34.2148 25.5902H17.5553V24.4098H34.2148V25.5902Z" fill="#1C2730" />
-                            </g>
-                            <defs>
-                                <filter id="filter0_dd_126_1253" x="0" y="0" width="52" height="52" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                                    <feMorphology radius="1" operator="dilate" in="SourceAlpha" result="effect1_dropShadow_126_1253" />
-                                    <feOffset dy="1" />
-                                    <feGaussianBlur stdDeviation="1.5" />
-                                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
-                                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_126_1253" />
-                                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                                    <feOffset dy="1" />
-                                    <feGaussianBlur stdDeviation="1" />
-                                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
-                                    <feBlend mode="normal" in2="effect1_dropShadow_126_1253" result="effect2_dropShadow_126_1253" />
-                                    <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_126_1253" result="shape" />
-                                </filter>
-                            </defs>
-                        </svg>
-                    </div>
-                    <div class="slide4Swiper-button-prev position-absolute top-50 translate-middle-y start-0" style="z-index: 1;">
-                        <svg width="40" height="40" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g filter="url(#filter0_dd_126_1251)">
-                                <rect x="48" y="47" width="44" height="44" rx="10" transform="rotate(-180 48 47)" fill="white" />
-                                <path d="M17.7852 25L17.3921 25.4178L17 25L17.3921 24.5822L17.7852 25ZM34.4447 24.4098C34.592 24.4098 34.7332 24.472 34.8374 24.5827C34.9415 24.6934 35 24.8435 35 25C35 25.1565 34.9415 25.3066 34.8374 25.4173C34.7332 25.528 34.592 25.5902 34.4447 25.5902V24.4098ZM24.0558 32.5L17.3921 25.4178L18.1784 24.5822L24.8422 31.6643L24.0558 32.5ZM17.3921 24.5822L24.0558 17.5L24.8422 18.3357L18.1784 25.4178L17.3921 24.5822ZM17.7852 24.4098H34.4447V25.5902H17.7852V24.4098Z" fill="#1C2730" />
-                            </g>
-                            <defs>
-                                <filter id="filter0_dd_126_1251" x="0" y="0" width="52" height="52" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                                    <feMorphology radius="1" operator="dilate" in="SourceAlpha" result="effect1_dropShadow_126_1251" />
-                                    <feOffset dy="1" />
-                                    <feGaussianBlur stdDeviation="1.5" />
-                                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
-                                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_126_1251" />
-                                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                                    <feOffset dy="1" />
-                                    <feGaussianBlur stdDeviation="1" />
-                                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
-                                    <feBlend mode="normal" in2="effect1_dropShadow_126_1251" result="effect2_dropShadow_126_1251" />
-                                    <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_126_1251" result="shape" />
-                                </filter>
-                            </defs>
-                        </svg>
-                    </div>
                 </div>
+            <?php } ?>
 
-                <script>
-                    var swiper = new Swiper(".slide4", {
-                        slidesPerView: 1,
-                        loop: true,
-                        navigation: {
-                            nextEl: ".slide4Swiper-button-next",
-                            prevEl: ".slide4Swiper-button-prev",
-                        },
-                        breakpoints: {
-                            640: {
-                                slidesPerView: 1,
-                                spaceBetween: 10,
-                            },
-                            768: {
-                                slidesPerView: 3,
-                                spaceBetween: 20,
-                            },
-                            1024: {
-                                slidesPerView: 4,
-                                spaceBetween: 30,
-                            },
-                        },
-                    });
-                </script>
+            <div class="slide4Swiper-button-next position-absolute top-50 translate-middle-y end-0" style="z-index: 1;">
+                <svg width="40" height="40" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g filter="url(#filter0_dd_126_1253)">
+                        <rect x="4" y="3" width="44" height="44" rx="10" fill="white" />
+                        <path d="M34.2148 25L34.6079 24.5822L35 25L34.6079 25.4178L34.2148 25ZM17.5553 25.5902C17.408 25.5902 17.2668 25.528 17.1626 25.4173C17.0585 25.3066 17 25.1565 17 25C17 24.8435 17.0585 24.6934 17.1626 24.5827C17.2668 24.472 17.408 24.4098 17.5553 24.4098V25.5902ZM27.9442 17.5L34.6079 24.5822L33.8216 25.4178L27.1578 18.3357L27.9442 17.5ZM34.6079 25.4178L27.9442 32.5L27.1578 31.6643L33.8216 24.5822L34.6079 25.4178ZM34.2148 25.5902H17.5553V24.4098H34.2148V25.5902Z" fill="#1C2730" />
+                    </g>
+                    <defs>
+                        <filter id="filter0_dd_126_1253" x="0" y="0" width="52" height="52" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                            <feMorphology radius="1" operator="dilate" in="SourceAlpha" result="effect1_dropShadow_126_1253" />
+                            <feOffset dy="1" />
+                            <feGaussianBlur stdDeviation="1.5" />
+                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
+                            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_126_1253" />
+                            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                            <feOffset dy="1" />
+                            <feGaussianBlur stdDeviation="1" />
+                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+                            <feBlend mode="normal" in2="effect1_dropShadow_126_1253" result="effect2_dropShadow_126_1253" />
+                            <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_126_1253" result="shape" />
+                        </filter>
+                    </defs>
+                </svg>
+            </div>
+            <div class="slide4Swiper-button-prev position-absolute top-50 translate-middle-y start-0" style="z-index: 1;">
+                <svg width="40" height="40" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g filter="url(#filter0_dd_126_1251)">
+                        <rect x="48" y="47" width="44" height="44" rx="10" transform="rotate(-180 48 47)" fill="white" />
+                        <path d="M17.7852 25L17.3921 25.4178L17 25L17.3921 24.5822L17.7852 25ZM34.4447 24.4098C34.592 24.4098 34.7332 24.472 34.8374 24.5827C34.9415 24.6934 35 24.8435 35 25C35 25.1565 34.9415 25.3066 34.8374 25.4173C34.7332 25.528 34.592 25.5902 34.4447 25.5902V24.4098ZM24.0558 32.5L17.3921 25.4178L18.1784 24.5822L24.8422 31.6643L24.0558 32.5ZM17.3921 24.5822L24.0558 17.5L24.8422 18.3357L18.1784 25.4178L17.3921 24.5822ZM17.7852 24.4098H34.4447V25.5902H17.7852V24.4098Z" fill="#1C2730" />
+                    </g>
+                    <defs>
+                        <filter id="filter0_dd_126_1251" x="0" y="0" width="52" height="52" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                            <feMorphology radius="1" operator="dilate" in="SourceAlpha" result="effect1_dropShadow_126_1251" />
+                            <feOffset dy="1" />
+                            <feGaussianBlur stdDeviation="1.5" />
+                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
+                            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_126_1251" />
+                            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                            <feOffset dy="1" />
+                            <feGaussianBlur stdDeviation="1" />
+                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+                            <feBlend mode="normal" in2="effect1_dropShadow_126_1251" result="effect2_dropShadow_126_1251" />
+                            <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_126_1251" result="shape" />
+                        </filter>
+                    </defs>
+                </svg>
             </div>
         </div>
+
+        <script>
+            var swiper = new Swiper(".slide4", {
+                slidesPerView: 1,
+                loop: true,
+                navigation: {
+                    nextEl: ".slide4Swiper-button-next",
+                    prevEl: ".slide4Swiper-button-prev",
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 1,
+                        spaceBetween: 10,
+                    },
+                    768: {
+                        slidesPerView: 3,
+                        spaceBetween: 20,
+                    },
+                    1024: {
+                        slidesPerView: 4,
+                        spaceBetween: 30,
+                    },
+                },
+            });
+        </script>
+    </div>
+
+    </div>
     </div>
 </section>
 
@@ -458,7 +502,7 @@
                 <div class="modal-body">
                     <!-- Actual review form -->
                     <div id="loginFirst">
-                        Please login first to view sellere .
+                        Please login first to view seller .
                     </div>
                 </div>
 

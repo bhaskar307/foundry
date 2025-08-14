@@ -94,11 +94,28 @@
                             <div class="">
                                 <h6 class="mb-2">All Country</h6>
                                 <div class="d-flex flex-column gap-1">
-                                    <div class="form-check m-0">
+
+                                    <?php if (!empty($vendorCountryList)) : ?>
+                                        <?php foreach ($vendorCountryList as $country): ?>
+
+                                            <div class="form-check m-0">
+                                                <input
+                                                    class="form-check-input country-checkbox"
+                                                    type="checkbox"
+                                                    value="<?= esc($country['country']); ?>"
+                                                    id="country_<?= esc($country['country']); ?>"
+                                                    <?= strtolower($country['country']) === 'india' ? 'checked' : '' ?>>
+                                                <label class="form-check-label" for="country_<?= esc($country['country']); ?>">
+                                                    <?= esc($country['country']); ?>
+                                                </label>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                    <!-- <div class="form-check m-0">
                                         <input class="form-check-input" type="checkbox" value="india" id="india" checked>
 
                                         <label class="form-check-label" for="india">India</label>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
 
@@ -265,10 +282,10 @@
         const container = document.getElementById('productContainer');
         container.innerHTML = ''; // clear old content
 
-        // if (list.length === 0) {
-        //     container.innerHTML = '<div class="col-12 text-center text-muted">No products found</div>';
-        //     return;
-        // }
+        if (list.length === 0) {
+            container.innerHTML = '<div class="col-12 text-center py-4"><h5 class="text-muted">No products found </h5></div>';
+            return;
+        }
 
         list.forEach(row => {
             // Rating logic
@@ -311,9 +328,11 @@
                     <h5 class="mb-1" style="height:50px;">
                         ${row.name.length > 40 ? row.name.slice(0, 40) + '...' : row.name}
                     </h5>
-                    
-                    
-
+                      ${row.is_verify == 1 ? `
+                        <span class="badge bg-success">
+                            <i class="bi bi-check-circle-fill"></i> Sponsored
+                        </span>
+                        ` : ''}
                     <small class="d-flex align-items-center gap-1">
                         <span class="fw-600">Supplier Name: ${row.vendor_name}</span>
                     </small>
@@ -357,7 +376,7 @@
             (p.description && p.description.toLowerCase().includes(lowerSearch))
         );
         console.log("Filtered Products:", filtered);
-        
+
         renderProducts(filtered);
     }
 
@@ -365,7 +384,7 @@
     document.getElementById('searchInput').addEventListener('keyup', function() {
         filterProducts(this.value);
         console.log("Search Input Value:", this.value);
-        
+
     });
 
     // Initial render

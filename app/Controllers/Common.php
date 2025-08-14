@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Controllers;
 
@@ -8,7 +8,9 @@ use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-class Common extends BaseController {
+
+class Common extends BaseController
+{
 
     protected $validation;
     protected $current_datetime;
@@ -53,7 +55,7 @@ class Common extends BaseController {
     }
 
     /** Check Admin JWT Tocken */
-    public function validateJwtWebToken() 
+    public function validateJwtWebToken()
     {
         $jwt = $this->request->getCookie(ADMIN_JWT_TOKEN);
 
@@ -85,7 +87,7 @@ class Common extends BaseController {
     /** Check Admin JWT Tocken */
 
     /** Check Admin JWT Tocken */
-    public function validateJwtWebTokenVendor() 
+    public function validateJwtWebTokenVendor()
     {
         $jwt = $this->request->getCookie(VENDOR_JWT_TOKEN);
 
@@ -117,7 +119,7 @@ class Common extends BaseController {
     /** Check Admin JWT Tocken */
 
     /** Check Customer JWT Tocken */
-    public function validateJwtWebTokenCustomer() 
+    public function validateJwtWebTokenCustomer()
     {
         $jwt = $this->request->getCookie(CUSTOMER_JWT_TOKEN);
         if (empty($jwt)) {
@@ -144,6 +146,15 @@ class Common extends BaseController {
                 return $data;
             }
         }
+    }
+
+
+    public function dd($data)
+    {
+        echo "<pre>";
+        print_r($data);
+        echo "</pre>";
+        die;
     }
     /** Check Customer JWT Tocken */
 }

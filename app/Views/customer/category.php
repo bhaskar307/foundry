@@ -20,59 +20,84 @@
                                     <path d="M225.474,0C101.151,0,0,101.151,0,225.474c0,124.33,101.151,225.474,225.474,225.474
                                         c124.33,0,225.474-101.144,225.474-225.474C450.948,101.151,349.804,0,225.474,0z M225.474,409.323
                                         c-101.373,0-183.848-82.475-183.848-183.848S124.101,41.626,225.474,41.626s183.848,82.475,183.848,183.848
-                                        S326.847,409.323,225.474,409.323z"/>
+                                        S326.847,409.323,225.474,409.323z" />
                                     <path d="M505.902,476.472L386.574,357.144c-8.131-8.131-21.299-8.131-29.43,0c-8.131,8.124-8.131,21.306,0,29.43l119.328,119.328
-                                        c4.065,4.065,9.387,6.098,14.715,6.098c5.321,0,10.649-2.033,14.715-6.098C514.033,497.778,514.033,484.596,505.902,476.472z"/>
+                                        c4.065,4.065,9.387,6.098,14.715,6.098c5.321,0,10.649-2.033,14.715-6.098C514.033,497.778,514.033,484.596,505.902,476.472z" />
                                 </svg>
                             </span>
-                            <input type="text" class="form-control" placeholder="Search.." style="height:40px">
+                            <input id="searchCategory" type="text" class="form-control" placeholder="Search.." style="height:40px">
                         </div>
                     </div>
                 </div>
             </div>
-            <?php if ($category) {
-                foreach ($category as $row) {
-                    $uid = $row['uid'];
-            ?>
+            <div id="categoryContainer" class="row mt-3"></div>
+
+        </div>
+    </div>
+</section>
+<script>
+    const category = <?= json_encode($category) ?>;
+
+    // Function to render categories
+    function renderCategories(list) {
+        const container = document.getElementById("categoryContainer");
+        container.innerHTML = ''; // Clear old content
+        if (list.length === 0) {
+            container.innerHTML = `
+                <div class="col-12 text-center py-4">
+                    <h5 class="text-muted">No categories found</h5>
+                </div>
+            `;
+            return;
+        }
+        list.forEach(row => {
+            container.innerHTML += `
                 <div class="col-6 col-lg-3">
-                    <a 
-                        href="javascript:void(0);" 
-                        class="position-relative rounded-10 overflow-hidden d-block topCatThmb" 
+                    <a
+                        href="javascript:void(0);"
+                        class="position-relative rounded-10 overflow-hidden d-block topCatThmb"
                         onclick="handleCategoryClick(this)"
-                        data-uid="<?= $uid ?>"
-                    >
-                        <img src="<?= base_url($row['image']) ?>" alt="" class="w-100 object-fit-cover" style="height: 350px;">
+                        data-uid="${row.uid}">
+                        <img src="${row.image}" alt="" class="w-100 object-fit-cover" style="height: 350px;">
                         <div class="position-absolute rounded-10 p-3 text-center topCatmask">
-                            <h5 class="mb-2"><?= $row['title'] ?></h5>
+                            <h5 class="mb-2">${row.title}</h5>
                             <div class="btn btn-primary h-auto">Explore Category</div>
                         </div>
                     </a>
                 </div>
-            <?php 
-                } 
-            } 
-            ?>    
-        </div>
-    </div>
-</section>
+            `;
+        });
+    }
 
+    // Initial render
+    renderCategories(category);
+
+    // Search filter
+    document.getElementById("searchCategory").addEventListener("input", function() {
+        const searchText = this.value.toLowerCase();
+        const filtered = category.filter(row =>
+            row.title.toLowerCase().includes(searchText)
+        );
+        renderCategories(filtered);
+    });
+</script>
 <script>
-function handleCategoryClick(element) {
-    const uid = element.getAttribute('data-uid');
+    function handleCategoryClick(element) {
+        const uid = element.getAttribute('data-uid');
 
-    const categoryData = [uid];
+        const categoryData = [uid];
 
-    const filterData = {
-        categories: categoryData,
-        price: {
-            from: 100,
-            to: 50000
-        }
-    };
+        const filterData = {
+            categories: categoryData,
+            price: {
+                from: 100,
+                to: 50000
+            }
+        };
 
-    const jsonStr = JSON.stringify(filterData);
-    const base64 = btoa(jsonStr);
-    const url = "<?= base_url('product-list?filter=') ?>" + encodeURIComponent(base64);
-    window.location.href = url;
-}
+        const jsonStr = JSON.stringify(filterData);
+        const base64 = btoa(jsonStr);
+        const url = "<?= base_url('product-list?filter=') ?>" + encodeURIComponent(base64);
+        window.location.href = url;
+    }
 </script>

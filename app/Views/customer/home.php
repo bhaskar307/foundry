@@ -18,19 +18,20 @@
                         </button>
                     </div>
                     <div id="searchResults" class="position-absolute w-100 start-0 text-start" style="display: none;top:100%;z-index:5;font-size:12px;">
+                    </div>
                 </div>
-                
 
-                </div>
-                <div class="d-flex align-items-center justify-content-center gap-3 mb-3 fadeUp">
-                    <a href="<?= base_url('/product-list') ?>" class="btn btn-primary">Shop Foundry Tech</a>
-                    <a href="<?= base_url('/category') ?>" class="btn btn-white">Browse Categories</a>
-                </div>
-                <div class="fadeUp">
-                    <img src="<?= base_url('assets/customer/images/xdfvbdfv.webp') ?>" alt="" width="300">
-                </div>
+
+            </div>
+            <div class="d-flex align-items-center justify-content-center gap-3 mb-3 fadeUp">
+                <a href="<?= base_url('/product-list') ?>" class="btn btn-primary">Shop Foundry Tech</a>
+                <a href="<?= base_url('/category') ?>" class="btn btn-white">Browse Categories</a>
+            </div>
+            <div class="fadeUp">
+                <img src="<?= base_url('assets/customer/images/xdfvbdfv.webp') ?>" alt="" width="300">
             </div>
         </div>
+    </div>
     </div>
 </section>
 <section class="py-5" style="background-color: #F9F9F9;">
@@ -69,9 +70,10 @@
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M22.7475 0H5.9195L0.333496 5.586V24H28.3335V5.586L22.7475 0ZM3.7475 5L6.7475 2H21.9195L24.9195 5H3.7475ZM11.7475 12L13.0415 10.708L11.6275 9.292L6.9195 14H18.3335C18.5987 14 18.8531 14.1054 19.0406 14.2929C19.2281 14.4804 19.3335 14.7348 19.3335 15C19.3335 15.2652 19.2281 15.5196 19.0406 15.7071C18.8531 15.8946 18.5987 16 18.3335 16H10.3335V18H18.3335C19.1291 18 19.8922 17.6839 20.4548 17.1213C21.0174 16.5587 21.3335 15.7956 21.3335 15C21.3335 14.2044 21.0174 13.4413 20.4548 12.8787C19.8922 12.3161 19.1291 12 18.3335 12H11.7475Z" fill="#4B4D56" />
                         </svg>
                     </i>
+
                     <div>
                         <h5 class="mb-1">Easy Returns</h5>
-                        <small class="d-block">Changed your mind? No problem! With our Easy Returns policy.</small>
+                        <small class="d-block">Changed your mind? No problem! With our Easy Returns policy, you can return your purchase for a hassle-free refund or exchange.</small>
                     </div>
                 </div>
             </div>
@@ -523,26 +525,37 @@
                 if (data.success && data.data.products.length > 0) {
                     let html = "<ul class='list-group'>";
                     data.data.products.forEach(product => {
-                        html += `<li class='list-group-item' 
-                                style="cursor:pointer;" 
-                                onclick="window.location.href='https://devs.v-xplore.com/foundry/product-details/${product.uid}'">
-                                ${product.name}
-                            </li>`;
-
+                        html += `
+                    <li class='list-group-item' 
+                        style="cursor:pointer;" 
+                        onclick="window.location.href='https://devs.v-xplore.com/foundry/product-details/${product.uid}'">
+                        ${product.name}
+                    </li>
+                `;
                     });
                     html += "</ul>";
                     searchResults.innerHTML = html;
                     searchResults.style.display = "block";
                 } else {
-                    searchResults.innerHTML = "<p>No products found</p>";
+                    searchResults.innerHTML = "<p style='text-align:center;'>No result found</p>";
                     searchResults.style.display = "block";
                 }
+
+                // Close when clicking outside
+                document.addEventListener("click", function handleClickOutside(event) {
+                    if (!searchResults.contains(event.target) && event.target.id !== "searchInput") {
+                        searchResults.style.display = "none";
+                        searchResults.innerHTML = "";
+                        document.removeEventListener("click", handleClickOutside);
+                    }
+                });
             })
             .catch(err => {
                 console.error("Search API Error:", err);
                 searchResults.innerHTML = "<p>Error fetching results</p>";
                 searchResults.style.display = "block";
             });
+
     }
 
     // Run search on typing (debounced)
