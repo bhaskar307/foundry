@@ -302,4 +302,17 @@ class ApiController extends Common
         }
     }
     /** Change Password */
+
+
+    public function deleteRating()
+    {
+        $payload = $this->validateJwtApiToken();
+        $productDetails = $this->request->getPost();
+        $resp = $this->apiService->deleteRating($productDetails);
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
 }

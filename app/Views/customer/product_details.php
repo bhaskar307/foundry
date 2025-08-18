@@ -30,9 +30,9 @@
                 <div class="swiper thumb-slider mt-3">
                     <div class="swiper-wrapper">
                         <?php
-                            foreach ($resp['images'] as $row) {
+                        foreach ($resp['images'] as $row) {
                         ?>
-                                <div class="swiper-slide"><img src="<?= base_url($row['image']) ?>" width="100" height="100" /></div>
+                            <div class="swiper-slide"><img src="<?= base_url($row['image']) ?>" width="100" height="100" /></div>
                         <?php }
                         ?>
                     </div>
@@ -173,7 +173,8 @@
 
                     <?php } ?>
                     <div class="d-flex gap-3">
-                        <button class="btn btn-primary d-inline-flex gap-2" data-bs-toggle="modal" data-bs-target="#requestAQuote">
+                        <!--  data-bs-toggle="modal" data-bs-target="#requestAQuote" -->
+                        <button class="btn btn-primary d-inline-flex gap-2 " onclick="openCustomerVendorDetails()">
                             <i style="line-height: 0;">
                                 <svg width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10.9273 14.1883L9.73663 11.7164C9.48038 11.1883 9.14913 10.8039 8.57725 11.0383L7.44913 11.457C6.546 11.8758 6.096 11.457 5.64288 10.8258L3.61163 6.2039C3.35538 5.67577 3.48975 5.17889 4.06163 4.94452L5.63975 4.31327C6.21163 4.07577 6.121 3.58202 5.86475 3.05389L4.51163 0.535145C4.25538 0.00702 3.73038 -0.121105 3.1585 0.11327C2.01475 0.585145 1.06788 1.32577 0.452254 2.42265C-0.297746 3.76327 0.0772543 5.62889 0.227254 6.41327C0.377254 7.19765 0.902254 8.57265 1.58038 9.98202C2.2585 11.3945 2.85225 12.5039 3.38663 13.132C3.91788 13.7601 5.19288 15.4789 6.771 15.8633C8.06475 16.1758 9.46163 15.9133 10.6054 15.4414C11.1804 15.2164 11.1804 14.7195 10.9273 14.1883Z" fill="white" />
@@ -196,7 +197,7 @@
             <?php if (!empty($resp['html_description'])): ?>
                 <div class="col-12">
                     <div class="card text-bg-dark m-0">
-                        <h5 class="card-header">Description</h5>
+                        <!-- <h5 class="card-header">Description</h5> -->
                         <div class="card-body listStyle">
 
                             <?= $resp['html_description']; ?>
@@ -303,11 +304,11 @@
                                                         <i class="bi bi-check-circle-fill"></i> Sponsored
                                                     </span>
                                                 <?php endif; ?>
-                                                <small class="d-flex align-items-center gap-1">
+                                                <!-- <small class="d-flex align-items-center gap-1">
 
-                                                    <!-- <span class="fw-600">Price: <?= $row['price']; ?></span> // vendor_name -->
+                                                <span class="fw-600">Price: <?= $row['price']; ?></span> // vendor_name 
                                                     <span class="fw-600">Supplier Name: <?= $row['vendor_name']; ?></span>
-                                                </small>
+                                                </small> -->
                                                 <?php
                                                 // Rating display
                                                 $rating = $row['total_rating_percent'];
@@ -447,6 +448,12 @@
     </div>
 </section>
 
+
+
+
+
+
+
 <!--=================Request A Quote Modal=================-->
 <?php if (!empty($customerDetails)) { ?>
     <div class="modal fade" id="requestAQuote" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -458,18 +465,27 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <h5 class="mb-2">Seller Details</h5>
+                        <!-- <h5 class="mb-2">Seller Details</h5> -->
                         <div class="d-flex flex-column gap-2">
-                            <div><strong>Name:</strong> <span id="sellerName"><?= $vendor['name'] ?></span></div>
-                            <div><strong>Email:</strong> <span id="sellerEmail"><?= $vendor['email'] ?></span></div>
+                            <div><strong>Company Name:</strong> <span id="sellerName"><?= $vendor['company'] ?></span></div>
+                            <!-- <div><strong>Email:</strong> <span id="sellerEmail"><?= $vendor['email'] ?></span></div> -->
                             <div><strong>Phone:</strong> <span id="sellerPhone">+91 <?= $vendor['mobile'] ?></span></div>
+                            <div><strong>Country:</strong> <span id="sellerPhone"><?= $vendor['country'] ?></span></div>
+                            <div>
+                                <strong>Website:</strong>
+                                <a id="sellerPhone" href="<?= $vendor['website'] ?>" target="_blank">
+                                    <?= $vendor['website'] ?>
+                                </a>
+                            </div>
+
                         </div>
                     </div>
-                    <form action="#" method="post" class="" onsubmit="submitQuote(event)">
+                    <form action="#" method="post" class="" onsubmit="">
                         <div class="d-flex flex-column gap-3 mb-3">
-                            <div>Please fill out the form below and our team will get back to you with a customized quote tailored to your needs.</div>
                             <input type='hidden' name="productId" id="productId" value="<?= $resp['uid'] ?>">
-                            <div class="position-relative">
+
+                            <!-- <div>Please fill out the form below and our team will get back to you with a customized quote tailored to your needs.</div> -->
+                            <!-- <div class="position-relative">
                                 <input type="text" class="form-control" placeholder="Name*" value="<?php if (!empty($customerDetails)) {
                                                                                                         echo $customerDetails['name'];
                                                                                                     } ?>" readonly>
@@ -488,7 +504,7 @@
                                 <textarea class="form-control" rows="3" placeholder="Message"></textarea>
                             </div>
                         </div>
-                        <button id="btnQuoteSubmit" type="submit" class="btn btn-primary w-100 justify-content-center">Submit</button>
+                        <button id="btnQuoteSubmit" type="submit" class="btn btn-primary w-100 justify-content-center">Submit</button> -->
                     </form>
                 </div>
             </div>
@@ -578,6 +594,67 @@
     </div>
 
 <?php } ?>
+
+
+<script>
+    function openCustomerVendorDetails() {
+        const productId = document.getElementById('productId')?.value;
+        const message = document.getElementById('message')?.value || "";
+        console.log("Sending productId:", productId);
+
+
+        const vendorDetails = document.getElementById('requestAQuote');
+        const showVendorDetails = bootstrap.Modal.getOrCreateInstance(vendorDetails);
+        showVendorDetails.show();
+
+
+        fetch(`${BASE_URL1}customer/api/request/created`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    productId,
+                    message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("API Response:", data);
+
+                if (data.status === "success") {
+
+                    if (typeof aonsolve !== "undefined" && typeof aonsolve.log === "function") {
+                        aonsolve.log("Quote request submitted successfully for product " + productId);
+                    }
+                    console.log("API success:", data.message);
+                    // optional success alert
+                    // MessSuccess.fire({
+                    //     icon: 'success',
+                    //     title: data.message || 'Quote request submitted successfully.',
+                    // });
+
+                } else {
+                    console.error("API Error:", data.message);
+                    // MessError.fire({
+                    //     icon: 'error',
+                    //     title: data.message || 'Failed to submit quote request.',
+                    // });
+                }
+            })
+            .catch(error => {
+                console.error("API Error:", error);
+                // MessError.fire({
+                //     icon: 'error',
+                //     title: 'Something went wrong. Please try again.',
+                // });
+            });
+    }
+</script>
+
+
+
+
 <script>
     const BASE_URL1 = "<?= base_url(); ?>";
 

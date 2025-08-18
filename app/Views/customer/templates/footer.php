@@ -4,7 +4,8 @@
             <div class="row g-4">
                 <div class="col-md-6 col-lg-3 fadeUp" style="transition-delay: 0;">
                     <img src="<?= base_url('assets/customer/images/logo.svg') ?>" alt="" width="141" height="36">
-                    <div class="my-3">The leading B2B marketplace for foundry equipment and industrial machinery.</div>
+                    <!-- <div class="my-3">The leading B2B marketplace for foundry equipment and industrial machinery.</div> -->
+                    <div class="my-3">Find ANY Product for your Foundry</div>
                     <h5 class="mb-3 text-white fw-600">Follow Us</h5>
                     <div class="d-flex gap-2 footerSoc">
                         <!-- <a href="" target="_blank">
@@ -40,9 +41,9 @@
                         <li>
                             <a href="<?= base_url('product-list') ?>">Explore Catalog</a>
                         </li>
-                        <li>
+                        <!-- <li>
                             <a href="<?= base_url('category') ?>">Top Categories</a>
-                        </li>
+                        </li> -->
                         <!-- <li>
                             <a href="">Brands</a>
                         </li> -->
@@ -101,7 +102,7 @@
                             </i>
                             <div>
                                 <h6 class="text-white">Phone</h6>
-                                <div>7821839934</div>
+                                <div>+91 7821839934</div>
                             </div>
                         </a>
                         <a href="mailto:sales@foundrybiz.com" class="text-white d-flex align-items-center gap-3">

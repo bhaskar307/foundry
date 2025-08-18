@@ -60,6 +60,7 @@ class ApiController extends Common
     public function createdRequest()
     {
         $payload = $this->validateJwtApiTokenCustomer();
+        
         $details = $this->request->getJSON(true);
         $details['user_id'] = $payload->user_id;
         $resp = $this->apiService->createdRequest($details);

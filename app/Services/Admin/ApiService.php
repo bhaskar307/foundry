@@ -59,7 +59,8 @@ class ApiService
             'email'     => 'required',
             'mobile'    => 'required',
             'dob'       => 'required',
-            'password'  => 'required'
+            'password'  => 'required',
+            'company' => 'required',
         ];
         $validationResult = validateData($data, $validationRules);
         if (!$validationResult['success']) {
@@ -70,19 +71,16 @@ class ApiService
         $uploadResult = null;
         $timestamp = timestamp();
         $image_path = '';
-        if ($file && $file->isValid() && !$file->hasMoved()) {
 
+        if ($file && $file->isValid() && !$file->hasMoved()) {
             $uploadResult = uploadFile($file, 'vendor', $timestamp);
-            if (isset($uploadResult['error'])) {
-                return [
-                    'status'     => 'failed',
-                    'statusCode' => 400,
-                    'message'    => 'File upload failed',
-                    'errors'     => ['Vendor Image' => $uploadResult['error']],
-                ];
+            if (!isset($uploadResult['error'])) {
+                $image_path = $uploadResult['path'];
+            } else {
+                $image_path = null;
             }
-            $image_path = $uploadResult['path'];
         }
+
 
         try {
             $plainPassword = $data['password'];
@@ -95,7 +93,8 @@ class ApiService
                 'mobile'     => $data['mobile'],
                 'email'      => $data['email'],
                 'password'   => $hashedPassword,
-                'dob'        => $data['dob'],
+                'dob'        => $data['dob'] ?? "",
+                'company'    => $data['company'] ?? NULL,
                 'created_by' => $data['user_id'] ?? NULL,
             ];
             $success = $this->commonModel->insertData(CUSTOMER_TABLE, $addData);
@@ -943,6 +942,45 @@ class ApiService
                 true,
                 200,
                 'product verify successfully.',
+                ['data' => $success]
+            ];
+        } catch (\Throwable $e) {
+            return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
+        }
+    }
+
+
+    public function deleteRating($data)
+    {
+        $validationRules = [
+            'uid'      => 'required'
+        ];
+        $validationResult = validateData($data, $validationRules);
+        if (!$validationResult['success']) {
+            return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
+        }
+        $productRatingUid = $data['uid'];
+
+        try {
+            $updateData = [
+                'status'     => DELETED_STATUS,
+                'update_at' => date('Y-m-d H:i:s')
+            ];
+
+            $success = $this->commonModel->UpdateData(PRODUCT_RATING_LIST_TABLE, ['uid' => $productRatingUid], $updateData);
+            if (!$success) {
+                return [
+                    false,
+                    500,
+                    'Product Details Deleted failed.',
+                    ['error' => 'Database Deleted failed']
+                ];
+            }
+
+            return [
+                true,
+                200,
+                'Product details Deleted successfully.',
                 ['data' => $success]
             ];
         } catch (\Throwable $e) {

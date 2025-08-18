@@ -21,6 +21,8 @@ class WebModel extends Model
         ');
         $builder->join('customer c', 'c.uid = pr.customer_id', 'left');
         $builder->join('product p', 'p.uid = pr.product_id', 'left');
+        $builder->orderBy('pr.rating', 'DESC');
+        $builder->orderBy('pr.created_at', 'DESC');
         $builder->where('pr.status', ACTIVE_STATUS);
         $result = $builder->get()->getResultArray();
         return $result;
@@ -318,18 +320,46 @@ class WebModel extends Model
 
     public function getStatics()
     {
-        return "hello";
+        return [
+            'total_vendors' => $this->getTotalVendors(),
+            'total_customers' => $this->getTotalCustomers(),
+            'total_products' => $this->getTotalProducts(),
+            'total_country' => $this->getVendorCountryCountry(),
+        ];
+    }
+
+    public function getVendorCountryCountry()
+    {
         $db = \Config\Database::connect();
-        $builder = $db->table('product p');
-        $builder->select('
-            COUNT(p.uid) AS total_products,
-            COUNT(DISTINCT v.uid) AS total_vendors,
-            COUNT(DISTINCT c.uid) AS total_customers,
-            SUM(p.price) AS total_revenue
-        ');
-        $builder->join('vendor v', 'v.uid = p.vendor_id', 'inner');
-        $builder->join('customer c', 'c.uid = p.customer_id', 'left'); // Assuming there's a customer_id in product table
-        $result = $builder->get()->getRowArray();
-        return $result;
+        $builder = $db->table('vendor'); // fixed typo from 'venodr'
+        $builder->select('country');
+        $builder->distinct();
+        $builder->where('status', ACTIVE_STATUS);
+        return $builder->countAllResults();
+    }
+
+
+    public function getTotalVendors()
+    {
+        $db = \Config\Database::connect();
+
+        $builder = $db->table('vendor');
+        $builder->where('status', ACTIVE_STATUS);
+        return $builder->countAllResults();
+    }
+    public function getTotalCustomers()
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('customer');
+
+        $builder->where('status', ACTIVE_STATUS);
+        return $builder->countAllResults();
+    }
+    public function getTotalProducts()
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('product');
+        $builder->where('status', ACTIVE_STATUS);
+        return $builder->countAllResults();
     }
 }

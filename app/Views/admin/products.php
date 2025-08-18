@@ -6,17 +6,18 @@
             </div>
         </div>
         <div class="px-3 pb-3">
-            <table class="dataTableNoSearch display border">
+            <table id="tableProduct" class="display border">
                 <thead>
                     <tr>
                         <th>Vendor Details</th>
                         <th>Product Name</th>
                         <th>Image</th>
                         <th>Category</th>
-                        <th>Price</th>
-                        <th>Brand</th>
+
+
                         <th>Sponsored</th>
                         <th>Status</th>
+                        <th>Created</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -49,12 +50,8 @@
                                 <td>
                                     <div><?= $row['category_name']; ?></div>
                                 </td>
-                                <td>
-                                    <div><?= $row['price']; ?></div>
-                                </td>
-                                <td>
-                                    <div><?= $row['brand']; ?></div>
-                                </td>
+
+
                                 <td>
                                     <div class="form-check form-switch d-flex justify-content-center">
                                         <input class="form-check-input" type="checkbox" role="switch"
@@ -83,7 +80,7 @@
                                         <?= $row['status']; ?>
                                     </button> -->
                                 </td>
-
+                                <td><?= $row['created_at'] ?></td>
                                 <td style="max-width: 120px;">
                                     <div class="d-flex align-items-center gap-3">
                                         <!-- <a href="<?php echo base_url('admin/view-product?productId=' . $row['uid']) ?>" class="btnico">
@@ -109,6 +106,14 @@
         </div>
     </div>
     <script>
+        $(document).ready(function() {
+            $('#tableProduct').DataTable({
+                order: [
+                    [0, 'desc']
+                ]
+            });
+        });
+
         function productVerify(checkbox, uid) {
 
             let willBeVerified = checkbox.checked;
@@ -160,12 +165,12 @@
                         });
                     } else {
                         console.error("Failed to update product verification status:", data.message);
-                        checkbox.checked = !isChecked; 
+                        checkbox.checked = !isChecked;
                     }
                 })
                 .catch(error => {
                     console.error("Error updating product verification status:", error);
-                    checkbox.checked = !isChecked; 
+                    checkbox.checked = !isChecked;
                 });
         }
     </script>

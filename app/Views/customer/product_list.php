@@ -46,6 +46,7 @@
                                 </script>
                             </div>
                             <div class="d-flex flex-column gap-1">
+                                <!-- <h6 class="mb-2">Category</h6> -->
                                 <?php if (!empty($category)) : ?>
                                     <?php foreach ($category as $row): ?>
                                         <?php
@@ -186,7 +187,7 @@
                     </div>
 
                     <div id="productContainer" class="row">
-                       <!-- proudct list  form js  -->
+                        <!-- proudct list  form js  -->
                     </div>
 
                     <!-- <div class="col-12">
@@ -266,9 +267,7 @@
                             <i class="bi bi-check-circle-fill"></i> Sponsored
                         </span>
                         ` : ''}
-                    <small class="d-flex align-items-center gap-1">
-                        <span class="fw-600">Supplier Name: ${row.vendor_name}</span>
-                    </small>
+                    
 
                     <div class="d-flex align-items-center justify-content-between">
                         <i style="display: flex; gap: 2px; line-height: 0;">${starsHtml}</i>
@@ -300,7 +299,14 @@
         });
 
     }
-
+    /**  <
+    small class = "d-flex align-items-center gap-1" >
+    <
+    span class = "fw-600" > Supplier Name: $ {
+            row.vendor_name
+        } < /span> <
+        /small> */
+        
     // Local search filter
     function filterProducts(searchTerm) {
         const lowerSearch = searchTerm.toLowerCase();

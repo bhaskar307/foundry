@@ -1,9 +1,10 @@
-<section style="background-color: #F9F9F9;">
+<section>
     <div class="homeHreo text-center">
         <div class="container">
             <div class="mx-auto col-md-8 p-0">
-                <h1 class="mb-3 fadeUp">India's Most Trusted <span>Foundry Equipment</span> Marketplace</h1>
-                <div class="px-lg-5 mb-3 fadeUp">Explore 25,000+ industrial-grade products from 1,200+ verified manufacturers and brands in the foundry, metallurgy, and metalworking industry.</div>
+                <h1 class="mb-3 fadeUp">Find ANY Product for you <span>Foundry</span></h1>
+                <!-- <h1 class="mb-3 fadeUp">India's Most Trusted <span>Foundry Equipment</span> Marketplace</h1> -->
+                <!-- <div class="px-lg-5 mb-3 fadeUp">Explore 25,000+ industrial-grade products from 1,200+ verified manufacturers and brands in the foundry, metallurgy, and metalworking industry.</div> -->
                 <div class="mb-3 col-lg-9 mx-auto p-0 fadeUp position-relative" style="z-index: 50;">
                     <div class="input-group">
                         <input
@@ -11,28 +12,87 @@
                             id="searchInput"
                             class="form-control"
                             placeholder="Find ANY Product for you Foundry...">
-                        <a href="https://devs.v-xplore.com/foundry/product-list">
-                            <button class="btn btn-primary" id="searchBtn">
+                        <a href="#">
+                            <button onclick="serachBtnforProductList()" class="btn btn-primary" id="searchBtn">
                                 <svg width="20" height="20" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M19.5002 19.5001L15.1572 15.1571M15.1572 15.1571C15.9001 14.4142 16.4894 13.5323 16.8914 12.5617C17.2935 11.591 17.5004 10.5507 17.5004 9.50011C17.5004 8.44951 17.2935 7.4092 16.8914 6.43857C16.4894 5.46794 15.9001 4.586 15.1572 3.84311C14.4143 3.10023 13.5324 2.51094 12.5618 2.10889C11.5911 1.70684 10.5508 1.49991 9.50021 1.49991C8.4496 1.49991 7.40929 1.70684 6.43866 2.10889C5.46803 2.51094 4.58609 3.10023 3.84321 3.84311C2.34288 5.34344 1.5 7.37833 1.5 9.50011C1.5 11.6219 2.34288 13.6568 3.84321 15.1571C5.34354 16.6574 7.37842 17.5003 9.50021 17.5003C11.622 17.5003 13.6569 16.6574 15.1572 15.1571Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                             </button>
                         </a>
+                    </div>
+                    <div id="searchResults" class="position-absolute w-100 start-0 text-start overflow-auto" style="display: none; top:100%;z-index:5;height:300px;font-size:12px;">
+                        <!-- <div class="d-flex flex-column overflow-hidden bg-white list-group">
+                            <a href="" class="d-flex gap-2 list-group-item text-dark">
+                                <div style="line-height: 0;">
+                                    <img src="https://placehold.co/60x60" alt="" width="60" height="60" class="object-fit-cover rounded border m-0">
+                                </div>
+                                <div>
+                                    <h5 class="mb-1 h6">Casting Simulation for Gating</h5>
+                                    <div class="mb-1">
+                                        Macro Design Solution ✅
+                                    </div>
+                                    <small class="d-flex gap-1">
+                                        <span>Category: </span>
+                                        <div class="d-flex flex-wrap gap-1">
+                                            <span class="badge rounded-pill bg-light text-dark border">Category1</span>
+                                            <span class="badge rounded-pill bg-light text-dark border">Category2</span>
+                                            <span class="badge rounded-pill bg-light text-dark border">Category3</span>
+                                        </div>
+                                    </small>
+                                </div>
+                            </a>
+                            <a href="" class="d-flex gap-2 list-group-item text-dark">
+                                <div style="line-height: 0;">
+                                    <img src="https://placehold.co/60x60" alt="" width="60" height="60" class="object-fit-cover rounded border m-0">
+                                </div>
+                                <div>
+                                    <h5 class="mb-1 h6">Casting Simulation for Gating</h5>
+                                    <div class="mb-1">
+                                        Macro Design Solution ✅
+                                    </div>
+                                    <small class="d-flex gap-1">
+                                        <span>Category: </span>
+                                        <div class="d-flex flex-wrap gap-1">
+                                            <span class="badge rounded-pill bg-light text-dark border">Category1</span>
+                                            <span class="badge rounded-pill bg-light text-dark border">Category2</span>
+                                            <span class="badge rounded-pill bg-light text-dark border">Category3</span>
+                                        </div>
+                                    </small>
+                                </div>
+                            </a>
+                            <a href="" class="d-flex gap-2 list-group-item text-dark">
+                                <div style="line-height: 0;">
+                                    <img src="https://placehold.co/60x60" alt="" width="60" height="60" class="object-fit-cover rounded border m-0">
+                                </div>
+                                <div>
+                                    <h5 class="mb-1 h6">Casting Simulation for Gating</h5>
+                                    <div class="mb-1">
+                                        Macro Design Solution ✅
+                                    </div>
+                                    <small class="d-flex gap-1">
+                                        <span>Category: </span>
+                                        <div class="d-flex flex-wrap gap-1">
+                                            <span class="badge rounded-pill bg-light text-dark border">Category1</span>
+                                            <span class="badge rounded-pill bg-light text-dark border">Category2</span>
+                                            <span class="badge rounded-pill bg-light text-dark border">Category3</span>
+                                        </div>
+                                    </small>
+                                </div>
+                            </a>
+                        </div> -->
+                    </div>
 
-                    </div>
-                    <div id="searchResults" class="position-absolute w-100 start-0 text-start" style="display: none;top:100%;z-index:5;font-size:12px;">
-                    </div>
+                    <!-- <div id="searchResults" class="position-absolute w-100 start-0 text-start" style="display: none;top:100%;z-index:5;font-size:12px;">
+                    </div> -->
                 </div>
-
-
             </div>
             <div class="d-flex align-items-center justify-content-center gap-3 mb-3 fadeUp">
                 <a href="<?= base_url('/product-list') ?>" class="btn btn-primary">Go to shop</a>
-                <a href="<?= base_url('/category') ?>" class="btn btn-white">Browse Categories</a>
+                <!-- <a href="<?= base_url('/category') ?>" class="btn btn-white">Browse Categories</a> -->
             </div>
-            <div class="fadeUp">
+            <!-- <div class="fadeUp">
                 <img src="<?= base_url('assets/customer/images/xdfvbdfv.webp') ?>" alt="" width="300">
-            </div>
+            </div> -->
         </div>
     </div>
     </div>
@@ -102,21 +162,8 @@
             <div class="col-md-6 col-lg-3 fadeUp" style="transition-delay: 0;">
                 <div class="text-white d-flex align-items-center justify-content-between gap-3 p-3 rounded-10 h-100" style="background-color: #1F58BD;">
                     <div>
-                        <h4 class="mb-1 text-white">#1</h4>
-                        <small class="d-block">Website for Foundry Industry</small>
-                    </div>
-                    <i style="line-height: 0;">
-                        <svg width="37" height="38" viewBox="0 0 37 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M35.15 4.2H29.6V2.35C29.6 1.85935 29.4051 1.38879 29.0581 1.04185C28.7112 0.69491 28.2407 0.5 27.75 0.5H9.25C8.75935 0.5 8.2888 0.69491 7.94185 1.04185C7.59491 1.38879 7.4 1.85935 7.4 2.35V4.2H1.85C1.35935 4.2 0.888795 4.39491 0.541852 4.74185C0.19491 5.0888 0 5.55935 0 6.05V11.6C0 19.5735 3.33 24.3835 8.917 24.55C9.73218 25.9596 10.8475 27.1726 12.1839 28.103C13.5203 29.0334 15.0451 29.6583 16.65 29.9335V33.8H12.95V37.5H24.05V33.8H20.35V29.9335C21.9549 29.6583 23.4797 29.0334 24.8161 28.103C26.1525 27.1726 27.2678 25.9596 28.083 24.55C33.633 24.365 37 19.555 37 11.6V6.05C37 5.55935 36.8051 5.0888 36.4581 4.74185C36.1112 4.39491 35.6407 4.2 35.15 4.2ZM3.7 11.6V7.9H7.4V20.5355C4.107 19.148 3.7 14.005 3.7 11.6ZM29.6 20.5355V7.9H33.3V11.6C33.3 14.005 32.893 19.148 29.6 20.5355Z" fill="white" />
-                        </svg>
-                    </i>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 fadeUp" style="transition-delay: 0.2s;">
-                <div class="text-white d-flex align-items-center justify-content-between gap-3 p-3 rounded-10 h-100" style="background-color: #3A9F6C;">
-                    <div>
-                        <h4 class="mb-1 text-white">4600+</h4>
-                        <small class="d-block">Active Users</small>
+                        <h4 class="mb-1 text-white"><?= $statics['total_vendors'] ?>+</h4>
+                        <small class="d-block">Number of Sellers</small>
                     </div>
                     <i style="line-height: 0;">
                         <svg width="37" height="26" viewBox="0 0 37 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -125,11 +172,30 @@
                     </i>
                 </div>
             </div>
+            <div class="col-md-6 col-lg-3 fadeUp" style="transition-delay: 0.2s;">
+                <div class="text-white d-flex align-items-center justify-content-between gap-3 p-3 rounded-10 h-100" style="background-color: #3A9F6C;">
+                    <div>
+                        <h4 class="mb-1 text-white"><?= $statics['total_products'] ?>+</h4>
+                        <small class="d-block">Number of Products</small>
+                    </div>
+                    <i style="line-height: 0;">
+                        <svg fill="currentColor" enable-background="new 0 0 512 512" height="36" viewBox="0 0 512 512" width="36" xmlns="http://www.w3.org/2000/svg">
+                            <path d="m434.929 46.131c-10.38-10.402-24.184-16.131-38.871-16.131h-24.808v-5c0-13.785-11.215-25-25-25h-180c-13.785 0-25 11.215-25 25v5h-24.897c-30.261 0-54.908 24.646-54.942 54.939l-.411 372c-.016 14.702 5.691 28.528 16.07 38.93 10.38 10.402 24.185 16.131 38.872 16.131h279.704c30.262 0 54.909-24.646 54.942-54.939l.412-372c.017-14.703-5.691-28.529-16.071-38.93zm-263.679-16.131h170v30h-170zm249.37 427.027c-.016 13.771-11.219 24.973-24.974 24.973h-279.704c-6.676 0-12.951-2.604-17.669-7.332-4.718-4.729-7.312-11.013-7.305-17.695l.411-372c.015-13.771 11.218-24.973 24.974-24.973h24.897v5c0 13.785 11.215 25 25 25h180c13.785 0 25-11.215 25-25v-5h24.808c6.676 0 12.951 2.604 17.669 7.332s7.313 11.013 7.305 17.695z" />
+                            <path d="m261.099 200h106.571c8.284 0 15-6.716 15-15s-6.716-15-15-15h-106.571c-8.284 0-15 6.716-15 15s6.716 15 15 15z" />
+                            <path d="m261.099 300h106.571c8.284 0 15-6.716 15-15s-6.716-15-15-15h-106.571c-8.284 0-15 6.716-15 15s6.716 15 15 15z" />
+                            <path d="m368.099 370h-107c-8.284 0-15 6.716-15 15s6.716 15 15 15h107c8.284 0 15-6.716 15-15s-6.715-15-15-15z" />
+                            <path d="m197.256 144.157-34.592 34.592-8.156-8.157c-5.858-5.858-15.355-5.858-21.213 0-5.858 5.857-5.858 15.355 0 21.213l18.763 18.764c2.813 2.813 6.628 4.394 10.607 4.394 3.978 0 7.793-1.58 10.606-4.394l45.199-45.198c5.858-5.857 5.858-15.355 0-21.213-5.858-5.859-15.355-5.859-21.214-.001z" />
+                            <path d="m197.256 251.794-34.592 34.592-8.156-8.156c-5.858-5.858-15.355-5.858-21.213 0-5.858 5.857-5.858 15.354 0 21.213l18.763 18.764c2.813 2.813 6.628 4.394 10.607 4.394 3.978 0 7.794-1.58 10.606-4.394l45.199-45.199c5.858-5.857 5.858-15.355 0-21.213s-15.356-5.858-21.214-.001z" />
+                            <path d="m197.256 351.794-34.592 34.592-8.156-8.156c-5.858-5.858-15.355-5.858-21.213 0-5.858 5.857-5.858 15.354 0 21.213l18.763 18.764c2.813 2.813 6.628 4.394 10.607 4.394 3.978 0 7.794-1.58 10.606-4.394l45.199-45.199c5.858-5.857 5.858-15.355 0-21.213s-15.356-5.858-21.214-.001z" />
+                        </svg>
+                    </i>
+                </div>
+            </div>
             <div class="col-md-6 col-lg-3 fadeUp" style="transition-delay: 0.4s;">
                 <div class="text-white d-flex align-items-center justify-content-between gap-3 p-3 rounded-10 h-100" style="background-color: #CB9C44;">
                     <div>
-                        <h4 class="mb-1 text-white">585+</h4>
-                        <small class="d-block">Products Listed</small>
+                        <h4 class="mb-1 text-white"><?= $statics['total_customers'] ?>+</h4>
+                        <small class="d-block">Number of Customers</small>
                     </div>
                     <i style="line-height: 0;">
                         <svg width="37" height="38" viewBox="0 0 37 38" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -142,8 +208,8 @@
             <div class="col-md-6 col-lg-3 fadeUp" style="transition-delay: 0.6s;">
                 <div class="text-white d-flex align-items-center justify-content-between gap-3 p-3 rounded-10 h-100" style="background-color: #9049C2;">
                     <div>
-                        <h4 class="mb-1 text-white">100+</h4>
-                        <small class="d-block">Trusted Brands</small>
+                        <h4 class="mb-1 text-white"><?= $statics['total_country'] ?>+</h4>
+                        <small class="d-block">Number of Countries</small>
                     </div>
                     <i style="line-height: 0;">
                         <svg width="28" height="48" viewBox="0 0 28 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -158,7 +224,8 @@
 <section class="pb-5">
     <div class="container">
         <div class="p-0 col-md-6 mx-auto mb-4 titsec text-center fadeUp">
-            <h2 class="mb-2">Explore Top<span> Categories</span></h2>
+            <!-- <h2 class="mb-2">Explore Top<span> Categories</span></h2> Featured Products -->
+            <h2 class="mb-2">Featured<span> Products</span></h2>
             <div>Browse through our wide range of curated categories, from smartphones and laptops to smart home gadgets and audio gear.</div>
         </div>
         <div class="px-3 position-relative fadeUp">
@@ -347,9 +414,9 @@
                                 <!--  verify components -->
                                 <?= view('components/verify_badge', ['is_verify' => $row['is_verify']]) ?>
 
-                                <small class="d-flex align-items-center gap-1">
+                                <!-- <small class="d-flex align-items-center gap-1">
                                     <span class="fw-600">Supplier Name: <?= $row['vendor_name']; ?></span>
-                                </small>
+                                </small> -->
 
                                 <div class="d-flex align-items-center justify-content-between">
                                     <?php
@@ -426,7 +493,8 @@
 <section class="pb-5">
     <div class="container">
         <div class="p-0 col-md-6 mx-auto mb-4 titsec text-center fadeUp">
-            <h2 class="mb-2">Customer <span>Reviews</span></h2>
+            <!-- <h2 class="mb-2">Customer <span>Reviews</span></h2>  Reviews -->
+            <h2 class="mb-2">Top <span>Reviews</span></h2>
             <div>See what our customers are saying about their purchases</div>
         </div>
         <div class="fadeUp">
@@ -523,6 +591,7 @@
     const BASE_URL = "https://devs.v-xplore.com/foundry/customer/api/product-search?search=";
     const searchInput = document.getElementById("searchInput");
     const searchResults = document.getElementById("searchResults");
+    let categoryID = '';
 
     function fetchSearchResults(query) {
 
@@ -531,30 +600,65 @@
             searchResults.innerHTML = "";
             return;
         }
+        var verifyLogo = '';
+ 
 
         fetch(BASE_URL + encodeURIComponent(query))
             .then(res => res.json())
             .then(data => {
                 if (data.success && data.data.products.length > 0) {
-                    let html = "<ul class='list-group'>";
+                    let html = `
+                <div class="d-flex flex-column overflow-hidden bg-white list-group">
+            `;
                     data.data.products.forEach(product => {
+
+
+                        categoryID = data.data.products[0].category_id;
+                        console.log("Top category ID:", categoryID);
+
+
+                        if (product.vendor_is_verify === "1") {
+                            verifyLogo = '✅';
+                        }
+
                         html += `
-                    <li class='list-group-item' 
-                        style="cursor:pointer;" 
-                        onclick="window.location.href='https://devs.v-xplore.com/foundry/product-details/${product.uid}'">
-                        ${product.name}
-                    </li>
+                <a onclick="redirectProductListPage('` + product.uid + `')"  href="#" 
+                   class="d-flex gap-2 list-group-item text-dark">
+
+                    <div style="line-height:0;">
+                        <img src="${product.product_main_image ? product.product_main_image : 'https://placehold.co/60x60'}" 
+                             alt="${product.name}" width="60" height="60" 
+                             class="object-fit-cover rounded border m-0">
+                    </div>
+
+                    <div>
+                        <h5 class="mb-1 h6">${product.name}</h5>
+                        <div class="mb-1">
+                            ${product.vendor_name || "Unknown Brand"} ${verifyLogo}
+
+                        </div>
+                        <small class="d-flex gap-1">
+                            <span>Category: </span>
+                            <div class="d-flex flex-wrap gap-1">
+                            <span class="badge rounded-pill bg-light text-dark border">${product.category_name}</span>
+                                
+                            </div>
+                        </small>
+                    </div>
+                </a>
                 `;
                     });
-                    html += "</ul>";
+
+                    html += `</div>`;
                     searchResults.innerHTML = html;
                     searchResults.style.display = "block";
+
                 } else {
-                    searchResults.innerHTML = "<p style='text-align:center;'>Stay typing to search</p>";
+                    searchResults.innerHTML = "<p style='text-align:center;'>Keep typing to search</p>";
                     searchResults.style.display = "block";
                 }
 
-                // Close when clicking outside
+                // close when clicking outside
                 document.addEventListener("click", function handleClickOutside(event) {
                     if (!searchResults.contains(event.target) && event.target.id !== "searchInput") {
                         searchResults.style.display = "none";
@@ -569,6 +673,7 @@
                 searchResults.style.display = "block";
             });
 
+
     }
 
     // Run search on typing (debounced)
@@ -579,6 +684,37 @@
             fetchSearchResults(searchInput.value);
         }, 500);
     });
+
+
+
+
+    function redirectProductListPage(productUid) {
+        window.location.href = `https://devs.v-xplore.com/foundry/product-details/${productUid}`;
+    }
+
+    console.log("============lower ", categoryID);
+
+    function serachBtnforProductList() {
+        if (!categoryID) {
+            alert("No category ID found");
+            return;
+        }
+
+        const filterData = {
+            categories: [categoryID],
+            price: {
+                from: 100,
+                to: 50000
+            }
+        };
+
+        const jsonStr = JSON.stringify(filterData);
+        const base64 = btoa(jsonStr);
+        const url = "<?= base_url('product-list?filter=') ?>" + encodeURIComponent(base64);
+
+        // now redirect
+        window.location.href = url;
+    }
 </script>
 <script>
     function handleCategoryClick(element) {

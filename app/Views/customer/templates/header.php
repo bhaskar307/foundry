@@ -46,12 +46,14 @@ if (!empty($jwt)) {
     <header class="header pt-3 position-fixed top-0 start-0 w-100">
         <div class="container">
             <div class="headerBg p-3 rounded-10">
-                <div class="d-flex align-items-center justify-content-between gap-3">
-                    <a href="<?= base_url() ?>">
-                        <img src="<?= base_url('assets/customer/images/logo.svg') ?>" alt="" width="141" height="36">
-                    </a>
-                    <nav class="d-none d-lg-block">
-                        <ul class="mainMenu">
+                <div class="d-flex align-items-center justify-content-between gap-3 gap-lg-0">
+                    <div class="p-0 col-lg-3">
+                        <a href="<?= base_url() ?>">
+                            <img src="<?= base_url('assets/customer/images/logo.svg') ?>" alt="" width="141" height="36">
+                        </a>
+                    </div>
+                    <nav class="d-none d-lg-block p-0 col-lg-6">
+                        <ul class="mainMenu justify-content-lg-center">
                             <li>
                                 <a href="<?= base_url('') ?>" <?php if (empty($lastSegment)) { ?>class="active" <?php } ?>>Home</a>
                             </li>
@@ -69,30 +71,38 @@ if (!empty($jwt)) {
                             <li>
                                 <a href="https://www.skool.com/foundryskool/about" target="_blank">Skool</a>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <a  href="<?= base_url('vendor-register') ?>"  <?php if ($lastSegment == 'vendor-register') { ?>class="active" <?php } ?>>Vendor Resgister</a>
                             </li>
                             <li>
                                 <a href="<?= base_url('vendor/login') ?>" target="_blank" >Vendor Login</a>
-                            </li>
+                            </li> -->
                         </ul>
                     </nav>
-                    <div class="d-flex gap-4 align-items-center justify-content-end">
+                    <div class="d-flex gap-4 align-items-center justify-content-end p-0 col-lg-3">
+                        <a href="<?= base_url('vendor/login') ?>" target="_blank" class="btn btn-primary h-auto">
+                            <i>
+                                <svg fill="currentColor" width="16" height="16" viewBox="0 -31 512 512" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="m497.09375 60.003906c-.03125 0-.0625-.003906-.09375-.003906h-136v-15c0-24.8125-20.1875-45-45-45h-120c-24.8125 0-45 20.1875-45 45v15h-136c-8.351562 0-15 6.84375-15 15v330c0 24.8125 20.1875 45 45 45h422c24.8125 0 45-20.1875 45-45v-329.683594c0-.019531 0-.039062 0-.058594-.574219-9.851562-6.632812-15.199218-14.90625-15.253906zm-316.09375-15.003906c0-8.269531 6.730469-15 15-15h120c8.269531 0 15 6.730469 15 15v15h-150zm295.1875 45-46.582031 139.742188c-2.042969 6.136718-7.761719 10.257812-14.226563 10.257812h-84.378906v-15c0-8.285156-6.714844-15-15-15h-120c-8.285156 0-15 6.714844-15 15v15h-84.378906c-6.464844 0-12.183594-4.121094-14.226563-10.257812l-46.582031-139.742188zm-175.1875 150v30h-90v-30zm181 165c0 8.269531-6.730469 15-15 15h-422c-8.269531 0-15-6.730469-15-15v-237.566406l23.933594 71.796875c6.132812 18.40625 23.289062 30.769531 42.6875 30.769531h84.378906v15c0 8.285156 6.714844 15 15 15h120c8.285156 0 15-6.714844 15-15v-15h84.378906c19.398438 0 36.554688-12.363281 42.6875-30.769531l23.933594-71.796875zm0 0" />
+                                </svg>
+                            </i>
+                            <span class="text-nowrap">Become a Partner</span>
+                        </a>
                         <?php if (empty($user_details)) { ?>
                             <button class="btn btn-primary h-auto" data-bs-toggle="modal" data-bs-target="#loginRegisterModal">
                                 <i>
-                                    <svg fill="#fff" width="16" height="16" viewBox="0 0 434 434" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <svg fill="currentColor" width="16" height="16" viewBox="0 0 434 434" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M369.635 228.813C367.804 227.295 365.619 226.087 363.208 225.261C360.796 224.434 358.206 224.006 355.588 224C352.97 223.994 350.376 224.411 347.959 225.227C345.542 226.043 343.349 227.241 341.508 228.751C339.667 230.261 338.215 232.054 337.236 234.024C336.258 235.994 335.772 238.103 335.809 240.227C335.845 242.351 336.401 244.448 337.446 246.396C338.491 248.343 340.003 250.103 341.895 251.571C358.631 264.935 371.91 280.876 380.951 298.459C389.992 316.042 394.614 334.914 394.545 353.966C394.545 373.544 325.383 401.987 217 401.987C108.617 401.987 39.4553 373.53 39.4553 353.934C39.3889 335.013 43.9486 316.269 52.8705 298.787C61.7925 281.305 74.8994 265.432 91.4325 252.088C93.3025 250.609 94.7918 248.843 95.8141 246.893C96.8365 244.943 97.3714 242.848 97.388 240.729C97.4045 238.61 96.9023 236.509 95.9105 234.549C94.9187 232.588 93.4571 230.807 91.6104 229.309C89.7637 227.811 87.5686 226.625 85.1526 225.82C82.7366 225.015 80.1478 224.608 77.5362 224.621C74.9246 224.634 72.3422 225.069 69.939 225.898C67.5358 226.728 65.3595 227.936 63.5363 229.453C43.3243 245.767 27.3014 265.172 16.3955 286.545C5.48952 307.918 -0.0828713 330.834 0.000931352 353.966C0.000931352 405.95 111.795 434 217 434C322.205 434 433.999 405.95 433.999 353.966C434.087 330.678 428.438 307.611 417.385 286.119C406.332 264.626 390.098 245.143 369.635 228.813Z" />
                                         <path d="M216.499 224C238.702 224 260.406 217.431 278.866 205.125C297.327 192.818 311.716 175.326 320.212 154.861C328.709 134.395 330.932 111.876 326.601 90.1499C322.269 68.4241 311.577 48.4676 295.878 32.8041C280.178 17.1406 260.176 6.47364 238.399 2.1521C216.623 -2.16945 194.052 0.0485277 173.539 8.52554C153.027 17.0026 135.494 31.3579 123.159 49.7762C110.824 68.1945 104.24 89.8485 104.24 112C104.275 141.694 116.113 170.161 137.158 191.158C158.203 212.155 186.737 223.966 216.499 224ZM216.499 32C232.358 32 247.861 36.692 261.047 45.4825C274.233 54.273 284.511 66.7673 290.58 81.3854C296.649 96.0035 298.237 112.089 295.143 127.607C292.049 143.126 284.412 157.38 273.198 168.569C261.984 179.757 247.696 187.376 232.142 190.463C216.588 193.55 200.465 191.965 185.814 185.91C171.162 179.855 158.639 169.602 149.828 156.446C141.017 143.29 136.314 127.823 136.314 112C136.339 90.7904 144.795 70.4566 159.827 55.4591C174.859 40.4616 195.24 32.025 216.499 32Z" />
                                     </svg>
                                 </i>
-                                <span>Sign in/Sign up</span>
+                                <span>Login</span>
                             </button>
                         <?php } else { ?>
                             <div class="btn-group">
                                 <button class="btn btn-primary h-auto gap-2 rounded text-start py-1 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i>
-                                        <svg fill="#fff" width="16" height="16" viewBox="0 0 434 434" xmlns="http://www.w3.org/2000/svg">
+                                        <svg fill="currentColor" width="16" height="16" viewBox="0 0 434 434" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M369.635 228.813C367.804 227.295 365.619 226.087 363.208 225.261C360.796 224.434 358.206 224.006 355.588 224C352.97 223.994 350.376 224.411 347.959 225.227C345.542 226.043 343.349 227.241 341.508 228.751C339.667 230.261 338.215 232.054 337.236 234.024C336.258 235.994 335.772 238.103 335.809 240.227C335.845 242.351 336.401 244.448 337.446 246.396C338.491 248.343 340.003 250.103 341.895 251.571C358.631 264.935 371.91 280.876 380.951 298.459C389.992 316.042 394.614 334.914 394.545 353.966C394.545 373.544 325.383 401.987 217 401.987C108.617 401.987 39.4553 373.53 39.4553 353.934C39.3889 335.013 43.9486 316.269 52.8705 298.787C61.7925 281.305 74.8994 265.432 91.4325 252.088C93.3025 250.609 94.7918 248.843 95.8141 246.893C96.8365 244.943 97.3714 242.848 97.388 240.729C97.4045 238.61 96.9023 236.509 95.9105 234.549C94.9187 232.588 93.4571 230.807 91.6104 229.309C89.7637 227.811 87.5686 226.625 85.1526 225.82C82.7366 225.015 80.1478 224.608 77.5362 224.621C74.9246 224.634 72.3422 225.069 69.939 225.898C67.5358 226.728 65.3595 227.936 63.5363 229.453C43.3243 245.767 27.3014 265.172 16.3955 286.545C5.48952 307.918 -0.0828713 330.834 0.000931352 353.966C0.000931352 405.95 111.795 434 217 434C322.205 434 433.999 405.95 433.999 353.966C434.087 330.678 428.438 307.611 417.385 286.119C406.332 264.626 390.098 245.143 369.635 228.813Z"></path>
                                             <path d="M216.499 224C238.702 224 260.406 217.431 278.866 205.125C297.327 192.818 311.716 175.326 320.212 154.861C328.709 134.395 330.932 111.876 326.601 90.1499C322.269 68.4241 311.577 48.4676 295.878 32.8041C280.178 17.1406 260.176 6.47364 238.399 2.1521C216.623 -2.16945 194.052 0.0485277 173.539 8.52554C153.027 17.0026 135.494 31.3579 123.159 49.7762C110.824 68.1945 104.24 89.8485 104.24 112C104.275 141.694 116.113 170.161 137.158 191.158C158.203 212.155 186.737 223.966 216.499 224ZM216.499 32C232.358 32 247.861 36.692 261.047 45.4825C274.233 54.273 284.511 66.7673 290.58 81.3854C296.649 96.0035 298.237 112.089 295.143 127.607C292.049 143.126 284.412 157.38 273.198 168.569C261.984 179.757 247.696 187.376 232.142 190.463C216.588 193.55 200.465 191.965 185.814 185.91C171.162 179.855 158.639 169.602 149.828 156.446C141.017 143.29 136.314 127.823 136.314 112C136.339 90.7904 144.795 70.4566 159.827 55.4591C174.859 40.4616 195.24 32.025 216.499 32Z"></path>
                                         </svg>
@@ -108,7 +118,7 @@ if (!empty($jwt)) {
                             </div>
                         <?php } ?>
                         <button class="btnico d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#mobileMenuOffCanvas">
-                            <svg fill="#fff" enable-background="new 0 0 512 512" height="26" viewBox="0 0 512 512" width="26" xmlns="http://www.w3.org/2000/svg">
+                            <svg fill="currentColor" enable-background="new 0 0 512 512" height="26" viewBox="0 0 512 512" width="26" xmlns="http://www.w3.org/2000/svg">
                                 <path d="m128 102.4c0-14.138 11.462-25.6 25.6-25.6h332.8c14.138 0 25.6 11.462 25.6 25.6s-11.462 25.6-25.6 25.6h-332.8c-14.138 0-25.6-11.463-25.6-25.6zm358.4 128h-460.8c-14.138 0-25.6 11.463-25.6 25.6 0 14.138 11.462 25.6 25.6 25.6h460.8c14.138 0 25.6-11.462 25.6-25.6 0-14.137-11.462-25.6-25.6-25.6zm0 153.6h-230.4c-14.137 0-25.6 11.462-25.6 25.6 0 14.137 11.463 25.6 25.6 25.6h230.4c14.138 0 25.6-11.463 25.6-25.6 0-14.138-11.462-25.6-25.6-25.6z"></path>
                             </svg>
                         </button>
@@ -135,26 +145,26 @@ if (!empty($jwt)) {
         <div class="offcanvas-body p-4">
             <ul class="mobileMainMenu d-flex flex-column gap-1">
                 <li>
-                    <a href="<?= base_url('') ?>" <?php if (empty($lastSegment)) { ?>class="active" <?php } ?>>Ghar</a>
+                    <a href="<?= base_url('') ?>" <?php if (empty($lastSegment)) { ?>class="active" <?php } ?>>Home</a>
                 </li>
                 <li>
                     <a href="<?= base_url('product-list') ?>" <?php if ($lastSegment == 'product-list') { ?>class="active" <?php } ?>>Shop</a>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="<?= base_url('category') ?>" <?php if ($lastSegment == 'category') { ?>class="active" <?php } ?>>Category</a>
-                </li>
+                </li> -->
                 <li>
                     <a href="https://www.youtube.com/channel/UCqG_zja0MNnAPVdB4FpRBbg">Podcast</a>
                 </li>
                 <li>
                     <a href="https://www.skool.com/foundryskool/about">Skool</a>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="<?= base_url('vendor-register') ?>" <?php if ($lastSegment == 'vendor-register') { ?>class="active" <?php } ?>>Vendor Resgister</a>
                 </li>
                 <li>
                     <a href="<?= base_url('vendor/login') ?>" <?php if ($lastSegment == 'login') { ?>class="active" <?php } ?>>Vendor Login</a>
-                </li>
+                </li> -->
             </ul>
         </div>
         <div class="offcanvas-footer bg-dark d-flex flex-column gap-4 p-4">
@@ -211,18 +221,18 @@ if (!empty($jwt)) {
             <?php if (empty($user_details)) { ?>
                 <button class="btn btn-primary h-auto w-100" data-bs-toggle="modal" data-bs-target="#loginRegisterModal" data-bs-dismiss="offcanvas">
                     <i>
-                        <svg fill="#fff" width="16" height="16" viewBox="0 0 434 434" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg fill="currentColor" width="16" height="16" viewBox="0 0 434 434" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M369.635 228.813C367.804 227.295 365.619 226.087 363.208 225.261C360.796 224.434 358.206 224.006 355.588 224C352.97 223.994 350.376 224.411 347.959 225.227C345.542 226.043 343.349 227.241 341.508 228.751C339.667 230.261 338.215 232.054 337.236 234.024C336.258 235.994 335.772 238.103 335.809 240.227C335.845 242.351 336.401 244.448 337.446 246.396C338.491 248.343 340.003 250.103 341.895 251.571C358.631 264.935 371.91 280.876 380.951 298.459C389.992 316.042 394.614 334.914 394.545 353.966C394.545 373.544 325.383 401.987 217 401.987C108.617 401.987 39.4553 373.53 39.4553 353.934C39.3889 335.013 43.9486 316.269 52.8705 298.787C61.7925 281.305 74.8994 265.432 91.4325 252.088C93.3025 250.609 94.7918 248.843 95.8141 246.893C96.8365 244.943 97.3714 242.848 97.388 240.729C97.4045 238.61 96.9023 236.509 95.9105 234.549C94.9187 232.588 93.4571 230.807 91.6104 229.309C89.7637 227.811 87.5686 226.625 85.1526 225.82C82.7366 225.015 80.1478 224.608 77.5362 224.621C74.9246 224.634 72.3422 225.069 69.939 225.898C67.5358 226.728 65.3595 227.936 63.5363 229.453C43.3243 245.767 27.3014 265.172 16.3955 286.545C5.48952 307.918 -0.0828713 330.834 0.000931352 353.966C0.000931352 405.95 111.795 434 217 434C322.205 434 433.999 405.95 433.999 353.966C434.087 330.678 428.438 307.611 417.385 286.119C406.332 264.626 390.098 245.143 369.635 228.813Z" />
                             <path d="M216.499 224C238.702 224 260.406 217.431 278.866 205.125C297.327 192.818 311.716 175.326 320.212 154.861C328.709 134.395 330.932 111.876 326.601 90.1499C322.269 68.4241 311.577 48.4676 295.878 32.8041C280.178 17.1406 260.176 6.47364 238.399 2.1521C216.623 -2.16945 194.052 0.0485277 173.539 8.52554C153.027 17.0026 135.494 31.3579 123.159 49.7762C110.824 68.1945 104.24 89.8485 104.24 112C104.275 141.694 116.113 170.161 137.158 191.158C158.203 212.155 186.737 223.966 216.499 224ZM216.499 32C232.358 32 247.861 36.692 261.047 45.4825C274.233 54.273 284.511 66.7673 290.58 81.3854C296.649 96.0035 298.237 112.089 295.143 127.607C292.049 143.126 284.412 157.38 273.198 168.569C261.984 179.757 247.696 187.376 232.142 190.463C216.588 193.55 200.465 191.965 185.814 185.91C171.162 179.855 158.639 169.602 149.828 156.446C141.017 143.29 136.314 127.823 136.314 112C136.339 90.7904 144.795 70.4566 159.827 55.4591C174.859 40.4616 195.24 32.025 216.499 32Z" />
                         </svg>
                     </i>
-                    <span>Sign in/Sign up</span>
+                    <span>Login</span>
                 </button>
             <?php } else { ?>
                 <div class="btn-group">
                     <button class="btn btn-primary h-auto gap-2 rounded text-start py-1 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         <i>
-                            <svg fill="#fff" width="16" height="16" viewBox="0 0 434 434" xmlns="http://www.w3.org/2000/svg">
+                            <svg fill="currentColor" width="16" height="16" viewBox="0 0 434 434" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M369.635 228.813C367.804 227.295 365.619 226.087 363.208 225.261C360.796 224.434 358.206 224.006 355.588 224C352.97 223.994 350.376 224.411 347.959 225.227C345.542 226.043 343.349 227.241 341.508 228.751C339.667 230.261 338.215 232.054 337.236 234.024C336.258 235.994 335.772 238.103 335.809 240.227C335.845 242.351 336.401 244.448 337.446 246.396C338.491 248.343 340.003 250.103 341.895 251.571C358.631 264.935 371.91 280.876 380.951 298.459C389.992 316.042 394.614 334.914 394.545 353.966C394.545 373.544 325.383 401.987 217 401.987C108.617 401.987 39.4553 373.53 39.4553 353.934C39.3889 335.013 43.9486 316.269 52.8705 298.787C61.7925 281.305 74.8994 265.432 91.4325 252.088C93.3025 250.609 94.7918 248.843 95.8141 246.893C96.8365 244.943 97.3714 242.848 97.388 240.729C97.4045 238.61 96.9023 236.509 95.9105 234.549C94.9187 232.588 93.4571 230.807 91.6104 229.309C89.7637 227.811 87.5686 226.625 85.1526 225.82C82.7366 225.015 80.1478 224.608 77.5362 224.621C74.9246 224.634 72.3422 225.069 69.939 225.898C67.5358 226.728 65.3595 227.936 63.5363 229.453C43.3243 245.767 27.3014 265.172 16.3955 286.545C5.48952 307.918 -0.0828713 330.834 0.000931352 353.966C0.000931352 405.95 111.795 434 217 434C322.205 434 433.999 405.95 433.999 353.966C434.087 330.678 428.438 307.611 417.385 286.119C406.332 264.626 390.098 245.143 369.635 228.813Z"></path>
                                 <path d="M216.499 224C238.702 224 260.406 217.431 278.866 205.125C297.327 192.818 311.716 175.326 320.212 154.861C328.709 134.395 330.932 111.876 326.601 90.1499C322.269 68.4241 311.577 48.4676 295.878 32.8041C280.178 17.1406 260.176 6.47364 238.399 2.1521C216.623 -2.16945 194.052 0.0485277 173.539 8.52554C153.027 17.0026 135.494 31.3579 123.159 49.7762C110.824 68.1945 104.24 89.8485 104.24 112C104.275 141.694 116.113 170.161 137.158 191.158C158.203 212.155 186.737 223.966 216.499 224ZM216.499 32C232.358 32 247.861 36.692 261.047 45.4825C274.233 54.273 284.511 66.7673 290.58 81.3854C296.649 96.0035 298.237 112.089 295.143 127.607C292.049 143.126 284.412 157.38 273.198 168.569C261.984 179.757 247.696 187.376 232.142 190.463C216.588 193.55 200.465 191.965 185.814 185.91C171.162 179.855 158.639 169.602 149.828 156.446C141.017 143.29 136.314 127.823 136.314 112C136.339 90.7904 144.795 70.4566 159.827 55.4591C174.859 40.4616 195.24 32.025 216.499 32Z"></path>
                             </svg>
@@ -349,10 +359,14 @@ if (!empty($jwt)) {
                                         <small class="text-danger d-block" id="error-phone"></small>
                                     </div>
                                     <div>
+                                        <input type="tel" id="company" name="company" class="form-control" placeholder="company" required>
+                                        <small class="text-danger d-block" id="error-company"></small>
+                                    </div>
+                                    <!-- <div>
                                         <lebel for="dob" class="form-label">Date of Birth*</label>
                                             <input type="date" id="dob" name="dob" class="form-control" placeholder="ented dob*" required>
                                             <small class="text-danger d-block" id="error-dob"></small>
-                                    </div>
+                                    </div> -->
                                     <div>
                                         <input type="password" id="password" name="password" class="form-control" placeholder="Enter Password*" required>
                                         <small class="text-danger d-block" id="error-password"></small>
@@ -402,25 +416,26 @@ if (!empty($jwt)) {
 
         function submitRegistration() {
             // Clear all previous errors
-            ['avatar', 'name', 'email', 'phone', 'dob', 'password'].forEach(id => {
+            ['avatar', 'name', 'email', 'phone', 'password'].forEach(id => {
                 document.getElementById('error-' + id).textContent = '';
             });
 
             const name = document.getElementById('name').value.trim();
             const email = document.getElementById('email').value.trim();
             const phone = document.getElementById('phone').value.trim();
-            const dob = document.getElementById('dob').value.trim();
+            // const dob = document.getElementById('dob').value.trim();
             const password = document.getElementById('password').value.trim();
             //const message = document.getElementById('message').value.trim();
             const avatarInput = document.getElementById('avatarInput');
+            const company = document.getElementById('company').value.trim();
             const avatarFile = avatarInput.files[0];
 
             let hasError = false;
 
-            if (!avatarFile) {
-                document.getElementById('error-avatar').textContent = 'Profile image is required.';
-                hasError = true;
-            }
+            // if (!avatarFile) {
+            //     document.getElementById('error-avatar').textContent = 'Profile image is required.';
+            //     hasError = true;
+            // }
 
             if (!name) {
                 document.getElementById('error-name').textContent = 'Name is required.';
@@ -437,10 +452,10 @@ if (!empty($jwt)) {
                 hasError = true;
             }
 
-            if (!dob) {
-                document.getElementById('error-dob').textContent = 'dob is required.';
-                hasError = true;
-            }
+            // if (!dob) {
+            //     document.getElementById('error-dob').textContent = 'dob is required.';
+            //     hasError = true;
+            // }
 
             if (!password) {
                 document.getElementById('error-password').textContent = 'Password is required.';
@@ -454,7 +469,8 @@ if (!empty($jwt)) {
             formData.append('name', name);
             formData.append('email', email);
             formData.append('mobile', phone);
-            formData.append('dob', dob);
+            // formData.append('dob', dob);
+            formData.append('company', company);
             formData.append('password', password);
             //formData.append('message', message);
             const $button = $('#saveButton');

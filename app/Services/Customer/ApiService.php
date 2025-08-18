@@ -62,8 +62,9 @@ class ApiService
             'name'      => 'required',
             'email'     => 'required',
             'mobile'    => 'required',
-            'dob'       => 'required',
-            'password'  => 'required'
+            // 'dob'       => 'required',
+            'password'  => 'required',
+            // 'company'   => 'string',
         ];
         $validationResult = validateData($data, $validationRules);
         if (!$validationResult['success']) {
@@ -74,18 +75,14 @@ class ApiService
         $uploadResult = null;
         $timestamp = timestamp();
         $image_path = '';
-        if ($file && $file->isValid() && !$file->hasMoved()) {
 
+        if ($file && $file->isValid() && !$file->hasMoved()) {
             $uploadResult = uploadFile($file, 'vendor', $timestamp);
-            if (isset($uploadResult['error'])) {
-                return [
-                    'status'     => 'failed',
-                    'statusCode' => 400,
-                    'message'    => 'File upload failed',
-                    'errors'     => ['Vendor Image' => $uploadResult['error']],
-                ];
+            if (!isset($uploadResult['error'])) {
+                $image_path = $uploadResult['path'];
+            } else {
+                $image_path = null;
             }
-            $image_path = $uploadResult['path'];
         }
 
         try {
@@ -99,7 +96,8 @@ class ApiService
                 'mobile'     => $data['mobile'],
                 'email'      => $data['email'],
                 'password'   => $hashedPassword,
-                'dob'        => $data['dob'],
+                'dob'        => $data['dob'] ?? "",
+                'company'    => $data['company'] ?? NULL,
             ];
             $success = $this->commonModel->insertData(CUSTOMER_TABLE, $addData);
             if (!$success) {
@@ -293,18 +291,31 @@ class ApiService
     {
         $search = trim($search);
         $db = \Config\Database::connect();
-        $products = $db->table(PRODUCT_TABLE)
-            ->select('uid, name')
-            ->where('status', ACTIVE_STATUS)
-            ->like('name', $search)
-            ->orLike('description', $search)
-            ->get()
-            ->getResultArray();
+
+        $builder = $db->table(PRODUCT_TABLE . ' p');
+        $builder->select('p.*, c.title as category_name, v.name as vendor_name, v.is_verify as vendor_is_verify , pi.image as product_main_image');
+        $builder->join('category c', 'c.uid= p.category_id', 'left');
+        $builder->join('vendor v', 'v.uid = p.vendor_id', 'left');
+        $builder->join('product_image pi', 'pi.product_id = p.uid AND pi.main_image = 1', 'left');
+        $builder->where('p.status', ACTIVE_STATUS);
+
+        // grouping conditions for search
+        $builder->groupStart()
+            ->like('p.name', $search)
+            ->orLike('p.description', $search)
+            ->orLike('c.title', $search)
+            ->orLike('v.name', $search)
+            ->groupEnd();
+
+        $products = $builder->get()->getResultArray();
+
         if (empty($products)) {
             return [false, 404, 'No products found', []];
         }
+
         return [true, 200, 'Products found', ['products' => $products]];
     }
+
 
 
     public function productSearchInProductList($search)

@@ -11,7 +11,13 @@
                              </div>
                              <strong class="d-block mb-1">Upload Logo*</strong>
                              <small class="d-block" style="color:#666">Choose a clear Logo to help others recognize you. JPG, PNG, or GIF formats are supported. Max size: 2MB.</small>
-                             <input style="opacity: 0;" class="form-control position-absolute start-0 end-0 top-0 bottom-0" name="image" type="file" id="avatarInputVendor" accept="image/*" required>
+                             <input style="opacity: 0;"
+                                 class="form-control position-absolute start-0 end-0 top-0 bottom-0"
+                                 name="image"
+                                 type="file"
+                                 id="avatarInputVendor"
+                                 accept="image/*" required>
+
                          </div>
 
                          <div class="position-relative">
@@ -27,23 +33,26 @@
                              <input type="text" name="company" class="form-control" placeholder="Company Name*" required>
                          </div>
                          <div class="position-relative">
-                             <input type="number" name="gst" class="form-control" placeholder="GST*" required>
+                             <input type="number" name="gst" class="form-control" placeholder="GST/Tax ID">
                          </div>
                          <div class="position-relative">
-                             <input type="url" name="website" class="form-control" placeholder="Website">
+                             <input type="url" name="website" class="form-control" placeholder="Website" required>
+                         </div>
+
+                         <div class="position-relative">
+                             <input type="text" name="country" class="form-control" placeholder="Country*" required>
                          </div>
                          <div class="position-relative">
-                             <textarea name="address" class="form-control" rows="3" placeholder="Address"></textarea>
+                             <input type="text" name="states" class="form-control" placeholder="State*" required>
                          </div>
                          <div class="position-relative">
-                             <input type="text" name="city" class="form-control" placeholder="City">
+                             <input type="text" name="city" class="form-control" placeholder="City*" required>
                          </div>
                          <div class="position-relative">
-                             <input type="text" name="states" class="form-control" placeholder="State">
+                             <textarea name="address" class="form-control" rows="3" placeholder="Address*" required></textarea>
                          </div>
-                         <div class="position-relative">
-                             <input type="text" name="country" class="form-control" placeholder="Country">
-                         </div>
+
+
                          <!-- <div class="position-relative">
                               <input type="password" name="password" class="form-control" placeholder="Password">
                          </div> -->

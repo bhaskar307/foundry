@@ -20,14 +20,18 @@ class CommonModel extends Model
         return $this->db->table($tableName)->where($whereArray)->set($updateData)->update();
     }
 
-    public function getAllData($tableName, $whereArray, $selectFields = NULL)
+    public function getAllData($tableName, $whereArray, $selectFields = NULL, $orderBy = NULL)
     {
         $db = \Config\Database::connect();
         $builder = $db->table($tableName);
         if (!is_null($selectFields) && $selectFields != "") {
             $builder->select($selectFields);
         }
+
+        $builder->orderBy('created_at', 'desc');
+
         $builder->where($whereArray);
+
         return $query   = $builder->get()->getResultArray();
     }
     public function getSingleData($tableName, $whereArray, $selectFields = null)
