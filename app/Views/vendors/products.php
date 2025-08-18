@@ -29,10 +29,10 @@
                     <tr>
                         <th>#</th>
                         <th>Product Name</th>
-                        <th>Image</th>
+                        <!-- <th>Image</th> -->
                         <th>Category</th>
                         <th>Sub Category</th>
-                        <th>Price</th>
+                        <!-- <th>Price</th> -->
                         <!-- <th>Brand</th> -->
                         <th>Sponsored</th>
                         <th>Status</th>
@@ -49,22 +49,22 @@
                                 <td>
                                     <div><?= $row['name']; ?></div>
                                 </td>
-                                <td>
+                                <!-- <td>
                                     <?php if (!empty($row['image'])) { ?>
                                         <img src="<?= base_url($row['image']) ?>" alt="Vendor Image" style="width: 40px; height: 40px;">
                                     <?php } else { ?>
 
                                     <?php } ?>
-                                </td>
+                                </td> -->
                                 <td>
                                     <div><?= $row['category_name']; ?></div>
                                 </td>
                                 <td>
                                     <div> <?= $row['subcategory_name'] ?? '---' ?></div>
                                 </td>
-                                <td>
+                                <!-- <td>
                                     <div><?= $row['price']; ?></div>
-                                </td>
+                                </td> -->
                                 <!-- <td>
                                     <div><?= $row['brand']; ?></div>
                                 </td> -->
@@ -104,7 +104,7 @@
                                             </svg>
                                         </a>
 
-                                        <button class="btnico"
+                                        <!-- <button class="btnico"
                                             onclick="openEditModal(this)"
                                             data-uid="<?= $row['uid']; ?>"
                                             data-name="<?= htmlspecialchars($row['name']); ?>"
@@ -122,7 +122,7 @@
                                                     stroke="#6C757D" stroke-width="1.5" stroke-linecap="round"
                                                     stroke-linejoin="round" />
                                             </svg>
-                                        </button>
+                                        </button> -->
                                         <button class="btnico" onclick="deleteProduct('<?= $row['uid'] ?>')">
                                             <svg width="15" height="18" viewBox="0 0 15 18" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">

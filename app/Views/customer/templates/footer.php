@@ -101,7 +101,7 @@
                             </i>
                             <div>
                                 <h6 class="text-white">Phone</h6>
-                                <div> 0000-000-000 </div>
+                                <div>7821839934</div>
                             </div>
                         </a>
                         <a href="mailto:sales@foundrybiz.com" class="text-white d-flex align-items-center gap-3">

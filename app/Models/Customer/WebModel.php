@@ -125,20 +125,28 @@ class WebModel extends Model
         $builder = $db->table('product p');
 
         $builder->select('
-            p.*, 
-            v.name AS vendor_name,
-            v.is_verify AS is_vendor_verify,
-            v.company AS vendor_company,
-            (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) AS total_customer_review,
-            (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) AS total_rating,
-            (
-                CASE 
-                    WHEN (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) > 0 
-                    THEN ROUND((SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) / (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid), 1)
-                    ELSE 0
-                END
-            ) AS total_rating_percent
-        ');
+    p.*, 
+    v.name AS vendor_name,
+    v.is_verify AS is_vendor_verify,
+    v.company AS vendor_company,
+    (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) AS total_customer_review,
+    (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) AS total_rating,
+    (
+        CASE 
+            WHEN (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) > 0 
+            THEN ROUND((SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) / (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid), 1)
+            ELSE 0
+        END
+    ) AS total_rating_percent,
+   (SELECT pi.image 
+     FROM product_image pi 
+     WHERE pi.product_id = p.uid 
+       
+       AND pi.main_image = 1 
+     LIMIT 1
+    ) AS main_image
+');
+
         $builder->join('vendor v', 'v.uid = p.vendor_id', 'inner');
         $builder->where('p.status', ACTIVE_STATUS);
         $builder->orderBy('p.is_verify', 'DESC');
@@ -169,7 +177,14 @@ class WebModel extends Model
                                     (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid), 1)
                                 ELSE 0
                             END
-                        ) AS total_rating_percent
+                        ) AS total_rating_percent ,
+                         (SELECT pi.image 
+                            FROM product_image pi 
+                            WHERE pi.product_id = p.uid 
+                            
+                            AND pi.main_image = 1 
+                            LIMIT 1
+                            ) AS main_image
                     ');
         $builder->join('vendor v', 'v.uid = p.vendor_id');
         $builder->where('p.status', ACTIVE_STATUS);
@@ -231,10 +246,20 @@ class WebModel extends Model
         $imageBuilder = $db->table('product_image');
         $imageBuilder->select('*');
         $imageBuilder->where('product_id', $productId);
+        $imageBuilder->where('status', ACTIVE_STATUS);
         $images = $imageBuilder->get()->getResultArray();
 
         // Append images to product
         $product['images'] = $images;
+
+        $product['main_image'] = $db->table('product_image')->where('product_id', $productId)
+            ->orderBy('created_at', 'DESC')
+            ->where('main_image', 1)
+
+            ->where('status', ACTIVE_STATUS)
+
+            ->get()
+            ->getRow();
 
         return $product;
     }
@@ -260,7 +285,14 @@ class WebModel extends Model
                     THEN ROUND((SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) / (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid), 1)
                     ELSE 0
                 END
-            ) AS total_rating_percent
+            ) AS total_rating_percent ,
+            (SELECT pi.image 
+                FROM product_image pi 
+                WHERE pi.product_id = p.uid 
+                
+                AND pi.main_image = 1 
+                LIMIT 1
+            ) AS main_image
         ');
         $builder->join('vendor v', 'v.uid = p.vendor_id', 'inner');
         $builder->where('p.status', ACTIVE_STATUS);
@@ -281,6 +313,23 @@ class WebModel extends Model
         $builder->distinct();
         $builder->where('status', ACTIVE_STATUS);
         $result = $builder->get()->getResultArray();
+        return $result;
+    }
+
+    public function getStatics()
+    {
+        return "hello";
+        $db = \Config\Database::connect();
+        $builder = $db->table('product p');
+        $builder->select('
+            COUNT(p.uid) AS total_products,
+            COUNT(DISTINCT v.uid) AS total_vendors,
+            COUNT(DISTINCT c.uid) AS total_customers,
+            SUM(p.price) AS total_revenue
+        ');
+        $builder->join('vendor v', 'v.uid = p.vendor_id', 'inner');
+        $builder->join('customer c', 'c.uid = p.customer_id', 'left'); // Assuming there's a customer_id in product table
+        $result = $builder->get()->getRowArray();
         return $result;
     }
 }

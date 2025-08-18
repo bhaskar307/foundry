@@ -10,12 +10,15 @@
                             type="text"
                             id="searchInput"
                             class="form-control"
-                            placeholder="Search for machines, tools, brands, and more...">
-                        <button class="btn btn-primary" id="searchBtn">
-                            <svg width="20" height="20" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M19.5002 19.5001L15.1572 15.1571M15.1572 15.1571C15.9001 14.4142 16.4894 13.5323 16.8914 12.5617C17.2935 11.591 17.5004 10.5507 17.5004 9.50011C17.5004 8.44951 17.2935 7.4092 16.8914 6.43857C16.4894 5.46794 15.9001 4.586 15.1572 3.84311C14.4143 3.10023 13.5324 2.51094 12.5618 2.10889C11.5911 1.70684 10.5508 1.49991 9.50021 1.49991C8.4496 1.49991 7.40929 1.70684 6.43866 2.10889C5.46803 2.51094 4.58609 3.10023 3.84321 3.84311C2.34288 5.34344 1.5 7.37833 1.5 9.50011C1.5 11.6219 2.34288 13.6568 3.84321 15.1571C5.34354 16.6574 7.37842 17.5003 9.50021 17.5003C11.622 17.5003 13.6569 16.6574 15.1572 15.1571Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </button>
+                            placeholder="Find ANY Product for you Foundry...">
+                        <a href="https://devs.v-xplore.com/foundry/product-list">
+                            <button class="btn btn-primary" id="searchBtn">
+                                <svg width="20" height="20" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19.5002 19.5001L15.1572 15.1571M15.1572 15.1571C15.9001 14.4142 16.4894 13.5323 16.8914 12.5617C17.2935 11.591 17.5004 10.5507 17.5004 9.50011C17.5004 8.44951 17.2935 7.4092 16.8914 6.43857C16.4894 5.46794 15.9001 4.586 15.1572 3.84311C14.4143 3.10023 13.5324 2.51094 12.5618 2.10889C11.5911 1.70684 10.5508 1.49991 9.50021 1.49991C8.4496 1.49991 7.40929 1.70684 6.43866 2.10889C5.46803 2.51094 4.58609 3.10023 3.84321 3.84311C2.34288 5.34344 1.5 7.37833 1.5 9.50011C1.5 11.6219 2.34288 13.6568 3.84321 15.1571C5.34354 16.6574 7.37842 17.5003 9.50021 17.5003C11.622 17.5003 13.6569 16.6574 15.1572 15.1571Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                        </a>
+
                     </div>
                     <div id="searchResults" class="position-absolute w-100 start-0 text-start" style="display: none;top:100%;z-index:5;font-size:12px;">
                     </div>
@@ -24,7 +27,7 @@
 
             </div>
             <div class="d-flex align-items-center justify-content-center gap-3 mb-3 fadeUp">
-                <a href="<?= base_url('/product-list') ?>" class="btn btn-primary">Shop Foundry Tech</a>
+                <a href="<?= base_url('/product-list') ?>" class="btn btn-primary">Go to shop</a>
                 <a href="<?= base_url('/category') ?>" class="btn btn-white">Browse Categories</a>
             </div>
             <div class="fadeUp">
@@ -34,7 +37,7 @@
     </div>
     </div>
 </section>
-<section class="py-5" style="background-color: #F9F9F9;">
+<!-- <section class="py-5" style="background-color: #F9F9F9;">
     <div class="container">
         <div class="row g-4">
             <div class="col-md-6 col-lg-3 fadeUp" style="transition-delay: 0;">
@@ -92,7 +95,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 <section class="py-5">
     <div class="container">
         <div class="row g-lg-4 g-2">
@@ -324,7 +327,16 @@
             ?>
                     <div class="col-6 col-lg-3 fadeUp">
                         <a href="<?= base_url('product-details/' . $row['uid']) ?>" class="h-100 rounded-10 border bg-white overflow-hidden d-block">
-                            <img src="<?= base_url($row['image']) ?>" alt="" class="w-100 object-fit-cover" style="height:250px;">
+                            <?php
+                            $image = "";
+                            $proudctImage = $row['image'];
+                            if (empty($proudctImage)) {
+                                $image  = (string)$row['main_image'];
+                            } else {
+                                $image = $proudctImage;
+                            }
+                            ?>
+                            <img src="<?= base_url($image) ?>" alt="" class="w-100 object-fit-cover" style="height:250px;">
                             <div class="p-lg-3 p-2">
                                 <h5 class="mb-1" style="height:50px;">
                                     <?= substr(strip_tags($row['name']), 0, 40) ?><?= strlen(strip_tags($row['name'])) > 40 ? '...' : '' ?>
@@ -338,6 +350,7 @@
                                 <small class="d-flex align-items-center gap-1">
                                     <span class="fw-600">Supplier Name: <?= $row['vendor_name']; ?></span>
                                 </small>
+
                                 <div class="d-flex align-items-center justify-content-between">
                                     <?php
                                     $rating = $row['total_rating_percent'];
@@ -537,7 +550,7 @@
                     searchResults.innerHTML = html;
                     searchResults.style.display = "block";
                 } else {
-                    searchResults.innerHTML = "<p style='text-align:center;'>No result found</p>";
+                    searchResults.innerHTML = "<p style='text-align:center;'>Stay typing to search</p>";
                     searchResults.style.display = "block";
                 }
 

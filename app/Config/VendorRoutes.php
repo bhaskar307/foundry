@@ -36,6 +36,8 @@ $routes->group('vendor/api', ['namespace' => 'App\Controllers\Vendors'], functio
         $routes->post('update', 'ApiController::updateProduct');
         $routes->post('update-status', 'ApiController::updateProductStatus');
         $routes->post('delete', 'ApiController::deleteProduct');
+        $routes->post('image-delete', 'ApiController::deleteProductImage');
+        $routes->post('edit-product', 'ApiController::editProduct');
     });
     /** Product */
 });

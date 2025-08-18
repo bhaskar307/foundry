@@ -16,53 +16,51 @@
             Edit
         </button>
 
-        <form id="productForm" method="post" enctype="multipart/form-data">
-            <div class="row g-3 align-items-center">
-                <?php
-                // First, make an array of all images without changing backend variables
-                $allImages = [];
 
-                // Vendor image first (only if exists)
-                if (!empty($resp['image'])) {
+        <div class="row g-3 align-items-center">
+            <?php
+
+            $allImages = [];
+
+
+            if (!empty($images) && is_array($images)) {
+                foreach ($images as $img) {
                     $allImages[] = [
-                        'image' => $resp['image'],
-                        'isVendor' => true
+                        'uid' => $img['uid'],
+                        'image' => $img['image'],
+                        'mainImage' => ($img['main_image'] == 1) ? true : false,
                     ];
                 }
+            }
+            ?>
 
-                // Then product images (only if exists)
-                if (!empty($images) && is_array($images)) {
-                    foreach ($images as $img) {
-                        $allImages[] = [
-                            'image' => $img['image'],
-                            'isVendor' => false
-                        ];
-                    }
-                }
-                ?>
-                <!-- Images -->
-                <div class="row">
-                    <?php foreach ($allImages as $index => $imgData) : ?>
-                        <div class="col-md-3 text-center mb-3 mb-md-0 image-col">
-                            <!-- Clickable Image -->
-                            <a href="<?= base_url($imgData['image']) ?>" target="_blank">
-                                <img src="<?= base_url($imgData['image']) ?>"
-                                    alt="<?= $imgData['isVendor'] ? 'Vendor Image' : 'Product Image' ?>"
-                                    class="img-fluid <?= $imgData['isVendor'] ? 'rounded-circle' : 'rounded' ?> border border-3 border-primary shadow"
-                                    style="width: 120px; height: 120px; object-fit: cover;">
-                            </a>
+            <div class="row">
+                <?php foreach ($allImages as $index => $imgData) : ?>
 
-                            <!-- Upload Input -->
-                            <input type="file"
-                                name="image_upload_<?= $index ?>"
-                                accept="image/*"
-                                class="form-control mt-2"
-                                onchange="">
-                        </div>
-                    <?php endforeach; ?>
+                    <div class="col-md-3 text-center mb-3 mb-md-0 image-col">
+                        <!-- Clickable Image -->
+                        <a href="<?= base_url($imgData['image']) ?>" target="_blank">
+                            <img src="<?= base_url($imgData['image']) ?>"
+                                alt=""
+                                class="img-fluid <?= $imgData['mainImage'] ? 'rounded-circle' : 'rounded' ?> border border-3 border-primary shadow"
+                                style="width: 120px; height: 120px; object-fit: cover;">
+                        </a>
+
+
+                        <button class="btn btn-danger btn-sm w-100"
+                            onclick="productImageDelete('<?= $imgData['uid'] ?>')">
+                            Delete
+                        </button>
+
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <form id="productForm" method="post" enctype="multipart/form-data">
+                <div class="col-lg-12">
+                    <label for="company_logo">Uploaded Product Image</label>
+                    <input type="file" name="images[]" id="imageInput" class="form-control" accept="image/*" multiple disabled>
                 </div>
-
-
+                <div id="previewContainer" class="d-flex flex-wrap gap-2"></div>
                 <!-- Product Details -->
                 <div class="col-md-9">
                     <div class="row g-3">
@@ -109,19 +107,140 @@
                         </div>
                     </div>
                 </div>
+
                 <textarea name="content" id="content" rows="10" cols="90" class="form-control documentTextEditor"><?= esc($resp['html_description'] ?? '') ?> disabled
                      </textarea>
 
-            </div>
-            <button type="button" id="" class="btn btn-primary btn-sm position-absolute">
-                Update
-            </button>
+        </div>
+        <button type="button" id="submitProductinputs" class="">
+            Update
+        </button>
         </form>
 
 
 
     </div>
 
+
+
+
+
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const previewContainer = document.getElementById('previewContainer');
+        let selectedImages = [];
+
+        imageInput.addEventListener('change', (event) => {
+            const files = Array.from(event.target.files);
+
+            files.forEach((file) => {
+                const reader = new FileReader();
+
+                reader.onload = (e) => {
+                    const imageUrl = e.target.result;
+
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'position-relative';
+                    wrapper.style.width = '100px';
+                    wrapper.style.height = '100px';
+
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.className = 'img-thumbnail';
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover';
+
+                    const removeBtn = document.createElement('button');
+                    removeBtn.type = 'button';
+                    removeBtn.className = 'btn btn-danger btn-sm position-absolute top-0 end-0';
+                    removeBtn.innerHTML = '&times;';
+                    removeBtn.onclick = () => {
+                        previewContainer.removeChild(wrapper);
+                        selectedImages = selectedImages.filter(i => i !== file);
+                    };
+
+                    wrapper.appendChild(img);
+                    wrapper.appendChild(removeBtn);
+                    previewContainer.appendChild(wrapper);
+                    selectedImages.push(file);
+                };
+
+                reader.readAsDataURL(file);
+            });
+
+            imageInput.value = ''; // reset to allow re-selecting same file
+        });
+
+        // Submit logic
+        document.getElementById('submitProductinputs').addEventListener('click', function() {
+            const formData = new FormData();
+            console.log("formData:", formData);
+
+            formData.append('uid', '<?= $resp['uid'] ?? "" ?>'); // ensure uid is sent
+
+
+            formData.append('name', document.getElementById('name').value);
+            formData.append('description', document.getElementById('description').value);
+            formData.append('content', document.getElementById('content').value);
+            formData.append('category', document.getElementById('category').value);
+            formData.append('subcategory', document.getElementById('subcategory_id').value);
+
+            selectedImages.forEach((file) => {
+                formData.append('images[]', file);
+            });
+
+            $.ajax({
+                url: BASE_URL + "/vendor/api/product/edit-product",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        alert("Product updated successfully.");
+                        location.reload();
+                    } else {
+                        alert("Error: " + response.message);
+                    }
+                },
+                error: function() {
+                    alert("An error occurred while updating the product.");
+                }
+            });
+        });
+    </script>
+
+    <script>
+        function productImageDelete(imageID) {
+            console.log("Deleting image with ID:", imageID);
+
+            if (confirm("Are you sure you want to delete this image?")) {
+                $.ajax({
+                    url: BASE_URL + "/vendor/api/product/image-delete",
+                    type: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: JSON.stringify({
+                        uid: imageID
+                    }),
+                    success: function(response) {
+                        if (response.success) {
+                            alert("Image deleted successfully.");
+                            location.reload(); // Reload the page to reflect changes
+                        } else {
+                            alert("Error deleting image: " + response.message);
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred while deleting the image.");
+                    }
+                });
+            }
+
+        }
+    </script>
 
     <script>
         document.getElementById('editBtn').addEventListener('click', function() {

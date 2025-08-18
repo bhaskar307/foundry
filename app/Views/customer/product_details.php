@@ -9,17 +9,17 @@
 
                             use Config\View;
 
-                            if (!empty($resp['image'])) {
-                                foreach ($resp['images'] as $row) {
+
+                            foreach ($resp['images'] as $row) {
                             ?>
-                                    <div class="swiper-slide">
-                                        <img
-                                            class="drift-img"
-                                            src="<?= base_url($row['image']) ?>"
-                                            data-zoom="<?= base_url($row['image']) ?>" />
-                                    </div>
+                                <div class="swiper-slide">
+                                    <img
+                                        class="drift-img"
+                                        src="<?= base_url($row['image']) ?>"
+                                        data-zoom="<?= base_url($row['image']) ?>" />
+                                </div>
                             <?php }
-                            } ?>
+                            ?>
                         </div>
                         <!-- Add Arrows -->
                         <div class="swiper-button-next"></div>
@@ -29,12 +29,12 @@
                 <!-- Thumbnail Slider -->
                 <div class="swiper thumb-slider mt-3">
                     <div class="swiper-wrapper">
-                        <?php if (!empty($resp['image'])) {
+                        <?php
                             foreach ($resp['images'] as $row) {
                         ?>
                                 <div class="swiper-slide"><img src="<?= base_url($row['image']) ?>" width="100" height="100" /></div>
                         <?php }
-                        } ?>
+                        ?>
                     </div>
                 </div>
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/drift-zoom/1.3.1/drift-basic.min.css" />
@@ -181,7 +181,7 @@
                             </i>
                             <span>View Seller Details </span> <!-- <span>Request A Quote</span> -->
                         </button>
-                        <button class="btn bg-white text-dark d-inline-flex gap-2 border">
+                        <!-- <button class="btn bg-white text-dark d-inline-flex gap-2 border">
                             <i style="line-height: 0;">
                                 <svg width="16" height="16" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M10.0889 8.15V1C10.0889 0.734784 9.9835 0.48043 9.79597 0.292893C9.60843 0.105357 9.35408 0 9.08886 0C8.82364 0 8.56929 0.105357 8.38175 0.292893C8.19422 0.48043 8.08886 0.734784 8.08886 1V8.15L5.86886 5.374C5.78841 5.2669 5.68725 5.17706 5.57141 5.10981C5.45557 5.04256 5.32739 4.99926 5.1945 4.9825C5.0616 4.96573 4.92669 4.97584 4.79777 5.01221C4.66886 5.04859 4.54856 5.11049 4.44403 5.19425C4.3395 5.27801 4.25286 5.38192 4.18926 5.49981C4.12565 5.61769 4.08638 5.74716 4.07378 5.88051C4.06117 6.01387 4.07548 6.1484 4.11586 6.27611C4.15625 6.40383 4.22188 6.52213 4.30886 6.624L8.30886 11.624C8.40256 11.7408 8.5213 11.8351 8.6563 11.8998C8.7913 11.9646 8.93913 11.9982 9.08886 11.9982C9.2386 11.9982 9.38642 11.9646 9.52142 11.8998C9.65643 11.8351 9.77516 11.7408 9.86886 11.624L13.8689 6.624C13.9558 6.52213 14.0215 6.40383 14.0619 6.27611C14.1022 6.1484 14.1166 6.01387 14.1039 5.88051C14.0913 5.74716 14.0521 5.61769 13.9885 5.49981C13.9249 5.38192 13.8382 5.27801 13.7337 5.19425C13.6292 5.11049 13.5089 5.04859 13.3799 5.01221C13.251 4.97584 13.1161 4.96573 12.9832 4.9825C12.8503 4.99926 12.7222 5.04256 12.6063 5.10981C12.4905 5.17706 12.3893 5.2669 12.3089 5.374L10.0889 8.15Z" fill="#4B4D56" />
@@ -189,7 +189,7 @@
                                 </svg>
                             </i>
                             <span>Download Brochure</span>
-                        </button>
+                        </button> -->
                     </div>
                 </div>
             </div>
@@ -272,7 +272,7 @@
             </div>
 
             <?php
-            
+
             $filteredProducts = array_filter($product, function ($row) use ($resp) {
                 return $row['uid'] !== $resp['uid'];
             });
@@ -292,7 +292,7 @@
                                 ?>
                                     <div class="swiper-slide">
                                         <a href="<?= base_url('product-details/' . $row['uid']) ?>" class="h-100 rounded-10 border bg-white overflow-hidden d-block">
-                                            <img src="<?= base_url($row['image']) ?>" alt="" class="w-100 object-fit-cover" style="height:250px;">
+                                            <img src="<?= base_url($row['main_image']) ?>" alt="" class="w-100 object-fit-cover" style="height:250px;">
                                             <div class="p-lg-3 p-2">
                                                 <h5 class="mb-1" style="height:50px;">
                                                     <?= substr(strip_tags($row['name']), 0, 40) ?><?= strlen(strip_tags($row['name'])) > 40 ? '...' : '' ?>
@@ -303,7 +303,11 @@
                                                         <i class="bi bi-check-circle-fill"></i> Sponsored
                                                     </span>
                                                 <?php endif; ?>
+                                                <small class="d-flex align-items-center gap-1">
 
+                                                    <!-- <span class="fw-600">Price: <?= $row['price']; ?></span> // vendor_name -->
+                                                    <span class="fw-600">Supplier Name: <?= $row['vendor_name']; ?></span>
+                                                </small>
                                                 <?php
                                                 // Rating display
                                                 $rating = $row['total_rating_percent'];
@@ -318,11 +322,11 @@
                                                         'empty' => '#E0E0E0',
                                                     };
                                                     return <<<SVG
-                                    <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                                    <defs><linearGradient id="halfGradient"><stop offset="50%" stop-color="#F6AB27"/><stop offset="50%" stop-color="#E0E0E0"/></linearGradient></defs>
-                                    <path d="M50 5L61 35H95L67 57L78 90L50 70L22 90L33 57L5 35H39L50 5Z" fill="$color"/>
-                                    </svg>
-                                    SVG;
+                                                        <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                                        <defs><linearGradient id="halfGradient"><stop offset="50%" stop-color="#F6AB27"/><stop offset="50%" stop-color="#E0E0E0"/></linearGradient></defs>
+                                                        <path d="M50 5L61 35H95L67 57L78 90L50 70L22 90L33 57L5 35H39L50 5Z" fill="$color"/>
+                                                        </svg>
+                                                        SVG;
                                                 };
                                                 ?>
                                                 <i style="display: flex; gap: 2px; line-height: 0;">

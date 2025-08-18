@@ -31,6 +31,7 @@ class WebController extends Common
         //$resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['status' => ACTIVE_STATUS]);
         $resp['product'] = $this->webService->getAllProductDetails();
         $resp['review'] = $this->webService->getCustomerReview();
+        $resp['statics'] = $this->webmodel->getStatics();
         // print_r($resp); die ; 
         return
             view('customer/templates/header.php') .
@@ -93,7 +94,7 @@ class WebController extends Common
         $resp['review'] = $this->webService->getCustomerReview();
         $resp['vendorCountryList'] = $this->webmodel->getVendorCountryList();
 
-         
+        // $this->dd($resp);
 
         return
             view('customer/templates/header.php') .
@@ -147,7 +148,7 @@ class WebController extends Common
                 ['uid' => $vendorUid],
             );
         }
-        // print_r($resp['resp']);
+        // print_r($resp);
         // die;
         return
             view('customer/templates/header.php') .
