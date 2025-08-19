@@ -194,19 +194,16 @@
                     </div>
                 </div>
             </div>
-            <?php if (!empty($resp['html_description'])): ?>
-                <div class="col-12">
+            <?php if (!empty($resp['html_description'])): ?> <?php endif; ?>
+            <!-- <div class="col-12">
                     <div class="card text-bg-dark m-0">
-                        <!-- <h5 class="card-header">Description</h5> -->
-                        <div class="card-body listStyle">
-
-                            <?= $resp['html_description']; ?>
-
-
-                        </div>
-                    </div>
+                       <h5 class="card-header">Description</h5> 
+                <div class="card-body listStyle">
+                    <?= $resp['html_description']; ?>
                 </div>
-            <?php endif; ?>
+              </div>
+            </div> -->
+
             <div class="col-12">
                 <div class="card text-bg-dark m-0 fadeUp">
                     <h5 class="card-header">Customer Reviews</h5>
@@ -291,8 +288,14 @@
                                         continue;
                                     }
                                 ?>
+                                    <?php if ($row['slug'] === null) {
+                                        $slug = $row['uid'];
+                                    } else {
+                                        $slug = $row['slug'];
+                                    } ?>
+
                                     <div class="swiper-slide">
-                                        <a href="<?= base_url('product-details/' . $row['uid']) ?>" class="h-100 rounded-10 border bg-white overflow-hidden d-block">
+                                        <a href="<?= base_url('product/' . $slug) ?>" class="h-100 rounded-10 border bg-white overflow-hidden d-block">
                                             <img src="<?= base_url($row['main_image']) ?>" alt="" class="w-100 object-fit-cover" style="height:250px;">
                                             <div class="p-lg-3 p-2">
                                                 <h5 class="mb-1" style="height:50px;">

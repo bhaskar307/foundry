@@ -16,12 +16,14 @@ class WebController extends Common
     protected $webService;
     protected $commonModel;
     protected $webmodel;
+    protected $db;
     public function __construct()
     {
         $this->session = session();
         $this->webService = new WebService();
         $this->commonModel = new CommonModel();
         $this->webmodel = new WebModel();
+        $this->db =   \Config\Database::connect();
     }
 
     /** Index */
@@ -33,10 +35,14 @@ class WebController extends Common
         $resp['review'] = $this->webService->getCustomerReview();
 
         $resp['statics'] = $this->webmodel->getStatics();
-        // print_r($resp); die ; 
+        $homePageMetaTags = $this->db->table('meta_tags')->where('page_name', 'home')->get()->getRow();
+        $metaTags = [
+            'meta_title' => !empty($homePageMetaTags->title) ?  $homePageMetaTags->title  : 'Home',
+            'meta_description' => !empty($homePageMetaTags->description) ?  $homePageMetaTags->description  : ''
+        ];
 
         return
-            view('customer/templates/header.php') .
+            view('customer/templates/header.php', $metaTags) .
             view('customer/home.php', $resp) .
             view('customer/templates/footer.php');
     }
@@ -96,10 +102,14 @@ class WebController extends Common
         $resp['review'] = $this->webService->getCustomerReview();
         $resp['vendorCountryList'] = $this->webmodel->getVendorCountryList();
 
-        // $this->dd($resp);
+        // $this->dd($resp);.
+        $metaTags = [
+            'meta_title' => 'Product Filter',
+            'meta_description' => 'Equip your project with the best. Foundry offers a full range of heavy-duty machines and commercial equipment built for performance and durability. Find the power you need, delivered straight to your site'
+        ];
 
         return
-            view('customer/templates/header.php') .
+            view('customer/templates/header.php', $metaTags) .
             view('customer/product_list.php', $resp) .
             view('customer/templates/footer.php');
     }
@@ -107,18 +117,25 @@ class WebController extends Common
     /** Category Product */
     public function category_product()
     {
+        $metaTags = [
+            'meta_title' => 'Product Category',
+            'meta_description' => 'Equip your project with the best. Foundry offers a full range of heavy-duty machines and commercial equipment built for performance and durability. Find the power you need, delivered straight to your site'
+        ];
         $resp['category'] = $this->commonModel->getCategory();
         $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE, ['status' => ACTIVE_STATUS]);
         $resp['review'] = $this->webService->getCustomerReview();
         return
-            view('customer/templates/header.php') .
+            view('customer/templates/header.php', $metaTags) .
             view('customer/category.php', $resp) .
             view('customer/templates/footer.php');
     }
 
     /** Product Details */
-    public function product_details($productId)
+    public function product_details($slug)
     {
+
+        // print_r($slug) ; 
+        $db = \Config\Database::connect();
         $payload = $this->validateJwtWebTokenCustomer();
 
         if (!empty($payload)) {
@@ -130,8 +147,16 @@ class WebController extends Common
         } else {
             $resp['customerDetails'] = [];
         }
+        $getSingleProductUid = $db->table('product')->where('slug', $slug)->get()->getRow();
+
+        if (empty($getSingleProductUid) && $getSingleProductUid === null) {
+            $getSingleProductUid = $db->table('product')->where('uid', $slug)->get()->getRow();
+            $productId = $getSingleProductUid->uid;
+        }
+        $productId = $getSingleProductUid->uid;
 
         $resp['resp'] = $this->webService->getProductDetailsByProductId($productId);
+
         $resp['reviews'] = $this->webService->getCustomerReviewByProductId($productId);
 
         // $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE, ['category_id' => $resp['resp']['category_id'], 'status' => ACTIVE_STATUS]);
@@ -143,7 +168,10 @@ class WebController extends Common
         $vendorUid = $resp['product'][0]['vendor_id'] ?? null;
 
         // $isMatch = in_array($categoryUID, array_column($resp['product'], 'uid')) ? 1 : 0;
-
+        $metaTags = [
+            'meta_title' => 'Product Details',
+            'meta_description' => 'Equip your project with the best. Foundry offers a full range of heavy-duty machines and commercial equipment built for performance and durability. Find the power you need, delivered straight to your site'
+        ];
         if (!empty($vendorUid)) {
             $resp['vendor'] = $this->commonModel->getAllData(
                 VENDOR_TABLE,
@@ -155,7 +183,7 @@ class WebController extends Common
         // die;
 
         return
-            view('customer/templates/header.php') .
+            view('customer/templates/header.php', $metaTags) .
             view('customer/product_details.php', $resp) .
             view('customer/templates/footer.php');
     }

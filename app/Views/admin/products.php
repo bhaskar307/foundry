@@ -14,7 +14,7 @@
                         <th>Image</th>
                         <th>Category</th>
 
-
+                        <th>Approval</th>
                         <th>Sponsored</th>
                         <th>Status</th>
                         <th>Created</th>
@@ -50,7 +50,16 @@
                                 <td>
                                     <div><?= $row['category_name']; ?></div>
                                 </td>
+                                <td>
+                                    <div class="form-check form-switch d-flex justify-content-center">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            id="productVerify_<?= $row['uid']; ?>"
+                                            onchange="productApproval(this, '<?= $row['uid']; ?>')"
+                                            <?= $row['is_admin_allow'] == 1 ? 'checked' : '' ?>>
+                                        <label class="form-check-label" for="productVerify_<?= $row['uid']; ?>"></label>
+                                    </div>
 
+                                </td>
 
                                 <td>
                                     <div class="form-check form-switch d-flex justify-content-center">
@@ -105,14 +114,86 @@
             </table>
         </div>
     </div>
+    
+
+    <script>
+        function productApproval(checkbox, uid) {
+
+            let willBeVerified = checkbox.checked;
+
+
+            let title = willBeVerified ? "Are you sure?" : "Are you sure?";
+            let text = willBeVerified ?
+                "Do you want to verify this product?" :
+                "Do you want to mark this product as NOT verified?";
+
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: willBeVerified ? 'Yes, verify it!' : 'Yes, unverify it!',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    submitproductApproval(checkbox, uid);
+                } else {
+                    checkbox.checked = !willBeVerified;
+                }
+            });
+        }
+
+        function submitproductApproval(checkbox, uid) {
+            const isChecked = checkbox.checked;
+
+            const updateValue = JSON.stringify({
+                uid: uid,
+                is_admin_allow: isChecked ? 1 : 0
+            });
+
+            fetch(BASE_URL + '/admin/api/product/approval', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: updateValue,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        MessSuccess.fire({
+                            icon: 'success',
+                            title: isChecked ? 'Product verified successfully!' : 'Product unverified successfully!',
+                        });
+                    } else {
+                        console.error("Failed to update product verification status:", data.message);
+                        checkbox.checked = !isChecked;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error updating product verification status:", error);
+                    checkbox.checked = !isChecked;
+                });
+        }
+    </script>
+    <script>
+
+    </script>
     <script>
         $(document).ready(function() {
             $('#tableProduct').DataTable({
+                columnDefs: [{
+                        type: 'num',
+                        targets: 0
+                    } // if first column is numeric ID
+                ],
                 order: [
                     [0, 'desc']
                 ]
             });
         });
+
 
         function productVerify(checkbox, uid) {
 

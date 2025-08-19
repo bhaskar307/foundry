@@ -13,12 +13,13 @@ use Firebase\JWT\Key;
 class ApiController extends Common
 {
     protected $apiService;
+    protected $db;
     public function __construct()
     {
         $this->session = session();
         $this->apiService = new ApiService();
         //$this->AdminModel = new AdminModel();
-
+        $this->db =   \Config\Database::connect();
     }
 
     /** Login */
@@ -301,6 +302,22 @@ class ApiController extends Common
             $this->apiSuccess($resp[1], $resp[2], $resp[3]);
         }
     }
+
+    public function approvalProduct()
+    {
+        $payload = $this->validateJwtApiToken();
+
+        $productDetails = $this->request->getJSON(true);
+        $productDetails['user_id'] = $payload->user_id;
+        $productDetails['user_type'] = $payload->user_type;
+
+        $resp = $this->apiService->approvalProduct($productDetails);
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
     /** Change Password */
 
 
@@ -314,5 +331,70 @@ class ApiController extends Common
         } else {
             $this->apiSuccess($resp[1], $resp[2], $resp[3]);
         }
+    }
+
+
+
+    public function deleteRequest()
+    {
+        $payload = $this->validateJwtApiToken();
+        $productDetails = $this->request->getPost();
+        $resp = $this->apiService->deleteRequest($productDetails);
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
+
+
+    public function addEndUpdateSeoTags()
+    {
+        $json = $this->request->getJSON(true); // Get JSON as array
+
+        if (empty($json['page_name']) || empty($json['title'])) {
+            return $this->response->setStatusCode(422)->setJSON([
+                'success' => false,
+                'message' => 'Page name and title are required'
+            ]);
+        }
+
+        $data = [
+            'page_name'   => $json['page_name'] ?? null,
+            'title'       => $json['title'] ?? null,
+            'description' => $json['description'] ?? null,
+        ];
+
+        $builder = $this->db->table('meta_tags');
+
+        if (!empty($json['uid'])) {
+            
+            $exists = $builder->where('uid', $json['uid'])->get()->getRow();
+
+            if (!$exists) {
+                return $this->response->setStatusCode(404)->setJSON([
+                    'success' => false,
+                    'message' => 'SEO tag with this UID not found'
+                ]);
+            }
+
+           
+            $builder->where('uid', $json['uid'])->update($data);
+
+            return $this->response->setStatusCode(200)->setJSON([
+                'success' => true,
+                'message' => 'SEO tags updated successfully'
+            ]);
+        }
+
+        
+        $data['uid'] = uniqid();
+        $builder->insert($data);
+
+        return $this->response->setStatusCode(201)->setJSON([
+            'success' => true,
+            'message' => 'SEO tags added successfully',
+            'data'    => $data
+        ]);
     }
 }

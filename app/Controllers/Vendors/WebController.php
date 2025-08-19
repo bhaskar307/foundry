@@ -60,6 +60,7 @@ class WebController extends Common
         }
         $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE, ['status' => ACTIVE_STATUS]);
         $resp['resp'] = $this->webService->getProductsDetails($payload->user_id);
+        // $this->dd($resp) ; 
         return
             view('vendors/templates/header.php') .
             view('vendors/products.php', $resp) .

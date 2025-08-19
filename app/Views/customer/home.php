@@ -2,7 +2,7 @@
     <div class="homeHreo text-center">
         <div class="container">
             <div class="mx-auto col-md-8 p-0">
-                <h1 class="mb-3 fadeUp">Find ANY Product for you <span>Foundry</span></h1>
+                <h1 class="mb-3 fadeUp">Find ANY Product for your <span>Foundry</span></h1>
                 <!-- <h1 class="mb-3 fadeUp">India's Most Trusted <span>Foundry Equipment</span> Marketplace</h1> -->
                 <!-- <div class="px-lg-5 mb-3 fadeUp">Explore 25,000+ industrial-grade products from 1,200+ verified manufacturers and brands in the foundry, metallurgy, and metalworking industry.</div> -->
                 <div class="mb-3 col-lg-9 mx-auto p-0 fadeUp position-relative" style="z-index: 50;">
@@ -11,7 +11,7 @@
                             type="text"
                             id="searchInput"
                             class="form-control"
-                            placeholder="Find ANY Product for you Foundry...">
+                            placeholder="Find ANY Product for your Foundry...">
                         <a href="#">
                             <button onclick="serachBtnforProductList()" class="btn btn-primary" id="searchBtn">
                                 <svg width="20" height="20" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -221,10 +221,11 @@
         </div>
     </div>
 </section>
+<!--  
 <section class="pb-5">
     <div class="container">
         <div class="p-0 col-md-6 mx-auto mb-4 titsec text-center fadeUp">
-            <!-- <h2 class="mb-2">Explore Top<span> Categories</span></h2> Featured Products -->
+            <h2 class="mb-2">Explore Top<span> Categories</span></h2> Featured Products 
             <h2 class="mb-2">Featured<span> Products</span></h2>
             <div>Browse through our wide range of curated categories, from smartphones and laptops to smart home gadgets and audio gear.</div>
         </div>
@@ -330,6 +331,8 @@
         </script>
     </div>
 </section>
+-->
+<!--  
 <section class="pb-5">
     <div class="container">
         <div class="fadeUp">
@@ -382,18 +385,28 @@
         </div>
     </div>
 </section>
+-->
 <section class="pb-5">
     <div class="container">
         <div class="p-0 col-md-6 mx-auto mb-4 titsec text-center fadeUp">
-            <h2 class="mb-2">Today's Top <span> Picks</span></h2>
-            <div>Browse through our wide range of curated categories, from smartphones and laptops to smart home gadgets and audio gear.</div>
+
+            <h2 class="mb-2">Featured <span> Products</span></h2>
+            <!-- <div>Browse through our wide range of curated categories, from smartphones and laptops to smart home gadgets and audio gear.</div> -->
         </div>
         <div class="row g-lg-4 g-3">
             <?php if (!empty($product)) {
                 foreach ($product as $row) {
             ?>
-                    <div class="col-6 col-lg-3 fadeUp">
-                        <a href="<?= base_url('product-details/' . $row['uid']) ?>" class="h-100 rounded-10 border bg-white overflow-hidden d-block">
+                    <div class="col5 fadeUp">
+                        <?php
+                        if ($row['slug'] ===  null) {
+                            $slug = $row['uid'];
+                        } else {
+                            $slug = $row['slug'];
+                        }
+
+                        ?>
+                        <a href="<?= base_url('product/' . $slug) ?>" class="h-100 rounded-10 border bg-white overflow-hidden d-block">
                             <?php
                             $image = "";
                             $proudctImage = $row['image'];
@@ -403,7 +416,7 @@
                                 $image = $proudctImage;
                             }
                             ?>
-                            <img src="<?= base_url($image) ?>" alt="" class="w-100 object-fit-cover" style="height:250px;">
+                            <img src="<?= base_url($image) ?>" alt="<?= $slug ?>" class="w-100 object-fit-cover" style="height:250px;">
                             <div class="p-lg-3 p-2">
                                 <h5 class="mb-1" style="height:50px;">
                                     <?= substr(strip_tags($row['name']), 0, 40) ?><?= strlen(strip_tags($row['name'])) > 40 ? '...' : '' ?>
@@ -448,9 +461,9 @@
                                     </i>
                                     <small style="color: #666;"><?= $row['total_rating_percent'] ?> (<?= $row['total_customer_review'] ?> reviews)</small>
                                 </div>
-                                <div class="my-1" style="color: #666;">
+                                <!-- <div class="my-1" style="color: #666;">
                                     <?= substr(strip_tags($row['description']), 0, 95) ?><?= strlen(strip_tags($row['description'])) > 95 ? '...' : '' ?>
-                                </div>
+                                </div> -->
                                 <div class="text-dark fw-600 d-flex gap-2 justify-content-between align-items-center">
                                     <span><?= $row['vendor_company'] ?></span>
                                     <?php if (!empty($row['is_vendor_verify']) && $row['is_vendor_verify'] == 1): ?>
@@ -507,8 +520,14 @@
                                 <div class="h-100 rounded-10 border bg-light p-3 p-lg-4">
                                     <div class="d-flex align-itens-center gap-3 mb-3">
                                         <div>
-                                            <img src="<?= base_url($row['customer_image']) ?>" alt="Customer" width="50" height="50" class="rounded-circle">
+                                            <img
+                                                src="<?= !empty($row['customer_image']) ? base_url($row['customer_image']) : 'https://app.pagarai.com/public/images/user.svg' ?>"
+                                                alt="Customer"
+                                                width="50" height="50"
+                                                class="rounded-circle"
+                                                onerror="this.onerror=null;this.src='https://app.pagarai.com/public/images/user.svg';">
                                         </div>
+
                                         <div class="d-flex flex-column gap-1">
                                             <h5 class="text-dark fw-600"><?= $row['customer_name'] ?></h5>
                                             <?php
@@ -601,7 +620,7 @@
             return;
         }
         var verifyLogo = '';
- 
+
 
         fetch(BASE_URL + encodeURIComponent(query))
             .then(res => res.json())
@@ -614,7 +633,6 @@
 
 
                         categoryID = data.data.products[0].category_id;
-                        console.log("Top category ID:", categoryID);
 
 
                         if (product.vendor_is_verify === "1") {
@@ -689,7 +707,7 @@
 
 
     function redirectProductListPage(productUid) {
-        window.location.href = `https://devs.v-xplore.com/foundry/product-details/${productUid}`;
+        window.location.href = `https://devs.v-xplore.com/foundry/product/${productUid}`;
     }
 
     console.log("============lower ", categoryID);

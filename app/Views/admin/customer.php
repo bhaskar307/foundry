@@ -6,7 +6,7 @@
             </div>
         </div>
         <div class="px-3 pb-3">
-            <table class="dataTableNoSearch display border">
+            <table class="dataTable display border">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -21,6 +21,7 @@
                         foreach ($resp as $row) {
                     ?>
                             <tr>
+
                                 <td>
                                     <div class="fw-600 h6 m-0">
                                         <div class="d-flex align-items-center">
@@ -32,6 +33,7 @@
                                         </div>
                                     </div>
                                 </td>
+
                                 <td>
                                     <?php if(!empty($row['image'])) { ?>
                                         <img src="<?= base_url($row['image']) ?>" alt="Vendor Image" style="width: 40px; height: 40px;">
@@ -39,9 +41,11 @@
                                         
                                     <?php } ?>
                                 </td>
+
                                 <td>
                                     <div class="fw-600 h6 m-0"><?= date('jS F, Y', strtotime($row['dob'])); ?></div>
                                 </td>
+
                                 <td>
                                     <div class="form-check form-switch d-flex justify-content-center">
                                         <?php if($row['status'] != 'deleted'){ ?>
@@ -94,6 +98,7 @@
                                         </button>
                                     </div>
                                 </td>
+                                
                             </tr>
                     <?php }
                     } ?>

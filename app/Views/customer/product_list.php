@@ -46,7 +46,7 @@
                                 </script>
                             </div>
                             <div class="d-flex flex-column gap-1">
-                                <!-- <h6 class="mb-2">Category</h6> -->
+                                <h6 class="mb-2">Category</h6>
                                 <?php if (!empty($category)) : ?>
                                     <?php foreach ($category as $row): ?>
                                         <?php
@@ -120,7 +120,7 @@
                                 </div>
                             </div>
 
-                            <div class="">
+                            <!-- <div class="">
                                 <h6 class="mb-2">Rating</h6>
                                 <div class="d-flex flex-column gap-1">
                                     <div class="form-check m-0">
@@ -136,7 +136,8 @@
                                         <label class="form-check-label" for="3star">★★★ 3+ Stars</label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
+
                         </div>
                     </div>
                     <script>
@@ -155,54 +156,66 @@
                 </div>
             </div>
             <div class="col-md-8 col-lg-9">
-                <div class="row g-4">
-                    <div class="col-12">
-                        <div class="row g-3">
-                            <div class="col-md-8">
-                                <nav aria-label="breadcrumb">
-                                    <ol class="breadcrumb m-0" style="font-size: 12px;">
-                                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">All Products</li>
-                                    </ol>
-                                </nav>
-                                <h1 class="m-0 h4">All Products</h1>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="input-group m-0">
-                                    <span class="input-group-text">
-                                        <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                            viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
-                                            <path d="M225.474,0C101.151,0,0,101.151,0,225.474c0,124.33,101.151,225.474,225.474,225.474
-                                                c124.33,0,225.474-101.144,225.474-225.474C450.948,101.151,349.804,0,225.474,0z M225.474,409.323
-                                                c-101.373,0-183.848-82.475-183.848-183.848S124.101,41.626,225.474,41.626s183.848,82.475,183.848,183.848
-                                                S326.847,409.323,225.474,409.323z" />
-                                            <path d="M505.902,476.472L386.574,357.144c-8.131-8.131-21.299-8.131-29.43,0c-8.131,8.124-8.131,21.306,0,29.43l119.328,119.328
-                                                c4.065,4.065,9.387,6.098,14.715,6.098c5.321,0,10.649-2.033,14.715-6.098C514.033,497.778,514.033,484.596,505.902,476.472z" />
-                                        </svg>
-                                    </span>
-                                    <input type="text" id="searchInput" class="form-control" placeholder="Search.." style="height:40px">
+                <div class="">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4 d-none d-md-block">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb m-0" style="font-size: 12px;">
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">All Products</li>
+                                </ol>
+                            </nav>
+                            <h1 class="m-0 h4">All Products</h1>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row g-2">
+                                <div class="col-8">
+                                    <div class="input-group m-0">
+                                        <input type="text" id="searchInput" class="form-control" placeholder="Search.." style="height:40px;font-size:14px;">
+                                        <span class="input-group-text">
+                                            <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                                                <path d="M225.474,0C101.151,0,0,101.151,0,225.474c0,124.33,101.151,225.474,225.474,225.474
+                                                    c124.33,0,225.474-101.144,225.474-225.474C450.948,101.151,349.804,0,225.474,0z M225.474,409.323
+                                                    c-101.373,0-183.848-82.475-183.848-183.848S124.101,41.626,225.474,41.626s183.848,82.475,183.848,183.848
+                                                    S326.847,409.323,225.474,409.323z" />
+                                                <path d="M505.902,476.472L386.574,357.144c-8.131-8.131-21.299-8.131-29.43,0c-8.131,8.124-8.131,21.306,0,29.43l119.328,119.328
+                                                    c4.065,4.065,9.387,6.098,14.715,6.098c5.321,0,10.649-2.033,14.715-6.098C514.033,497.778,514.033,484.596,505.902,476.472z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <select id="ratingValue" class="form-select form-select-sm" style="height:40px;font-size:14px;">
+                                        <option>Rating(⭐) High to Low</option>
+                                        <option>Rating(⭐) Low to High</option>
+                                    </select>
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
-                    <div id="productContainer" class="row">
+                    <div id="productContainer" class="row g-3">
                         <!-- proudct list  form js  -->
                     </div>
 
-                    <!-- <div class="col-12">
-                        <nav aria-label="...">
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item"><a href="#" class="page-link">Previous</a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item active">
+
+                    <nav class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item">
+                                <a href="#" class="page-link">
+                                    << </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item active">
                                 <a class="page-link" href="#" aria-current="page">2</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                            </ul>
-                        </nav>
-                    </div> -->
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">>></a></li>
+                        </ul>
+                    </nav>
+
                 </div>
             </div>
         </div>
@@ -211,6 +224,58 @@
 <script>
     // Render products
     const productsData = <?= json_encode($product) ?>;
+    let currentPage = 1;
+    const itemsPerPage = 6;
+
+    function renderProductsPaginated(page = 1) {
+        currentPage = page;
+        const start = (page - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const paginatedItems = productsData.slice(start, end);
+        renderProducts(paginatedItems);
+        renderPagination(productsData.length, page);
+    }
+
+    function renderPagination(totalItems, currentPage) {
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        let paginationHTML = '';
+
+        // Previous
+        paginationHTML += `
+      <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+        <a href="#" class="page-link" data-page="${currentPage - 1}"><<</a>
+      </li>`;
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            paginationHTML += `
+          <li class="page-item ${currentPage === i ? 'active' : ''}">
+            <a href="#" class="page-link" data-page="${i}">${i}</a>
+          </li>`;
+        }
+
+        // Next
+        paginationHTML += `
+      <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+        <a href="#" class="page-link" data-page="${currentPage + 1}">>></a>
+      </li>`;
+
+        document.querySelector('.pagination').innerHTML = paginationHTML;
+
+        // Add click events
+        document.querySelectorAll('.page-link').forEach(el => {
+            el.addEventListener('click', function(e) {
+                e.preventDefault();
+                const page = parseInt(this.getAttribute('data-page'));
+                if (!isNaN(page) && page >= 1 && page <= totalPages) {
+                    renderProductsPaginated(page);
+                }
+            });
+        });
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+        renderProductsPaginated(1);
+    });
 
     function renderProducts(list) {
         const container = document.getElementById('productContainer');
@@ -252,11 +317,16 @@
             for (let i = 0; i < fullStars; i++) starsHtml += starSvg('full');
             if (halfStar) starsHtml += starSvg('half');
             for (let i = 0; i < emptyStars; i++) starsHtml += starSvg('empty');
-
+            let slug = "";
+            if (row.slug === null) {
+                slug = row.uid;
+            } else {
+                slug = row.slug;
+            }
             // Append product card
             container.innerHTML += `
         <div class="col-lg-4 col-6">
-            <a href="product-details/${row.uid}" class="h-100 rounded-10 border bg-white overflow-hidden d-block">
+            <a href="product/${slug}" class="h-100 rounded-10 border bg-white overflow-hidden d-block">
                 <img src="${row.main_image}" alt="" class="w-100 object-fit-cover" style="height:250px;">
                 <div class="p-lg-3 p-2">
                     <h5 class="mb-1" style="height:50px;">
@@ -306,7 +376,7 @@
             row.vendor_name
         } < /span> <
         /small> */
-        
+
     // Local search filter
     function filterProducts(searchTerm) {
         const lowerSearch = searchTerm.toLowerCase();
@@ -325,12 +395,26 @@
         console.log("Search Input Value:", this.value);
 
     });
+    $(document).ready(function() {
+        $("#ratingValue").on("change", function() {
+            let selected = $(this).val();
+            let filtered = [...productsData]; // clone original array
 
+            if (selected === "Rating(⭐) High to Low") {
+                filtered.sort((a, b) => b.rating - a.rating);
+            } else if (selected === "Rating(⭐) Low to High") {
+                filtered.sort((a, b) => a.rating - b.rating);
+            }
+
+            console.log("Sorted Products:", filtered);
+            renderProducts(filtered);
+        });
+    });
     // Initial render
     renderProducts(productsData);
 </script>
 <script>
-    console.log("============productsData", productsData);
+    // console.log("============productsData", productsData);
 
     // Category change function
     function handleCategoryChange(checkbox) {

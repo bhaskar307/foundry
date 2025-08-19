@@ -12,12 +12,13 @@ class ApiService
     protected $validation;
     protected $apiModel;
     protected $commonModel;
-
+    protected $db;
     public function __construct()
     {
         $this->validation = \Config\Services::validation();
         $this->apiModel = new ApiModel();
         $this->commonModel = new CommonModel();
+        $this->db =   \Config\Database::connect();
     }
 
     /** Login */
@@ -57,7 +58,8 @@ class ApiService
         $validationRules = [
             'name'        => 'required',
             'category'    => 'required',
-            'description' => 'required'
+            'description' => 'required',
+
         ];
         $validationResult = validateData($data, $validationRules);
         if (!$validationResult['success']) {
@@ -85,10 +87,15 @@ class ApiService
         }
 
         try {
+            $name = $data['name'];
+
+            $slug = $this->generateUniqueSlug($name , $data['user_id']);
+
             $image_path = $image_paths[0] ?? '';
             $addData = [
                 'uid'               => $productUid,
-                'name'              => $data['name'],
+                'name'              =>   $name,
+                'slug'              => $slug,
                 'description'       => $data['description'],
                 'price'             => $data['product_price'],
                 'brand'             => $data['product_brand'],
@@ -99,6 +106,9 @@ class ApiService
                 'image'             => '',
                 'created_by'        => $data['user_id'] ?? NULL,
             ];
+
+          
+
             $success = $this->commonModel->insertData(PRODUCT_TABLE, $addData);
             if (!empty($image_paths)) {
                 foreach ($image_paths as $imgPath) {
@@ -131,6 +141,54 @@ class ApiService
             return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
         }
     }
+
+
+
+    private function generateUniqueSlug($string, $vendorId = null)
+    {
+
+       
+        $slug = strtolower($string);
+        $slug = preg_replace('/[^a-z0-9\s-]/', '', $slug);
+        $slug = preg_replace('/[\s-]+/', '-', $slug);
+        $slug = trim($slug, '-');
+
+        $originalSlug = $slug;
+        $i = 1;
+
+        $builder = $this->db->table('product')->select('slug');
+
+        if ($vendorId) {
+            $builder->where('vendor_id', $vendorId);
+        }
+
+        while ($builder->where('slug', $slug)->countAllResults() > 0) {
+            $slug = $originalSlug . '-' . $i;
+            $i++;
+            $builder = $this->db->table('product')->select('slug');
+            if ($vendorId) {
+                $builder->where('vendor_id', $vendorId);
+            }
+        }
+
+        return $slug;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function updateProduct($data, $file)
     {
         $validationRules = [

@@ -20,6 +20,7 @@ class WebModel extends Model
         $builder->join('vendor v', 'v.uid = p.vendor_id', 'left');
         $builder->join('category c', 'c.uid = p.category_id', 'left');
         $builder->join('category s', 's.uid = p.subcategory_id', 'left');
+        $builder->orderBy('p.created_at' , 'desc') ; 
         $builder->where('p.status !=', DELETED_STATUS);
         $builder->where('p.vendor_id', $vendorId);
 
@@ -38,6 +39,7 @@ class WebModel extends Model
         ');
         $builder->join('vendor v', 'v.uid = p.vendor_id', 'left');
         $builder->join('category c', 'c.uid = p.category_id', 'left');
+        $builder->orderBy('p.created_at' , 'desc') ; 
         $builder->where('p.status !=', DELETED_STATUS);
         $builder->where('p.vendor_id', $vendorId);
         $builder->where('p.uid', $productId);
@@ -73,6 +75,7 @@ class WebModel extends Model
         if ($date != null) {
             $builder->where('DATE(r.created_at)', $date);
         }
+        $builder->orderBy('r.created_at' , 'desc') ; 
         $result = $builder->get()->getResultArray();
         return $result;
     }
@@ -101,6 +104,7 @@ class WebModel extends Model
         if ($vendorId != null) {
             $builder->where('p.vendor_id', $vendorId);
         }
+        $builder->orderBy('pr.created_at' ,  'desc') ; 
         $result = $builder->get()->getResultArray();
         return $result;
     }

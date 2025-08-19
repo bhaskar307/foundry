@@ -14,11 +14,13 @@ class WebController extends Common
 {
     protected $webService;
     protected $commonModel;
+    protected $db;
     public function __construct()
     {
         $this->session = session();
         $this->webService = new WebService();
         $this->commonModel = new CommonModel();
+        $this->db =   \Config\Database::connect();
     }
 
     /** Index */
@@ -104,7 +106,7 @@ class WebController extends Common
             return redirect()->to(base_url('admin/login'));
         }
         $resp['resp'] = $this->webService->getProductsDetails();
-
+        // $this->dd($resp);
         return
             view('admin/templates/header.php') .
             view('admin/products.php', $resp) .
@@ -171,6 +173,7 @@ class WebController extends Common
         $resp['vendor'] = $this->commonModel->getAllData(VENDOR_TABLE, ['status' => ACTIVE_STATUS]);
         $resp['customer'] = $this->commonModel->getAllData(CUSTOMER_TABLE, ['status' => ACTIVE_STATUS]);
         $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE, ['status' => ACTIVE_STATUS]);
+      
 
         return
             view('admin/templates/header.php') .
@@ -190,13 +193,26 @@ class WebController extends Common
         $resp['customer'] = $this->commonModel->getAllData(CUSTOMER_TABLE, ['status' => ACTIVE_STATUS]);
         $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE, ['status' => ACTIVE_STATUS]);
         $resp['resp'] = $this->webService->getCustomerReview($resp['customerUid'], $resp['productUid']);
-        // echo '<pre>';
-        // print_r($resp);
-        // die;
-        // $this->dd($resp['resp']) ; 
+
         return
             view('admin/templates/header.php') .
             view('admin/ratings.php', $resp) .
+            view('admin/templates/footer.php');
+    }
+
+
+    public function metaContent()
+    {
+        $payload = $this->validateJwtWebToken();
+        if (!$payload) {
+            return redirect()->to(base_url('admin/login'));
+        }
+        $getAllTags = $this->db->table('meta_tags')->orderBy('id', 'desc')->where('status', 'active')->get()->getResultArray();
+        $data['metaDeatils'] =  $getAllTags;
+        // $this->dd($data);
+        return
+            view('admin/templates/header.php') .
+            view('admin/seo_tags.php' , $data) .
             view('admin/templates/footer.php');
     }
 

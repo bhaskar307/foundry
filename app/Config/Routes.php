@@ -23,6 +23,8 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], function ($rou
     $routes->get('ratings', 'WebController::ratings');
     $routes->get('header-content', 'WebController::headerContent');
     $routes->get('logout', 'WebController::logout');
+
+    $routes->get('meta-content', 'WebController::metaContent');
 });
 
 $routes->group('admin/api', ['namespace' => 'App\Controllers\Admin'], function ($routes) {
@@ -59,11 +61,21 @@ $routes->group('admin/api', ['namespace' => 'App\Controllers\Admin'], function (
         $routes->post('update-status', 'ApiController::updateProductStatus');
         $routes->post('delete', 'ApiController::deleteProduct');
         $routes->post('verify', 'ApiController::verifyProduct');
+        $routes->post('approval', 'ApiController::approvalProduct');
     });
     $routes->group("rating", function ($routes) {
         $routes->post('delete', 'ApiController::deleteRating');
-
     });
+
+    $routes->group("request", function ($routes) {
+        $routes->post('delete', 'ApiController::deleteRequest');
+    });
+    
+    $routes->group("seo", function ($routes) {
+        $routes->post('add-update', 'ApiController::addEndUpdateSeoTags');
+    });
+
+
     /** Product */
 });
 /** Admin */

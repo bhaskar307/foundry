@@ -987,4 +987,83 @@ class ApiService
             return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
         }
     }
+
+    public function deleteRequest($data)
+    {
+        $validationRules = [
+            'uid'      => 'required'
+        ];
+        $validationResult = validateData($data, $validationRules);
+        if (!$validationResult['success']) {
+            return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
+        }
+        $productRequestUid = $data['uid'];
+
+        try {
+            $updateData = [
+                'status'     => DELETED_STATUS,
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+
+            $success = $this->commonModel->UpdateData('request', ['uid' => $productRequestUid], $updateData);
+            if (!$success) {
+                return [
+                    false,
+                    500,
+                    'Product request Deleted failed.',
+                    ['error' => 'Database Deleted failed']
+                ];
+            }
+            return [
+                true,
+                200,
+                'Product request Deleted successfully.',
+                ['data' => $success]
+            ];
+        } catch (\Throwable $e) {
+            return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
+        }
+    }
+
+    public function approvalProduct($data)
+    {
+        $validationRules = [
+            'uid'     => 'required',
+            'is_admin_allow'     => 'required',
+
+        ];
+        $validationResult = validateData($data, $validationRules);
+        if (!$validationResult['success']) {
+            return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
+        }
+        $productUid = $data['uid'];
+
+        try {
+
+            $updateData = [
+                'is_admin_allow'      => $data['is_admin_allow'],
+                'updated_by'    => $data['user_id'] ?? NULL,
+                'updated_at'    => date('Y-m-d H:i:s')
+            ];
+
+            $success = $this->commonModel->UpdateData('product', ['uid' => $productUid], $updateData);
+            if (!$success) {
+                return [
+                    false,
+                    500,
+                    'Password Update failed.',
+                    ['error' => 'Database update failed']
+                ];
+            }
+
+            return [
+                true,
+                200,
+                'product approve  successfully.',
+                ['data' => $success]
+            ];
+        } catch (\Throwable $e) {
+            return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
+        }
+    }
 }

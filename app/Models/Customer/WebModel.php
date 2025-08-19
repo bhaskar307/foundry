@@ -153,6 +153,7 @@ class WebModel extends Model
         $builder->where('p.status', ACTIVE_STATUS);
         $builder->orderBy('p.is_verify', 'DESC');
         $builder->orderBy('p.uid', 'DESC');
+        $builder->limit(10);
         $result = $builder->get()->getResultArray();
 
         return $result;

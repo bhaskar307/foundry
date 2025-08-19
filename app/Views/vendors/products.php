@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="px-3 pb-3">
-            <table class="dataTable display border">
+            <table id="tableProduct" class=" display border">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -45,7 +45,7 @@
                         foreach ($resp as $i =>  $row) {
                     ?>
                             <tr>
-                                <td><?=  $i+1 ?> </td>
+                                <td><?= $i + 1 ?> </td>
                                 <td>
                                     <div><?= $row['name']; ?></div>
                                 </td>
@@ -78,15 +78,19 @@
                                 <td><?= $verifyStatus ?></td>
 
                                 <td>
-                                    <div class="form-check form-switch d-flex justify-content-center">
-                                        <?php if ($row['status'] != 'deleted') { ?>
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="flexSwitchCheckChecked_<?= $row['id']; ?>"
-                                                onchange="handleStatusChange(this, '<?= $row['uid']; ?>')"
-                                                <?= ($row['status'] == ACTIVE_STATUS) ? 'checked' : ''; ?>>
-                                            <label class="form-check-label" for="flexSwitchCheckChecked"></label>
-                                        <?php } ?>
-                                    </div>
+                                    <?php if ($row['is_admin_allow'] == 1) : ?>
+                                        <div class="form-check form-switch d-flex justify-content-center">
+                                            <?php if ($row['status'] != 'deleted') { ?>
+                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                    id="flexSwitchCheckChecked_<?= $row['id']; ?>"
+                                                    onchange="handleStatusChange(this, '<?= $row['uid']; ?>')"
+                                                    <?= ($row['status'] == ACTIVE_STATUS) ? 'checked' : ''; ?>>
+                                                <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                                            <?php } ?>
+                                        </div>
+                                    <?php else :  ?>
+                                        <span class="status-wait">Wait for admin approval</span>
+                                    <?php endif; ?>
                                     <!-- <?php
                                             $bgColor = ($row['status'] === 'Active') ? '#FFE4E3' : '#D1FAE5';
                                             $textColor = ($row['status'] === 'Active') ? '#AB3D3C' : '#065F46';
@@ -246,6 +250,22 @@
     <!-- Edit module -->
 
     <script>
+        $(document).ready(function() {
+            $('#tableProduct').DataTable({
+                columnDefs: [{
+                        type: 'num',
+                        targets: 0
+                    } // if first column is numeric ID
+                ],
+                order: [
+                    [0, 'asc']
+                ]
+            });
+        });
+
+
+
+
         /** Created */
         $(document).ready(function() {
             $('#vendorForm').on('submit', function(e) {
