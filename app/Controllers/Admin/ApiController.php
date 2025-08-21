@@ -368,7 +368,7 @@ class ApiController extends Common
         $builder = $this->db->table('meta_tags');
 
         if (!empty($json['uid'])) {
-            
+
             $exists = $builder->where('uid', $json['uid'])->get()->getRow();
 
             if (!$exists) {
@@ -378,7 +378,7 @@ class ApiController extends Common
                 ]);
             }
 
-           
+
             $builder->where('uid', $json['uid'])->update($data);
 
             return $this->response->setStatusCode(200)->setJSON([
@@ -387,7 +387,7 @@ class ApiController extends Common
             ]);
         }
 
-        
+
         $data['uid'] = uniqid();
         $builder->insert($data);
 
@@ -396,5 +396,22 @@ class ApiController extends Common
             'message' => 'SEO tags added successfully',
             'data'    => $data
         ]);
+    }
+
+
+    public function verifyVendor()
+    {
+        $payload = $this->validateJwtApiToken();
+
+        $productDetails = $this->request->getJSON(true);
+        $productDetails['user_id'] = $payload->user_id;
+        $productDetails['user_type'] = $payload->user_type;
+
+        $resp = $this->apiService->verifyVendor($productDetails);
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
     }
 }

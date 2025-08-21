@@ -62,7 +62,7 @@ if (!empty($jwt)) {
                                 <a href="<?= base_url('product-list') ?>" <?php if ($lastSegment == 'product-list') { ?>class="active" <?php } ?>>Shop</a>
                             </li>
                             <li>
-                                <a href="<?= base_url('category') ?>" <?php if ($lastSegment == 'category') { ?>class="active" <?php } ?>>Category</a>
+                                <a href="<?= base_url('category') ?>" <?php if ($lastSegment == 'category') { ?>class="active" <?php } ?>>Categories</a>
                             </li>
                             <li>
                                 <a href="https://www.youtube.com/channel/UCqG_zja0MNnAPVdB4FpRBbg" target="_blank" rel="noopener noreferrer">

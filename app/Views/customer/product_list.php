@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row g-4">
             <div class="col-md-4 col-lg-3">
-                <div class="rounded-10 border d-flex flex-column overflow-hidden">
+                <div class="rounded-10 border d-flex flex-column overflow-hidden position-sticky" style="top:100px;">
                     <div class="p-3 bg-light d-flex align-items-center gap-1 accordion-button shadow-none" style="border-radius: 10px 10px 0 0;" data-bs-toggle="collapse" data-bs-target="#productFilter">
                         <i style="line-height: 0">
                             <svg height="16" viewBox="0 0 511 511.99982" width="16" xmlns="http://www.w3.org/2000/svg">
@@ -222,9 +222,31 @@
     </div>
 </section>
 <script>
+    function handleCategoryChange(checkbox) {
+        const selected = [];
+        document.querySelectorAll('.category-checkbox:checked').forEach(cb => {
+            selected.push(cb.value);
+        });
+
+        const filterData = {
+            categories: selected,
+            price: {
+                from: priceRange.from,
+                to: priceRange.to
+            },
+
+        };
+
+        const jsonStr = JSON.stringify(filterData);
+        const base64 = btoa(jsonStr);
+        const url = "<?= base_url('product-list?filter=') ?>" + encodeURIComponent(base64);
+
+        window.location.href = url;
+    }
     const productsData = <?= json_encode($product) ?>;
+
     let currentPage = 1;
-    const itemsPerPage = 3;
+    const itemsPerPage = 15;
 
     function renderProductsPaginated(page = 1) {
         currentPage = page;
@@ -393,49 +415,47 @@
         console.log("Search Input Value:", this.value);
 
     });
+
     $(document).ready(function() {
         $("#ratingValue").on("change", function() {
             let selected = $(this).val();
             let filtered = [...productsData]; // clone original array
 
+            console.log("Before Sort:", filtered);
+
             if (selected === "Rating(⭐) High to Low") {
-                filtered.sort((a, b) => b.rating - a.rating);
+                filtered.sort((a, b) => b.total_rating_percent - a.total_rating_percent);
             } else if (selected === "Rating(⭐) Low to High") {
-                filtered.sort((a, b) => a.rating - b.rating);
+                filtered.sort((a, b) => a.total_rating_percent - b.total_rating_percent);
             }
 
             console.log("Sorted Products:", filtered);
             renderProducts(filtered);
         });
     });
+
     // Initial render
     renderProducts(productsData);
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
-    // console.log("============productsData", productsData);
-
-    // Category change function
-    function handleCategoryChange(checkbox) {
-        const selected = [];
-        document.querySelectorAll('.category-checkbox:checked').forEach(cb => {
-            selected.push(cb.value);
-        });
-
-        const filterData = {
-            categories: selected,
-            price: {
-                from: priceRange.from,
-                to: priceRange.to
-            },
-
-        };
-
-        const jsonStr = JSON.stringify(filterData);
-        const base64 = btoa(jsonStr);
-        const url = "<?= base_url('product-list?filter=') ?>" + encodeURIComponent(base64);
-        window.location.href = url;
-    }
-
     // function handleCategoryChange(checkbox) {
     //     const selected = [];
     //     document.querySelectorAll('.category-checkbox:checked').forEach(cb => {

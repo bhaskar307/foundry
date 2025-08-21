@@ -151,6 +151,9 @@ class WebModel extends Model
 
         $builder->join('vendor v', 'v.uid = p.vendor_id', 'inner');
         $builder->where('p.status', ACTIVE_STATUS);
+        $builder->where('v.status', ACTIVE_STATUS);
+        $builder->where('p.is_verify', 1);
+        $builder->where('p.is_admin_allow', true);
         $builder->orderBy('p.is_verify', 'DESC');
         $builder->orderBy('p.uid', 'DESC');
         $builder->limit(10);
@@ -160,7 +163,7 @@ class WebModel extends Model
     }
 
 
-    public function getFilteredProductDetails($categoryUid = [], $priceFrom = 0, $priceTo = 50000)
+    public function getFilteredProductDetails($categoryUid = [], $priceFrom = 0, $priceTo = 100000)
     {
         $db = \Config\Database::connect();
         $builder = $db->table('product p');
@@ -189,8 +192,10 @@ class WebModel extends Model
                             LIMIT 1
                             ) AS main_image
                     ');
-        $builder->join('vendor v', 'v.uid = p.vendor_id');
+        $builder->join('vendor v', 'v.uid = p.vendor_id', 'inner');
+        // $builder->join('vendor v', 'v.uid = p.vendor_id');
         $builder->where('p.status', ACTIVE_STATUS);
+
 
         // Category filter
         if (!empty($categoryUid) && is_array($categoryUid)) {
@@ -205,7 +210,10 @@ class WebModel extends Model
             $builder->where('p.price >=', $priceFrom);
             $builder->where('p.price <=', $priceTo);
         }
+        $builder->where('v.status', ACTIVE_STATUS);
         $builder->orderBy('p.is_verify', 'DESC');
+        
+
         $builder->orderBy('p.uid', 'DESC');
         $result = $builder->get()->getResultArray();
         return $result;
@@ -300,6 +308,7 @@ class WebModel extends Model
         $builder->join('vendor v', 'v.uid = p.vendor_id', 'inner');
         $builder->where('p.status', ACTIVE_STATUS);
         $builder->orderBy('p.is_verify', 'DESC');
+
         $builder->orderBy('p.uid', 'DESC');
         $builder->where('p.category_id', $categoryUid);
         $result = $builder->get()->getResultArray();

@@ -19,9 +19,9 @@
             <table class="dataTable display border">
                 <thead>
                     <tr>
-                        <th>Title</th>
+                        <th>categories</th>
                         <th>Image</th>
-                        <th>Path</th>
+                        <th>Sub-categories</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>

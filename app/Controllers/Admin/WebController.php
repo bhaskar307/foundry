@@ -5,7 +5,7 @@ namespace App\Controllers\Admin;
 use App\Controllers\Common;
 use App\Services\Admin\WebService;
 use App\Models\CommonModel;
-
+use App\Models\Vendors\WebModel as vendorModel;
 use CodeIgniter\API\ResponseTrait;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -15,12 +15,14 @@ class WebController extends Common
     protected $webService;
     protected $commonModel;
     protected $db;
+    protected $vendorWebModel;
     public function __construct()
     {
         $this->session = session();
         $this->webService = new WebService();
         $this->commonModel = new CommonModel();
         $this->db =   \Config\Database::connect();
+        $this->vendorWebModel = new vendorModel();
     }
 
     /** Index */
@@ -128,19 +130,19 @@ class WebController extends Common
     }
 
     /** View Product Details */
-    public function view_product()
-    {
-        $payload = $this->validateJwtWebToken();
-        if (!$payload) {
-            return redirect()->to(base_url('admin/login'));
-        }
-        $productId = $this->request->getGet('productId');
-        $resp['resp'] = $this->webService->getProductsDetailsByProductId($productId);
-        return
-            view('admin/templates/header.php') .
-            view('admin/view_product.php', $resp) .
-            view('admin/templates/footer.php');
-    }
+    // public function view_product()
+    // {
+    //     $payload = $this->validateJwtWebToken();
+    //     if (!$payload) {
+    //         return redirect()->to(base_url('admin/login'));
+    //     }
+    //     $productId = $this->request->getGet('productId');
+    //     $resp['resp'] = $this->webService->getProductsDetailsByProductId($productId);
+    //     return
+    //         view('admin/templates/header.php') .
+    //         view('admin/view_product.php', $resp) .
+    //         view('admin/templates/footer.php');
+    // }
 
     /** View vendor Details */
     public function view_vendor_details()
@@ -173,7 +175,7 @@ class WebController extends Common
         $resp['vendor'] = $this->commonModel->getAllData(VENDOR_TABLE, ['status' => ACTIVE_STATUS]);
         $resp['customer'] = $this->commonModel->getAllData(CUSTOMER_TABLE, ['status' => ACTIVE_STATUS]);
         $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE, ['status' => ACTIVE_STATUS]);
-      
+
 
         return
             view('admin/templates/header.php') .
@@ -212,7 +214,7 @@ class WebController extends Common
         // $this->dd($data);
         return
             view('admin/templates/header.php') .
-            view('admin/seo_tags.php' , $data) .
+            view('admin/seo_tags.php', $data) .
             view('admin/templates/footer.php');
     }
 
@@ -223,5 +225,41 @@ class WebController extends Common
         return redirect()
             ->to(base_url('admin/login'))
             ->setCookie($auth_cookie);
+    }
+
+    // public function view_product($productId)
+    // {
+    //     $payload = $this->validateJwtWebTokenVendor();
+    //     if (!$payload) {
+    //         return redirect()->to(base_url('vendor/login'));
+    //     }
+    //     $resp['resp'] = $this->webService->getProductsDetailsByProductId($payload->user_id, $productId);
+    //     $resp['images'] = $this->vendorWebModel->getProductImage($productId);
+    //     $resp['category'] = $this->commonModel->getCategory();
+    //     return
+    //         view('vendors/templates/header.php') .
+    //         view('vendors/view_product.php', $resp) .
+    //         view('vendors/templates/footer.php');
+    // }
+
+
+    public function view_product($productId)
+    {
+
+        $payload = $this->validateJwtWebToken();
+        if (!$payload) {
+            return redirect()->to(base_url('admin/login'));
+        }
+        // // $productId = $this->request->getGet('productId');
+        // echo  $productId;
+        $resp['resp'] = $this->webService->getProductsDetailsByProductId($productId);
+        $resp['images'] = $this->vendorWebModel->getProductImage($productId);
+        $resp['category'] = $this->commonModel->getCategory();
+
+        // $this->dd($resp);
+        return
+            view('admin/templates/header.php') .
+            view('admin/view_product.php', $resp) .
+            view('admin/templates/footer.php');
     }
 }

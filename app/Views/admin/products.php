@@ -1,17 +1,19 @@
 <div class="content-body p-3">
     <div class="mt-4 rounded-10 bg-white border">
+
         <div class="p-3">
             <div class="d-flex align-items-center justify-content-between">
                 <div class="m-0 h5 fw-600">List of Products</div>
             </div>
         </div>
+
         <div class="px-3 pb-3">
             <table id="tableProduct" class="display border">
                 <thead>
                     <tr>
                         <th>Vendor Details</th>
                         <th>Product Name</th>
-                        <th>Image</th>
+                        <!-- <th>Image</th> -->
                         <th>Category</th>
                         <th>Approval</th>
                         <th>Sponsored</th>
@@ -39,13 +41,13 @@
                                 <td>
                                     <div><?= $row['name']; ?></div>
                                 </td>
-                                <td>
+                                <!-- <td>
                                     <?php if (!empty($row['image'])) { ?>
                                         <img src="<?= base_url($row['image']) ?>" alt="Vendor Image" style="width: 40px; height: 40px;">
                                     <?php } else { ?>
 
                                     <?php } ?>
-                                </td>
+                                </td> -->
                                 <td>
                                     <div><?= $row['category_name']; ?></div>
                                 </td>
@@ -80,22 +82,26 @@
                                             <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                                         <?php } ?>
                                     </div>
-                                    <!-- <?php
-                                            $bgColor = ($row['status'] === 'Active') ? '#FFE4E3' : '#D1FAE5';
-                                            $textColor = ($row['status'] === 'Active') ? '#AB3D3C' : '#065F46';
-                                            ?>
-                                    <button class="btn rounded-pill" style="background-color: <?= $bgColor ?>; color: <?= $textColor ?>;">
-                                        <?= $row['status']; ?>
-                                    </button> -->
+                                   
                                 </td>
                                 <td><?= $row['created_at'] ?></td>
                                 <td style="max-width: 120px;">
                                     <div class="d-flex align-items-center gap-3">
-                                        <!-- <a href="<?php echo base_url('admin/view-product?productId=' . $row['uid']) ?>" class="btnico">
-                                            <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M22 8C22 7.52133 21.7567 7.208 21.27 6.57867C19.4889 4.28 15.5605 0 11 0C6.43945 0 2.51106 4.28 0.729989 6.57867C0.24333 7.208 0 7.52133 0 8C0 8.47867 0.24333 8.792 0.729989 9.42133C2.51106 11.72 6.43945 16 11 16C15.5605 16 19.4889 11.72 21.27 9.42133C21.7567 8.792 22 8.47867 22 8ZM11 12C11.998 12 12.9551 11.5786 13.6607 10.8284C14.3664 10.0783 14.7628 9.06087 14.7628 8C14.7628 6.93913 14.3664 5.92172 13.6607 5.17157C12.9551 4.42143 11.998 4 11 4C10.002 4 9.04495 4.42143 8.33928 5.17157C7.63361 5.92172 7.23717 6.93913 7.23717 8C7.23717 9.06087 7.63361 10.0783 8.33928 10.8284C9.04495 11.5786 10.002 12 11 12Z" fill="#0D9488" />
+                                        <a href="<?php echo base_url('admin/view-product/' . $row['uid']) ?>" class="btnico">
+                                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M8.58062 1.83914H2.68458C2.2378 1.83914 1.80932 2.01662 1.4934 2.33253C1.17748 2.64844 1 3.07691 1 3.52368V15.3154C1 15.7622 1.17748 16.1907 1.4934 16.5066C1.80932 16.8225 2.2378 17 2.68458 17H14.4767C14.9234 17 15.3519 16.8225 15.6678 16.5066C15.9838 16.1907 16.1612 15.7622 16.1612 15.3154V9.41955"
+                                                    stroke="#6C757D" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path
+                                                    d="M13.9511 1.52332C14.2862 1.18824 14.7407 1 15.2146 1C15.6884 1 16.1429 1.18824 16.478 1.52332C16.8131 1.85839 17.0013 2.31285 17.0013 2.78672C17.0013 3.26059 16.8131 3.71505 16.478 4.05012L8.88643 11.6423C8.68643 11.8422 8.43935 11.9884 8.16795 12.0677L5.74805 12.7752C5.67557 12.7963 5.59875 12.7976 5.52561 12.7788C5.45247 12.7601 5.38572 12.7221 5.33234 12.6687C5.27895 12.6153 5.2409 12.5485 5.22216 12.4754C5.20342 12.4023 5.20469 12.3254 5.22583 12.253L5.93336 9.83314C6.01297 9.56197 6.15954 9.31519 6.35955 9.11552L13.9511 1.52332Z"
+                                                    stroke="#6C757D" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
                                             </svg>
-                                        </a> -->
+                                        </a>
+
+
                                         <button class="btnico" onclick="deleteProduct('<?= $row['uid'] ?>')">
                                             <svg width="15" height="18" viewBox="0 0 15 18" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -113,7 +119,7 @@
             </table>
         </div>
     </div>
-    
+
 
     <script>
         function productApproval(checkbox, uid) {
