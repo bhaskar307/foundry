@@ -102,7 +102,7 @@ class WebController extends Common
         $resp['review'] = $this->webService->getCustomerReview();
         $resp['vendorCountryList'] = $this->webmodel->getVendorCountryList();
 
-        // $this->dd($resp);.
+    
         $metaTags = [
             'meta_title' => 'Product Filter',
             'meta_description' => 'Equip your project with the best. Foundry offers a full range of heavy-duty machines and commercial equipment built for performance and durability. Find the power you need, delivered straight to your site'

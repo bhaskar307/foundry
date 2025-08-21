@@ -216,7 +216,7 @@
                                         <div class="d-flex align-items-center justify-content-between mb-3">
                                             <div class="d-flex align-items-center gap-3">
                                                 <i style="line-height: 0;">
-                                                    <img src="<?= base_url($row['customer_image']) ?>" alt="" class="rounded-circle" height="60" width="60">
+                                                    <img src="<?= !empty($row['customer_image']) ? base_url($row['customer_image']) : 'https://app.pagarai.com/public/images/user.svg' ?>" alt="" class="rounded-circle" height="60" width="60">
                                                 </i>
                                                 <div class="">
                                                     <strong class="d-block"><?= $row['customer_name'] ?></strong>

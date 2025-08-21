@@ -212,12 +212,12 @@
     <script>
         $(document).ready(function() {
 
-            // Handle form submit
+           
             $("#editCategoryModalForm").on("submit", function(e) {
                 e.preventDefault();
 
                 const formData = {
-                    uid: $("#editSeoTagsId").val(), // uid for update
+                    uid: $("#editSeoTagsId").val(),
                     page_name: $("#editPageName").val(),
                     title: $("#editTitle").val(),
                     description: $("#editDescription").val()
@@ -230,7 +230,10 @@
                     data: JSON.stringify(formData),
                     success: function(response) {
                         if (response.success) {
-                            alert(response.message);
+                            MessSuccess.fire({
+                                icon: 'success',
+                                title: response.message,
+                            });
                             $("#editCategoryModal").modal("hide");
                             // reload table or refresh page if needed
                             location.reload();

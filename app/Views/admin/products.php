@@ -13,7 +13,6 @@
                         <th>Product Name</th>
                         <th>Image</th>
                         <th>Category</th>
-
                         <th>Approval</th>
                         <th>Sponsored</th>
                         <th>Status</th>
@@ -189,7 +188,7 @@
                     } // if first column is numeric ID
                 ],
                 order: [
-                    [0, 'desc']
+                    [0, 'asc']
                 ]
             });
         });

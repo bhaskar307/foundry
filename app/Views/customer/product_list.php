@@ -222,10 +222,9 @@
     </div>
 </section>
 <script>
-    // Render products
     const productsData = <?= json_encode($product) ?>;
     let currentPage = 1;
-    const itemsPerPage = 6;
+    const itemsPerPage = 3;
 
     function renderProductsPaginated(page = 1) {
         currentPage = page;
@@ -262,7 +261,6 @@
 
         document.querySelector('.pagination').innerHTML = paginationHTML;
 
-        // Add click events
         document.querySelectorAll('.page-link').forEach(el => {
             el.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -300,16 +298,16 @@
                     empty: '#E0E0E0'
                 } [fill];
                 return `
-        <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <linearGradient id="halfGradient">
-                    <stop offset="50%" stop-color="#F6AB27"/>
-                    <stop offset="50%" stop-color="#E0E0E0"/>
-                </linearGradient>
-            </defs>
-            <path d="M50 5L61 35H95L67 57L78 90L50 70L22 90L33 57L5 35H39L50 5Z" fill="${color}"/>
-        </svg>
-        `;
+                <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="halfGradient">
+                            <stop offset="50%" stop-color="#F6AB27"/>
+                            <stop offset="50%" stop-color="#E0E0E0"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M50 5L61 35H95L67 57L78 90L50 70L22 90L33 57L5 35H39L50 5Z" fill="${color}"/>
+                </svg>
+                `;
             };
 
             // Build stars HTML
