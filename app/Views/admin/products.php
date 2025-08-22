@@ -11,7 +11,7 @@
             <table id="tableProduct" class="display border">
                 <thead>
                     <tr>
-                        <th>Vendor Details</th>
+                        <th class="text-start">Vendor Details</th>
                         <th>Product Name</th>
                         <!-- <th>Image</th> -->
                         <th>Category</th>
@@ -28,14 +28,10 @@
                     ?>
                             <tr>
                                 <td>
-                                    <div class="fw-600 h6 m-0">
-                                        <div class="d-flex align-items-center">
-                                            <div class="text-nowrap">
-                                                <strong><?= $row['vendor_name']; ?></strong>
-                                                <br><small class="text-muted">Eml: <?= $row['vendor_email']; ?></small>
-                                                <br><small class="text-muted">Mob: <?= $row['vendor_mobile']; ?></small>
-                                            </div>
-                                        </div>
+                                    <div class="text-nowrap text-start">
+                                        <div><?= $row['vendor_name']; ?></div>
+                                        <small class="text-muted d-block">Email: <?= $row['vendor_email']; ?></small>
+                                        <small class="text-muted d-block">Mob: <?= $row['vendor_mobile']; ?></small>
                                     </div>
                                 </td>
                                 <td>

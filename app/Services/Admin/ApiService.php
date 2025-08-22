@@ -430,7 +430,8 @@ class ApiService
                 'updated_by' => $data['user_id'] ?? NULL,
                 'updated_at' => date('Y-m-d H:i:s')
             ];
-
+            
+            
             $this->sendPasswordAfterVendor($vendorUid);
 
             $success = $this->commonModel->UpdateData(VENDOR_TABLE, ['uid' => $vendorUid], $updateData);
@@ -459,26 +460,26 @@ class ApiService
         $db = \Config\Database::connect();
 
         $getVendor = $db->table('vendor')
-            ->select('name , email , is_verify')
+            ->select('name , email , password_send_status')
             ->where('uid', $vendorUid)
             ->get()
             ->getRow();
 
         if (!$getVendor) {
-            return false; // Vendor not found
+            return false; 
         }
 
         $email = $getVendor->email ?? "";
         $name = $getVendor->name ?? "N/A";
-        $isVerify = $getVendor->is_verify ?? 0;
+        $isVerify = $getVendor->password_send_status ?? 0;
 
-        // Correct comparison
+
         if ((int)$isVerify === 0) {
             $plainPassword = generateRandomPassword(8);
             $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
 
             $updatedPayload = [
-                'is_verify' => 1,
+                'password_send_status' => 1,
                 'password' => $hashedPassword,
             ];
 

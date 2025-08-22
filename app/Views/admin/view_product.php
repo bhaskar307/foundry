@@ -2,313 +2,285 @@
 <div class="content-body p-3">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0">Product Details</h5>
-        <!-- <a href="<?= base_url('vendor/edit-profile') ?>" class="btn btn-primary btn-sm">
-            <i class="bi bi-pencil-fill"></i> Edit Profile
-        </a> -->
+        <button type="button" id="editBtn" class="btn btn-primary">
+            Edit Product
+        </button>
     </div>
     <div class="card p-4 shadow-sm">
-        <!-- Header with title and edit button -->
-
-
-        <!-- Vendor Profile Image -->
-
-        <button type="button" id="editBtn" class="btn btn-primary btn-sm position-absolute" style="top: 10px; right: 10px;">
-            Edit
-        </button>
-
-
-        <div class="row g-3 align-items-center">
-            <?php
-
-            $allImages = [];
-
-
-            if (!empty($images) && is_array($images)) {
-                foreach ($images as $img) {
-                    $allImages[] = [
-                        'uid' => $img['uid'],
-                        'image' => $img['image'],
-                        'mainImage' => ($img['main_image'] == 1) ? true : false,
-                    ];
-                }
+        <?php
+        $allImages = [];
+        if (!empty($images) && is_array($images)) {
+            foreach ($images as $img) {
+                $allImages[] = [
+                    'uid' => $img['uid'],
+                    'image' => $img['image'],
+                    'mainImage' => ($img['main_image'] == 1) ? true : false,
+                ];
             }
-            ?>
+        }
+        ?>
+        <div class="row g-3 mb-3">
+            <?php foreach ($allImages as $index => $imgData) : ?>
 
-            <div class="row">
-                <?php foreach ($allImages as $index => $imgData) : ?>
-
-                    <div class="col-md-3 text-center mb-3 mb-md-0 image-col">
-                        <!-- Clickable Image -->
-                        <a href="<?= base_url($imgData['image']) ?>" target="_blank">
-                            <img src="<?= base_url($imgData['image']) ?>"
-                                alt=""
-                                class="img-fluid <?= $imgData['mainImage'] ? 'rounded-circle' : 'rounded' ?> border border-3 border-primary shadow"
-                                style="width: 120px; height: 120px; object-fit: cover;">
-                        </a>
-
-
-                        <button class="btn btn-danger btn-sm w-100"
-                            onclick="productImageDelete('<?= $imgData['uid'] ?>')">
-                            Delete
-                        </button>
-
-                    </div>
-                <?php endforeach; ?>
+            <div class="col-md-3 col-lg-2 text-center image-col">
+                <!-- Clickable Image -->
+                <div class="position-relative p-3 border rounded">
+                    <img src="<?= base_url($imgData['image']) ?>" alt=""
+                        class="img-fluid <?= $imgData['mainImage'] ? 'rounded-circle' : 'rounded' ?> border border-3 border-primary shadow"
+                        style="width: 120px; height: 120px; object-fit: cover;">
+                    <button class="btn p-0 m-0 border-0 shadow-none position-absolute" style="right:10px;top:10px;" onclick="productImageDelete('<?= $imgData['uid'] ?>')">              
+                        <svg width="30" height="30" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="250" cy="250" r="250" fill="#FF0000"/>
+                        <path d="M271.611 260.406H228.922C223.028 260.406 218.25 255.628 218.25 249.733C218.25 243.839 223.028 239.061 228.922 239.061H271.611C277.506 239.061 282.284 243.839 282.284 249.733C282.284 255.628 277.506 260.406 271.611 260.406Z" fill="white"/>
+                        <path d="M356.991 198.506H143.543C137.649 198.506 132.871 203.284 132.871 209.178C132.871 215.073 137.649 219.851 143.543 219.851H155.656L175.876 358.832C178.095 374.514 191.723 386.339 207.578 386.339H292.956C308.811 386.339 322.439 374.514 324.651 358.875L344.878 219.851H356.991C362.885 219.851 367.663 215.073 367.663 209.178C367.663 203.284 362.885 198.506 356.991 198.506ZM303.523 355.844C302.785 361.06 298.242 364.995 292.956 364.995H207.578C202.292 364.995 197.749 361.06 197.006 355.801L177.225 219.851H323.309L303.523 355.844Z" fill="white"/>
+                        <path d="M175.192 176.662C180.811 178.442 186.81 175.332 188.59 169.713L197.4 141.913C198.811 137.462 202.9 134.472 207.578 134.472H292.957C297.634 134.472 301.723 137.462 303.134 141.913L311.944 169.713C313.719 175.315 319.708 178.449 325.342 176.662C330.961 174.881 334.072 168.883 332.291 163.265L323.481 135.465C319.247 122.104 306.981 113.127 292.957 113.127H207.578C193.554 113.127 181.287 122.104 177.053 135.465L168.243 163.265C166.462 168.884 169.573 174.882 175.192 176.662Z" fill="white"/>
+                        <path d="M228.922 343.65C234.816 343.65 239.594 338.872 239.594 332.978V251.868C239.594 245.973 234.816 241.195 228.922 241.195C223.028 241.195 218.25 245.973 218.25 251.868V332.978C218.25 338.872 223.028 343.65 228.922 343.65Z" fill="white"/>
+                        <path d="M271.611 343.65C277.506 343.65 282.284 338.872 282.284 332.978V251.868C282.284 245.973 277.506 241.195 271.611 241.195C265.717 241.195 260.939 245.973 260.939 251.868V332.978C260.939 338.872 265.717 343.65 271.611 343.65Z" fill="white"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
-            <form id="productForm" method="post" enctype="multipart/form-data">
-                <div class="col-lg-12">
-                    <label for="company_logo">Uploaded Product Image</label>
-                    <input type="file" name="images[]" id="imageInput" class="form-control" accept="image/*" multiple disabled>
-                </div>
-                <div id="previewContainer" class="d-flex flex-wrap gap-2"></div>
-                <!-- Product Details -->
-                <div class="col-md-9">
-                    <div class="row g-3">
-                        <!-- Product Name -->
-                        <div class="col-md-12">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" name="name" id="name"
-                                    value="<?= esc($resp['name'] ?? '') ?>" readonly>
-                                <label for="name">Product Name</label>
-                            </div>
-                        </div>
-
-                        <!-- Category -->
-                        <div class="col-md-12">
-                            <div class="form-floating">
-                                <select class="form-control" name="category" id="category" disabled>
-                                    <option value="">Select category</option>
-                                    <?php if (!empty($category)) {
-                                        foreach ($category as $key) { ?>
-                                            <option value="<?= $key['uid']; ?>"
-                                                <?= ($resp['category_id'] ?? '') == $key['uid'] ? 'selected' : '' ?>>
-                                                <?= $key['title']; ?>
-                                            </option>
-                                    <?php }
-                                    } ?>
-                                </select>
-                                <label for="category">Category</label>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-floating">
-                                <select class="form-control" name="subcategory" id="subcategory_id" disabled>
-                                    <option value="">Select Sub category</option>
-                                </select>
-                                <label for="subcategory">Sub Category<span class="text-danger">*</span></label>
-                            </div>
-                        </div>
-                        <!-- Description -->
-                        <div class="col-md-12">
-                            <div class="form-floating">
-                                <textarea class="form-control" name="description" id="description" style="height: 120px;" readonly><?= esc($resp['description'] ?? '') ?></textarea>
-                                <label for="description">Description</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- <textarea name="content" id="content" rows="10" cols="90" class="form-control documentTextEditor"><?= esc($resp['html_description'] ?? '') ?> disabled
-                     </textarea> -->
-
+            <?php endforeach; ?>
         </div>
-        <button type="button" id="submitProductinputs" class="">
-            Update
-        </button>
+        <form id="productForm" method="post" enctype="multipart/form-data">
+            <div class="row g-3">
+                <div id="previewContainer" class="d-flex flex-wrap gap-2 col-12"></div>
+                <div class="col-md-6">
+                    <label class="mb-1 d-block" for="company_logo">Uploaded Product Image</label>
+                    <input type="file" name="images[]" id="imageInput" class="form-control" accept="image/*" multiple
+                        disabled>
+                </div>
+                <div class="col-md-6">
+                    <label class="mb-1 d-block" for="name">Product Name</label>
+                        <input type="text" class="form-control" name="name" id="name"
+                            value="<?= esc($resp['name'] ?? '') ?>" readonly>
+                </div>
+                <div class="col-md-6">
+                    <label class="mb-1 d-block" for="category">Category</label>
+                    <select class="form-control" name="category" id="category" disabled>
+                        <option value="">Select category</option>
+                        <?php if (!empty($category)) {
+                            foreach ($category as $key) { ?>
+                        <option value="<?= $key['uid']; ?>"
+                            <?= ($resp['category_id'] ?? '') == $key['uid'] ? 'selected' : '' ?>>
+                            <?= $key['title']; ?>
+                        </option>
+                        <?php }
+                        } ?>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="mb-1 d-block" for="subcategory">Sub Category<span class="text-danger">*</span></label>
+                    <select class="form-control" name="subcategory" id="subcategory_id" disabled>
+                        <option value="">Select Sub category</option>
+                    </select>        
+                </div>
+                <div class="col-md-12">
+                    <label class="mb-1 d-block" for="description">Description</label>
+                        <textarea class="form-control" name="description" id="description"
+                            style="height: 120px;" readonly><?= esc($resp['description'] ?? '') ?></textarea>       
+                </div>
+                <div class="col-md-12 d-flex justify-content-end">
+                    <button type="button" id="submitProductinputs" class="btn btn-primary">
+                        Update
+                    </button>            
+                </div>
+            </div>
         </form>
-
-
-
-    </div>
+    </div>  
+</div>                      
 
 
 
 
 
     <script>
-        const imageInput = document.getElementById('imageInput');
-        const previewContainer = document.getElementById('previewContainer');
-        let selectedImages = [];
+    const imageInput = document.getElementById('imageInput');
+    const previewContainer = document.getElementById('previewContainer');
+    let selectedImages = [];
 
-        imageInput.addEventListener('change', (event) => {
-            const files = Array.from(event.target.files);
+    imageInput.addEventListener('change', (event) => {
+        const files = Array.from(event.target.files);
 
-            files.forEach((file) => {
-                const reader = new FileReader();
+        files.forEach((file) => {
+            const reader = new FileReader();
 
-                reader.onload = (e) => {
-                    const imageUrl = e.target.result;
+            reader.onload = (e) => {
+                const imageUrl = e.target.result;
 
-                    const wrapper = document.createElement('div');
-                    wrapper.className = 'position-relative';
-                    wrapper.style.width = '100px';
-                    wrapper.style.height = '100px';
+                const wrapper = document.createElement('div');
+                wrapper.className = 'position-relative';
+                wrapper.style.width = '100px';
+                wrapper.style.height = '100px';
 
-                    const img = document.createElement('img');
-                    img.src = imageUrl;
-                    img.className = 'img-thumbnail';
-                    img.style.width = '100%';
-                    img.style.height = '100%';
-                    img.style.objectFit = 'cover';
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.className = 'img-thumbnail';
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
 
-                    const removeBtn = document.createElement('button');
-                    removeBtn.type = 'button';
-                    removeBtn.className = 'btn btn-danger btn-sm position-absolute top-0 end-0';
-                    removeBtn.innerHTML = '&times;';
-                    removeBtn.onclick = () => {
-                        previewContainer.removeChild(wrapper);
-                        selectedImages = selectedImages.filter(i => i !== file);
-                    };
-
-                    wrapper.appendChild(img);
-                    wrapper.appendChild(removeBtn);
-                    previewContainer.appendChild(wrapper);
-                    selectedImages.push(file);
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className = 'btn btn-danger btn-sm position-absolute top-0 end-0';
+                removeBtn.innerHTML = '&times;';
+                removeBtn.onclick = () => {
+                    previewContainer.removeChild(wrapper);
+                    selectedImages = selectedImages.filter(i => i !== file);
                 };
 
-                reader.readAsDataURL(file);
-            });
+                wrapper.appendChild(img);
+                wrapper.appendChild(removeBtn);
+                previewContainer.appendChild(wrapper);
+                selectedImages.push(file);
+            };
 
-            imageInput.value = ''; // reset to allow re-selecting same file
+            reader.readAsDataURL(file);
         });
 
-        // Submit logic
-        document.getElementById('submitProductinputs').addEventListener('click', function() {
-            const formData = new FormData();
-            console.log("formData:", formData);
+        imageInput.value = ''; // reset to allow re-selecting same file
+    });
 
-            formData.append('uid', '<?= $resp['uid'] ?? "" ?>'); // ensure uid is sent
+    // Submit logic
+    document.getElementById('submitProductinputs').addEventListener('click', function() {
+        const formData = new FormData();
+        console.log("formData:", formData);
+
+        formData.append('uid', '<?= $resp['uid'] ?? "" ?>'); // ensure uid is sent
 
 
-            formData.append('name', document.getElementById('name').value);
-            formData.append('description', document.getElementById('description').value);
-            // formData.append('content', document.getElementById('content').value);
-            formData.append('category', document.getElementById('category').value);
-            formData.append('subcategory', document.getElementById('subcategory_id').value);
+        formData.append('name', document.getElementById('name').value);
+        formData.append('description', document.getElementById('description').value);
+        // formData.append('content', document.getElementById('content').value);
+        formData.append('category', document.getElementById('category').value);
+        formData.append('subcategory', document.getElementById('subcategory_id').value);
 
-            selectedImages.forEach((file) => {
-                formData.append('images[]', file);
-            });
+        selectedImages.forEach((file) => {
+            formData.append('images[]', file);
+        });
 
+        $.ajax({
+            url: BASE_URL + "/vendor/api/product/edit-product",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.success) {
+                    alert("Product updated successfully.");
+                    location.reload();
+                } else {
+                    alert("Error: " + response.message);
+                }
+            },
+            error: function() {
+                alert("An error occurred while updating the product.");
+            }
+        });
+    });
+    </script>
+
+    <script>
+    function productImageDelete(imageID) {
+        console.log("Deleting image with ID:", imageID);
+
+        if (confirm("Are you sure you want to delete this image?")) {
             $.ajax({
-                url: BASE_URL + "/vendor/api/product/edit-product",
+                url: BASE_URL + "/vendor/api/product/image-delete",
                 type: "POST",
-                data: formData,
-                processData: false,
-                contentType: false,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify({
+                    uid: imageID
+                }),
                 success: function(response) {
                     if (response.success) {
-                        alert("Product updated successfully.");
-                        location.reload();
+                        alert("Image deleted successfully.");
+                        location.reload(); // Reload the page to reflect changes
                     } else {
-                        alert("Error: " + response.message);
+                        alert("Error deleting image: " + response.message);
                     }
                 },
                 error: function() {
-                    alert("An error occurred while updating the product.");
+                    alert("An error occurred while deleting the image.");
                 }
             });
-        });
+        }
+
+    }
     </script>
 
     <script>
-        function productImageDelete(imageID) {
-            console.log("Deleting image with ID:", imageID);
+    document.getElementById('editBtn').addEventListener('click', function() {
+        let form = document.getElementById('productForm');
+        let inputs = form.querySelectorAll('input, select, textarea');
 
-            if (confirm("Are you sure you want to delete this image?")) {
+        inputs.forEach(el => {
+            if (el.hasAttribute('readonly') || el.hasAttribute('disabled')) {
+                el.removeAttribute('readonly');
+                el.removeAttribute('disabled');
+            } else {
+                el.setAttribute('readonly', true);
+                if (el.tagName.toLowerCase() === 'select') el.setAttribute('disabled', true);
+            }
+        });
+
+        this.textContent = this.textContent === 'Edit' ? 'Lock' : 'Edit';
+    });
+
+    const preselectedSubcategory = "<?= $resp['subcategory_id'] ?? '' ?>";
+    console.log(" === ", preselectedSubcategory);
+
+    $(document).ready(function() {
+        // trigger subcategory load if category is already selected (edit case)
+        if ($("#category").val()) {
+            $("#category").trigger("change");
+        }
+
+        $('#category').on('change', function() {
+            let categoryId = $(this).val();
+
+            if (categoryId) {
                 $.ajax({
-                    url: BASE_URL + "/vendor/api/product/image-delete",
-                    type: "POST",
-                    headers: {
-                        'Content-Type': 'application/json'
+                    url: BASE_URL + "/vendor/api/get-subcategories",
+                    type: "GET",
+                    data: {
+                        categoryId: categoryId
                     },
-                    data: JSON.stringify({
-                        uid: imageID
-                    }),
-                    success: function(response) {
-                        if (response.success) {
-                            alert("Image deleted successfully.");
-                            location.reload(); // Reload the page to reflect changes
+                    dataType: "json",
+                    success: function(res) {
+                        $('#subcategory_id').empty().append(
+                            '<option value="">Select Sub category</option>');
+
+                        if (res.success && res.data && res.data.data.length > 0) {
+                            res.data.data.forEach(function(subcat) {
+                                let selected = (String(subcat.uid).trim() ===
+                                        String(preselectedSubcategory).trim()) ?
+                                    "selected" : "";
+
+                                $('#subcategory_id').append(
+                                    `<option value="${subcat.uid}" ${selected}>${subcat.title}</option>`
+                                );
+                            });
+
+                            // force-set the selected value in dropdown
+                            if (preselectedSubcategory) {
+                                $('#subcategory_id').val(preselectedSubcategory);
+                            }
+
                         } else {
-                            alert("Error deleting image: " + response.message);
+                            $('#subcategory_id').append(
+                                '<option value="">No subcategories found</option>');
                         }
                     },
                     error: function() {
-                        alert("An error occurred while deleting the image.");
+                        alert("Error loading subcategories.");
                     }
                 });
+            } else {
+                $('#subcategory_id').empty().append('<option value="">Select Sub category</option>');
             }
-
-        }
-    </script>
-
-    <script>
-        document.getElementById('editBtn').addEventListener('click', function() {
-            let form = document.getElementById('productForm');
-            let inputs = form.querySelectorAll('input, select, textarea');
-
-            inputs.forEach(el => {
-                if (el.hasAttribute('readonly') || el.hasAttribute('disabled')) {
-                    el.removeAttribute('readonly');
-                    el.removeAttribute('disabled');
-                } else {
-                    el.setAttribute('readonly', true);
-                    if (el.tagName.toLowerCase() === 'select') el.setAttribute('disabled', true);
-                }
-            });
-
-            this.textContent = this.textContent === 'Edit' ? 'Lock' : 'Edit';
         });
-
-        const preselectedSubcategory = "<?= $resp['subcategory_id'] ?? '' ?>";
-        console.log(" === ", preselectedSubcategory);
-
-        $(document).ready(function() {
-            // trigger subcategory load if category is already selected (edit case)
-            if ($("#category").val()) {
-                $("#category").trigger("change");
-            }
-
-            $('#category').on('change', function() {
-                let categoryId = $(this).val();
-
-                if (categoryId) {
-                    $.ajax({
-                        url: BASE_URL + "/vendor/api/get-subcategories",
-                        type: "GET",
-                        data: {
-                            categoryId: categoryId
-                        },
-                        dataType: "json",
-                        success: function(res) {
-                            $('#subcategory_id').empty().append('<option value="">Select Sub category</option>');
-
-                            if (res.success && res.data && res.data.data.length > 0) {
-                                res.data.data.forEach(function(subcat) {
-                                    let selected = (String(subcat.uid).trim() === String(preselectedSubcategory).trim()) ?
-                                        "selected" : "";
-
-                                    $('#subcategory_id').append(
-                                        `<option value="${subcat.uid}" ${selected}>${subcat.title}</option>`
-                                    );
-                                });
-
-                                // force-set the selected value in dropdown
-                                if (preselectedSubcategory) {
-                                    $('#subcategory_id').val(preselectedSubcategory);
-                                }
-
-                            } else {
-                                $('#subcategory_id').append('<option value="">No subcategories found</option>');
-                            }
-                        },
-                        error: function() {
-                            alert("Error loading subcategories.");
-                        }
-                    });
-                } else {
-                    $('#subcategory_id').empty().append('<option value="">Select Sub category</option>');
-                }
-            });
-        });
+    });
     </script>

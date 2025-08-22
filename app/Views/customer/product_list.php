@@ -46,7 +46,7 @@
                                 </script>
                             </div>
                             <div class="d-flex flex-column gap-1">
-                                <h6 class="mb-2">Category</h6>
+                                <h6 class="mb-2">Categories</h6>
                                 <?php if (!empty($category)) : ?>
                                     <?php foreach ($category as $row): ?>
                                         <?php
@@ -187,8 +187,9 @@
                                 </div>
                                 <div class="col-4">
                                     <select id="ratingValue" class="form-select form-select-sm" style="height:40px;font-size:14px;">
-                                        <option>Rating(⭐) High to Low</option>
-                                        <option>Rating(⭐) Low to High</option>
+                                        <!-- <option disabled selected> Rating</option> -->
+                                        <option> High to Low (Rating)</option>
+                                        <option>Low to High(Rating) </option>
                                     </select>
                                 </div>
                             </div>
@@ -423,9 +424,10 @@
 
             console.log("Before Sort:", filtered);
 
-            if (selected === "Rating(⭐) High to Low") {
+            if (selected === "High to Low (Rating)") {
+
                 filtered.sort((a, b) => b.total_rating_percent - a.total_rating_percent);
-            } else if (selected === "Rating(⭐) Low to High") {
+            } else if (selected === "Low to High(Rating)") {
                 filtered.sort((a, b) => a.total_rating_percent - b.total_rating_percent);
             }
 

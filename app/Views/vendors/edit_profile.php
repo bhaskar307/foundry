@@ -56,7 +56,7 @@
                     <div class="col-lg-12">
                         <label for="company_logo">Uploaded Vendor Logo</label>
                         <?php $companyVendorImage = !empty($resp['image']) ? $resp['image'] : ""  ?>
-                        <img src="<?= base_url() . '/' . $companyVendorImage ?>">
+                        <img width="100" height="100" class="object-fit-cover" src="<?= base_url() . '/' . $companyVendorImage ?>">
                     </div>
 
                     <input type="hidden" name="old_filepath" value="<?= $companyVendorImage  ?>">

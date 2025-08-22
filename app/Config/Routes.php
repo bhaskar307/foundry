@@ -25,6 +25,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], function ($rou
     $routes->get('logout', 'WebController::logout');
     $routes->get('view-product/(:any)', 'WebController::view_product/$1');
     $routes->get('meta-content', 'WebController::metaContent');
+    $routes->get('categories', 'WebController::getCategories');
 });
 
 $routes->group('admin/api', ['namespace' => 'App\Controllers\Admin'], function ($routes) {

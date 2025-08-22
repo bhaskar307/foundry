@@ -10,12 +10,17 @@ use CodeIgniter\API\ResponseTrait;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
+use App\Models\Customer\WebModel as customerModel;
+use App\Models\Admin\WebModel as adminWebModel;
+
 class WebController extends Common
 {
     protected $webService;
     protected $commonModel;
     protected $db;
     protected $vendorWebModel;
+    protected $customerModel;
+    protected $adminWebModel;
     public function __construct()
     {
         $this->session = session();
@@ -23,6 +28,8 @@ class WebController extends Common
         $this->commonModel = new CommonModel();
         $this->db =   \Config\Database::connect();
         $this->vendorWebModel = new vendorModel();
+        $this->customerModel =  new customerModel();
+        $this->adminWebModel = new adminWebModel();
     }
 
     /** Index */
@@ -46,10 +53,12 @@ class WebController extends Common
         if (!$payload) {
             return redirect()->to(base_url('admin/login'));
         }
-
+        $data['matrics'] = $this->customerModel->getStatics();
+        $data['requests'] = $this->adminWebModel->getRequestsDetails(null, null, null, null);
+        // $this->dd($data) ; 
         return
             view('admin/templates/header.php') .
-            view('admin/dashboard.php') .
+            view('admin/dashboard.php', $data) .
             view('admin/templates/footer.php');
     }
 
@@ -261,5 +270,38 @@ class WebController extends Common
             view('admin/templates/header.php') .
             view('admin/view_product.php', $resp) .
             view('admin/templates/footer.php');
+    }
+
+
+    public function getCategories()
+    {
+        $categories = $this->db->table('category')->get()->getResultArray();
+        $tree = $this->buildTree($categories);
+
+        $this->apiSuccess(
+            200,
+            'category tree',
+            $tree
+        );
+    }
+
+
+
+    private function buildTree($elements, $parentId = null)
+    {
+        $branch = [];
+        foreach ($elements as $element) {
+            $elementParent = $element['path'] === "" ? null : $element['path'];
+
+            if ($elementParent == $parentId) {
+                $children = $this->buildTree($elements, $element['uid']);
+                if ($children) {
+                    $element['children'] = $children;
+                }
+                $branch[] = $element;
+            }
+        }
+
+        return $branch;
     }
 }

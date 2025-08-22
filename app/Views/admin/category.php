@@ -1,3 +1,4 @@
+
 <div class="content-body p-3">
     <div class="mt-4 rounded-10 bg-white border">
         <div class="p-3">
@@ -19,9 +20,9 @@
             <table class="dataTable display border">
                 <thead>
                     <tr>
-                        <th>categories</th>
+                        <th>Title</th>
                         <th>Image</th>
-                        <th>Sub-categories</th>
+                        <th>Path</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -379,3 +380,6 @@
     }
     /** Update Status */
     </script>
+apps-fileview.texmex_20250814.00_p1
+category.php
+Displaying category.php.

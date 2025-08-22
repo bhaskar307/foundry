@@ -427,11 +427,8 @@
         }
 
         function handleVendotVerify(checkbox, uid) {
-            console.log("===================== ", checkbox);
-            console.log("===================== ", uid);
             const status = checkbox.checked ? 1 : 0;
             console.log(status);
-            // return;
             fetch(BASE_URL + 'admin/api/vendor-verify', {
                     method: 'POST',
                     headers: {
