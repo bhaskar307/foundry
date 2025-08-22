@@ -8,7 +8,7 @@ class WebModel extends Model
 {
 
     /** Get Category Details */
-    public function getCategoryData()
+    public function getCategoryData_2()
     {
         $db = \Config\Database::connect();
 
@@ -20,6 +20,34 @@ class WebModel extends Model
 
         return $result;
     }
+    public function getCategoryData()
+    {
+        $db = \Config\Database::connect();
+
+        $builder = $db->table('category c');
+        $builder->select('c.id,c.uid, c.title, c.path,c.image, c.status, c.created_at, c.updated_at, cp.title AS path_name');
+        $builder->join('category cp', 'cp.uid = c.path', 'left'); // join parent category
+        $builder->where('c.status !=', DELETED_STATUS);
+        //$builder->orderBy('c.uid', 'desc');
+
+        $result = $builder->get()->getResultArray();
+
+        // If you want subcategories grouped under parent
+        $categories = [];
+        foreach ($result as $row) {
+            if (empty($row['path'])) {
+                // Main category
+                $categories[$row['uid']] = $row;
+                $categories[$row['uid']]['subcategories'] = [];
+            } else {
+                // Subcategory: push into its parent's array
+                $categories[$row['path']]['subcategories'][] = $row;
+            }
+        }
+
+        return array_values($categories);
+    }
+
     /** Get Category Details */
 
     /** Get Product Details */
