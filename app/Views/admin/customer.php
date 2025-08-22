@@ -6,12 +6,13 @@
             </div>
         </div>
         <div class="px-3 pb-3">
-            <table class="dataTable display border">
+            <table id="tableCustomer" class=" display border">
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th  class="text-nowrap text-start">Name</th>
                         <th>Image</th>
-                        <th>Dob</th>
+                  
+                        <th>Company</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -19,13 +20,13 @@
                 <tbody>
                     <?php if (!empty($resp)) {
                         foreach ($resp as $row) {
-                    ?>
+                            ?>
                             <tr>
 
                                 <td>
                                     <div class="fw-600 h6 m-0">
-                                        <div class="d-flex align-items-center">
-                                            <div class="text-nowrap">
+                                        <div class="d-flex justify-content-start">
+                                            <div class="text-nowrap text-start">
                                                 <strong><?= $row['name']; ?></strong>
                                                 <br><small class="text-muted">Eml: <?= $row['email']; ?></small>
                                                 <br><small class="text-muted">Mob: <?= $row['mobile']; ?></small>
@@ -35,28 +36,31 @@
                                 </td>
 
                                 <td>
-                                    <?php if(!empty($row['image'])) { ?>
-                                        <img src="<?= base_url($row['image']) ?>" alt="Vendor Image" style="width: 40px; height: 40px;">
-                                    <?php }else{ ?>
-                                        
+                                    <?php if (!empty($row['image'])) { ?>
+                                        <img src="<?= base_url($row['image']) ?>" alt="Vendor Image"
+                                            style="width: 40px; height: 40px;">
+                                    <?php } else { ?>
+                                        <img src="https://app.pagarai.com/public/images/user.svg" alt="Vendor Image"
+                                            style="width: 40px; height: 40px;">
                                     <?php } ?>
                                 </td>
 
+                               
                                 <td>
-                                    <div class="fw-600 h6 m-0"><?= date('jS F, Y', strtotime($row['dob'])); ?></div>
-                                </td>
+                                    <div class="fw-600 h6 m-0"><?= !empty($row['company']) ? $row['company'] : "---" ?></div>
 
+                                </td>
                                 <td>
                                     <div class="form-check form-switch d-flex justify-content-center">
-                                        <?php if($row['status'] != 'deleted'){ ?>
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="flexSwitchCheckChecked_<?= $row['id']; ?>"
-                                            onchange="handleStatusChange(this, '<?= $row['uid']; ?>')"
-                                            <?= ($row['status'] == ACTIVE_STATUS) ? 'checked' : ''; ?>>
-                                        <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                                        <?php if ($row['status'] != 'deleted') { ?>
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckChecked_<?= $row['id']; ?>"
+                                                onchange="handleStatusChange(this, '<?= $row['uid']; ?>')"
+                                                <?= ($row['status'] == ACTIVE_STATUS) ? 'checked' : ''; ?>>
+                                            <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                                         <?php } ?>
                                     </div>
-                                    
+
                                 </td>
 
                                 <td style="max-width: 120px;">
@@ -67,15 +71,11 @@
                                             </svg>
                                         </button> -->
 
-                                        <button class="btnico" 
-                                            onclick="openEditModal(this)"
-                                            data-uid="<?= $row['uid']; ?>"
+                                        <button class="btnico" onclick="openEditModal(this)" data-uid="<?= $row['uid']; ?>"
                                             data-name="<?= htmlspecialchars($row['name']); ?>"
                                             data-email="<?= htmlspecialchars($row['email']); ?>"
                                             data-mobile="<?= htmlspecialchars($row['mobile']); ?>"
-                                            data-dob="<?= $row['dob']; ?>"
-                                            data-image="<?= base_url($row['image'] ?? '') ?>"
-                                        >
+                                            data-dob="<?= $row['dob']; ?>" data-image="<?= base_url($row['image'] ?? '') ?>">
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -98,9 +98,9 @@
                                         </button>
                                     </div>
                                 </td>
-                                
+
                             </tr>
-                    <?php }
+                        <?php }
                     } ?>
                 </tbody>
             </table>
@@ -108,9 +108,10 @@
     </div>
 
     <!-- Edit module -->
-    <div class="modal fade" id="editCustomerModal" tabindex="-1" aria-labelledby="editCustomerModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editCustomerModal" tabindex="-1" aria-labelledby="editCustomerModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
-            <form id="editCustomerModalForm" enctype="multipart/form-data" >
+            <form id="editCustomerModalForm" enctype="multipart/form-data">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editCustomerModalLabel">Update Customer Details</h5>
@@ -132,11 +133,12 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Mobile</label>
-                            <input type="text" class="form-control" name="mobile" id="editMobile" placeholder="Enter Mobile" >
+                            <input type="text" class="form-control" name="mobile" id="editMobile"
+                                placeholder="Enter Mobile">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Dob</label>
-                            <input type="date" class="form-control" name="dob" id="editDob" placeholder="Enter DOB" >
+                            <input type="date" class="form-control" name="dob" id="editDob" placeholder="Enter DOB">
                         </div>
 
                         <!-- Upload Image -->
@@ -162,58 +164,114 @@
     </div>
     <!-- Edit module -->
 
-<script>
-    function openEditModal(button) {
-        const btn = $(button);
-        $('#editCustomerUid').val(btn.data('uid'));
-        $('#editName').val(btn.data('name'));
-        $('#editEmail').val(btn.data('email'));
-        $('#editMobile').val(btn.data('mobile'));
-        $('#editCountry').val(btn.data('country'));
-        $('#editDob').val(btn.data('dob'));
-        const imageUrl = btn.data('image');
-        if (imageUrl) {
-            $('#customerOldImage').attr('src', imageUrl).show();
-            $('#oldImagePreview').show();
-        } else {
-            $('#customerOldImage').hide();
-            $('#oldImagePreview').hide();
+    <script>
+        $(document).ready(function () {
+            $('#tableCustomer').DataTable({
+                columnDefs: [{
+                    type: 'num',
+                    targets: 0
+                } // if first column is numeric ID
+                ],
+                order: [
+                    [0, 'asc']
+                ]
+            });
+        });
+        function openEditModal(button) {
+            const btn = $(button);
+            $('#editCustomerUid').val(btn.data('uid'));
+            $('#editName').val(btn.data('name'));
+            $('#editEmail').val(btn.data('email'));
+            $('#editMobile').val(btn.data('mobile'));
+            $('#editCountry').val(btn.data('country'));
+            $('#editDob').val(btn.data('dob'));
+            const imageUrl = btn.data('image');
+            if (imageUrl) {
+                $('#customerOldImage').attr('src', imageUrl).show();
+                $('#oldImagePreview').show();
+            } else {
+                $('#customerOldImage').hide();
+                $('#oldImagePreview').hide();
+            }
+            $('#editCustomerModal').modal('show');
         }
-        $('#editCustomerModal').modal('show');
-    }
 
-    $(document).ready(function () {
-        $('#editCustomerModalForm').on('submit', function (e) {
-            e.preventDefault();
+        $(document).ready(function () {
+            $('#editCustomerModalForm').on('submit', function (e) {
+                e.preventDefault();
 
-            $('.text-danger').remove();
-            let isValid = true;
-            let formData = new FormData(this);
-            
-            $('#editCustomerModalForm input').each(function () {
-                const input = $(this);
-                if (input.attr('type') === 'file') {
-                    return; 
+                $('.text-danger').remove();
+                let isValid = true;
+                let formData = new FormData(this);
+
+                $('#editCustomerModalForm input').each(function () {
+                    const input = $(this);
+                    if (input.attr('type') === 'file') {
+                        return;
+                    }
+
+                    const value = input.val().trim();
+                    if (value === '') {
+                        isValid = false;
+                        input.after('<div class="text-danger mt-1">This field is required</div>');
+                    }
+                });
+                if (!isValid) {
+                    return;
                 }
 
-                const value = input.val().trim();
-                if (value === '') {
-                    isValid = false;
-                    input.after('<div class="text-danger mt-1">This field is required</div>');
+                const $button = $('#editBtn');
+                $button.prop('disabled', true).text('Loading...');
+                // for (let [key, value] of formData.entries()) {
+                //     console.log(key, value);
+                // }
+                // return;
+                $.ajax({
+                    url: BASE_URL + '/admin/api/customer/update',
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        MessSuccess.fire({
+                            icon: 'success',
+                            title: response.message || 'Update Successful',
+                        });
+                        location.reload();
+                    },
+                    error: function (xhr) {
+                        console.error('Error:', xhr.responseText);
+                        MessError.fire({
+                            icon: 'error',
+                            title: 'An error occurred. Please try again.',
+                        });
+                    }
+                });
+            });
+        });
+
+        /** deleted */
+        function deleteCustomer(uid) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Do you really want to delete this Customer?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteCustomerDetails(uid);
                 }
             });
-            if (!isValid) {
-                return;
-            }
+        }
+        function deleteCustomerDetails(uid) {
+            const formData = new FormData();
+            formData.append('uid', uid);
 
-            const $button = $('#editBtn');
-            $button.prop('disabled', true).text('Loading...');
-            // for (let [key, value] of formData.entries()) {
-            //     console.log(key, value);
-            // }
-            // return;
             $.ajax({
-                url: BASE_URL +'/admin/api/customer/update', 
+                url: BASE_URL + '/admin/api/customer/delete',
                 method: 'POST',
                 data: formData,
                 processData: false,
@@ -221,8 +279,8 @@
                 success: function (response) {
                     MessSuccess.fire({
                         icon: 'success',
-                        title: response.message || 'Update Successful',
-                    }); 
+                        title: response.message || 'Customer deleted successfully',
+                    });
                     location.reload();
                 },
                 error: function (xhr) {
@@ -233,74 +291,30 @@
                     });
                 }
             });
-        });
-    });
+        }
+        /** deleted */
 
-    /** deleted */
-    function deleteCustomer(uid) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'Do you really want to delete this Customer?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel',
-            reverseButtons: true,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                deleteCustomerDetails(uid);
-            }
-        });
-    }
-    function deleteCustomerDetails(uid) {
-        const formData = new FormData();
-        formData.append('uid', uid); 
+        /** Update Status */
+        function handleStatusChange(checkbox, uid) {
+            const status = checkbox.checked ? 'active' : 'inactive';
+            fetch(BASE_URL + '/admin/api/customer/update-status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    uid: uid,
+                    status: status
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
 
-        $.ajax({
-            url: BASE_URL + '/admin/api/customer/delete',
-            method: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                MessSuccess.fire({
-                    icon: 'success',
-                    title: response.message || 'Customer deleted successfully',
+                })
+                .catch(error => {
+                    console.error("Error updating status:", error);
+                    alert("Failed to update status");
                 });
-                location.reload();
-            },
-            error: function (xhr) {
-                console.error('Error:', xhr.responseText);
-                MessError.fire({
-                    icon: 'error',
-                    title: 'An error occurred. Please try again.',
-                });
-            }
-        });
-    }
-    /** deleted */
-
-    /** Update Status */
-    function handleStatusChange(checkbox, uid) {
-        const status = checkbox.checked ? 'active' : 'inactive';
-        fetch(BASE_URL + '/admin/api/customer/update-status', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                uid: uid,
-                status: status
-            }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            
-        })
-        .catch(error => {
-            console.error("Error updating status:", error);
-            alert("Failed to update status");
-        });
-    }
-    /** Update Status */
-</script>
+        }
+        /** Update Status */
+    </script>

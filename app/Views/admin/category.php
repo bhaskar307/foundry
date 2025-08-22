@@ -35,7 +35,7 @@
                     ?>
                             <tr>
                                 <td>
-                                    <div><?= $i++; ?></div>
+                                    <div class="text-nowrap text-center"><?= $i++; ?></div>
                                 </td>
                                 <td>
                                     <div class="fw-600 h6 m-0"><?= $row['title']; ?></div>
@@ -105,7 +105,7 @@
                                 ?>
                                 <tr>
                                     <td>
-                                        <div><?= $i++; ?></div>
+                                        <div class="text-nowrap text-center"><?= $i++; ?></div>
                                     </td>
                                     <td>
                                         <div><?= $subRow['title']; ?></div>

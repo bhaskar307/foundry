@@ -206,16 +206,16 @@ class WebModel extends Model
         }
 
         // Price range filter
-        if (is_numeric($priceFrom) && is_numeric($priceTo)) {
-            $builder->where('p.price >=', $priceFrom);
-            $builder->where('p.price <=', $priceTo);
-        }
+        // if (is_numeric($priceFrom) && is_numeric($priceTo)) {
+        //     $builder->where('p.price >=', $priceFrom);
+        //     $builder->where('p.price <=', $priceTo);
+        // }
         $builder->where('v.status', ACTIVE_STATUS);
         $builder->orderBy('p.is_verify', 'DESC');
 
         $builder->where('p.status', ACTIVE_STATUS);
         $builder->where('v.status', ACTIVE_STATUS);
-        $builder->where('p.is_verify', 1);
+        // $builder->where('p.is_verify', 1);
         $builder->where('p.is_admin_allow', true);
         $builder->orderBy('p.is_verify', 'DESC');
         $builder->orderBy('p.uid', 'DESC');
