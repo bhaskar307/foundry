@@ -100,9 +100,12 @@ class WebController extends Common
             return redirect()->to(base_url('admin/login'));
         }
 
-        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE, ['status' => ACTIVE_STATUS]);
+        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE, ['status' => ACTIVE_STATUS,'path' => '']);
         //$resp['resp'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status !=' => DELETED_STATUS]);
         $resp['resp'] = $this->webService->getCategoryData();
+        // echo '<pre>';
+        // print_r($resp['resp']);
+        // die();
         return
             view('admin/templates/header.php') .
             view('admin/category.php', $resp) .

@@ -187,7 +187,7 @@
                                 </div>
                                 <div class="col-4">
                                     <select id="ratingValue" class="form-select form-select-sm" style="height:40px;font-size:14px;">
-                                        <!-- <option disabled selected> Rating</option> -->
+                                        <option selected>All (Rating)</option>
                                         <option> High to Low (Rating)</option>
                                         <option>Low to High(Rating) </option>
                                     </select>
@@ -431,7 +431,7 @@
                 filtered.sort((a, b) => a.total_rating_percent - b.total_rating_percent);
             }
 
-            console.log("Sorted Products:", filtered);
+          
             renderProducts(filtered);
         });
     });
