@@ -326,9 +326,18 @@ class WebModel extends Model
             'total_customers' => $this->getTotalCustomers(),
             'total_products' => $this->getTotalProducts(),
             'total_country' => $this->getVendorCountryCountry(),
+            'total_request' => $this->getAllRequestCount(),
         ];
     }
 
+    public function getAllRequestCount()
+    {
+        $db = \Config\Database::connect();
+
+        $builder = $db->table('request');
+        $builder->where('status', ACTIVE_STATUS);
+        return $builder->countAllResults();
+    }
     public function getVendorCountryCountry()
     {
         $db = \Config\Database::connect();

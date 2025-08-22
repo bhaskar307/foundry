@@ -7,9 +7,9 @@
                         <option value=''>All Customer</option>
                         <?php if (!empty($customer)) {
                             foreach ($customer as $key) {
-                        ?>
+                                ?>
                                 <option value='<?= $key['uid'] ?>' <?php if ($key['uid'] == $customerUid) { ?> selected <?php } ?>><?= $key['name'] ?></option>
-                        <?php }
+                            <?php }
                         } ?>
                     </select>
                 </div>
@@ -20,9 +20,10 @@
                         <option value=''>All Products</option>
                         <?php if (!empty($product)) {
                             foreach ($product as $key) {
-                        ?>
-                                <option value='<?= $key['uid'] ?>' <?php if ($key['uid'] == $productUid) { ?> selected <?php } ?>><?= $key['name'] ?></option>
-                        <?php }
+                                ?>
+                                <option value='<?= $key['uid'] ?>' <?php if ($key['uid'] == $productUid) { ?> selected <?php } ?>>
+                                    <?= $key['name'] ?></option>
+                            <?php }
                         } ?>
                     </select>
                 </div>
@@ -52,7 +53,7 @@
                 <tbody>
                     <?php if (!empty($resp)) {
                         foreach ($resp as $row) {
-                    ?>
+                            ?>
                             <tr>
                                 <td>
                                     <div class="fw-600 h6 m-0">
@@ -91,9 +92,12 @@
                                     ?>
                                     <i style="display: flex; gap: 2px; line-height: 0;">
                                         <?php
-                                        for ($i = 0; $i < $fullStars; $i++) echo $starSvg('full');
-                                        if ($halfStar) echo $starSvg('half');
-                                        for ($i = 0; $i < $emptyStars; $i++) echo $starSvg('empty');
+                                        for ($i = 0; $i < $fullStars; $i++)
+                                            echo $starSvg('full');
+                                        if ($halfStar)
+                                            echo $starSvg('half');
+                                        for ($i = 0; $i < $emptyStars; $i++)
+                                            echo $starSvg('empty');
                                         ?>
                                     </i>
                                 </td>
@@ -129,7 +133,7 @@
                                 </td>
                             </tr>
 
-                    <?php }
+                        <?php }
                     } ?>
                 </tbody>
             </table>
@@ -164,14 +168,14 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function(response) {
+                success: function (response) {
                     MessSuccess.fire({
                         icon: 'success',
                         title: response.message || 'Vendor deleted successfully',
                     });
                     location.reload();
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     console.error('Error:', xhr.responseText);
                     MessError.fire({
                         icon: 'error',
@@ -180,15 +184,21 @@
                 }
             });
         }
-        $(document).ready(function() {
+
+        $(document).ready(function () {
             $('#tableRatings').DataTable({
+                columnDefs: [{
+                    type: 'num',
+                    targets: 0
+                } // if first column is numeric ID
+                ],
                 order: [
-                    [2, 'desc']
+                    [0, 'asc']
                 ]
             });
         });
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             function handleFilterChange() {
                 const customer = $('#search_customer').val();
                 const product = $('#search_product').val();

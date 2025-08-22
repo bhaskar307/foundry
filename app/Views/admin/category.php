@@ -4,10 +4,14 @@
             <div class="d-flex align-items-center justify-content-between">
                 <div class="m-0 h5 fw-600">List of Category</div>
                 <div class="">
-                    <a href="#" class="btn btn-primary d-flex align-items-center gap-2 py-2" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                    <a href="#" class="btn btn-primary d-flex align-items-center gap-2 py-2" data-bs-toggle="modal"
+                        data-bs-target="#addCategoryModal">
                         <i style="line-height: 0;">
-                            <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M14.8571 9.64286H9.14286V15.3571C9.14286 15.6602 9.02245 15.9509 8.80812 16.1653C8.59379 16.3796 8.30311 16.5 8 16.5C7.6969 16.5 7.40621 16.3796 7.19188 16.1653C6.97755 15.9509 6.85714 15.6602 6.85714 15.3571V9.64286H1.14286C0.839753 9.64286 0.549063 9.52245 0.334735 9.30812C0.120408 9.09379 0 8.80311 0 8.5C0 8.1969 0.120408 7.90621 0.334735 7.69188C0.549063 7.47755 0.839753 7.35714 1.14286 7.35714H6.85714V1.64286C6.85714 1.33975 6.97755 1.04906 7.19188 0.834735C7.40621 0.620407 7.6969 0.5 8 0.5C8.30311 0.5 8.59379 0.620407 8.80812 0.834735C9.02245 1.04906 9.14286 1.33975 9.14286 1.64286V7.35714H14.8571C15.1602 7.35714 15.4509 7.47755 15.6653 7.69188C15.8796 7.90621 16 8.1969 16 8.5C16 8.80311 15.8796 9.09379 15.6653 9.30812C15.4509 9.52245 15.1602 9.64286 14.8571 9.64286Z" fill="white"></path>
+                            <svg width="16" height="17" viewBox="0 0 16 17" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M14.8571 9.64286H9.14286V15.3571C9.14286 15.6602 9.02245 15.9509 8.80812 16.1653C8.59379 16.3796 8.30311 16.5 8 16.5C7.6969 16.5 7.40621 16.3796 7.19188 16.1653C6.97755 15.9509 6.85714 15.6602 6.85714 15.3571V9.64286H1.14286C0.839753 9.64286 0.549063 9.52245 0.334735 9.30812C0.120408 9.09379 0 8.80311 0 8.5C0 8.1969 0.120408 7.90621 0.334735 7.69188C0.549063 7.47755 0.839753 7.35714 1.14286 7.35714H6.85714V1.64286C6.85714 1.33975 6.97755 1.04906 7.19188 0.834735C7.40621 0.620407 7.6969 0.5 8 0.5C8.30311 0.5 8.59379 0.620407 8.80812 0.834735C9.02245 1.04906 9.14286 1.33975 9.14286 1.64286V7.35714H14.8571C15.1602 7.35714 15.4509 7.47755 15.6653 7.69188C15.8796 7.90621 16 8.1969 16 8.5C16 8.80311 15.8796 9.09379 15.6653 9.30812C15.4509 9.52245 15.1602 9.64286 14.8571 9.64286Z"
+                                    fill="white"></path>
                             </svg>
                         </i>
                         <span>Add Category</span>
@@ -16,7 +20,7 @@
             </div>
         </div>
         <div class="px-3 pb-3">
-            <table class="dataTable display border">
+            <table id="categoryTable" class=" display border">
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -29,29 +33,30 @@
                 <tbody>
                     <?php if (!empty($resp)) {
                         foreach ($resp as $row) {
-                    ?>
+                            ?>
                             <tr>
                                 <td>
                                     <div class="fw-600 h6 m-0"><?= $row['title']; ?></div>
                                 </td>
                                 <td>
-                                    <?php if(!empty($row['image'])) { ?>
-                                        <img src="<?= base_url($row['image']) ?>" alt="Vendor Image" style="width: 40px; height: 40px;">
-                                    <?php }else{ ?>
-                                        
+                                    <?php if (!empty($row['image'])) { ?>
+                                        <img src="<?= base_url($row['image']) ?>" alt="Vendor Image"
+                                            style="width: 40px; height: 40px;">
+                                    <?php } else { ?>
+
                                     <?php } ?>
                                 </td>
                                 <td>
-                                    <div class="fw-600 h6 m-0"><?= $row['path_name'] ?? "--" ; ?></div>
-                                </td>    
+                                    <div class="fw-600 h6 m-0"><?= $row['path_name'] ?? "--"; ?></div>
+                                </td>
                                 <td>
                                     <div class="form-check form-switch d-flex justify-content-center">
-                                        <?php if($row['status'] != 'deleted'){ ?>
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="flexSwitchCheckChecked_<?= $row['id']; ?>"
-                                            onchange="handleStatusChange(this, '<?= $row['uid']; ?>')"
-                                            <?= ($row['status'] == ACTIVE_STATUS) ? 'checked' : ''; ?>>
-                                        <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                                        <?php if ($row['status'] != 'deleted') { ?>
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckChecked_<?= $row['id']; ?>"
+                                                onchange="handleStatusChange(this, '<?= $row['uid']; ?>')"
+                                                <?= ($row['status'] == ACTIVE_STATUS) ? 'checked' : ''; ?>>
+                                            <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                                         <?php } ?>
                                     </div>
                                 </td>
@@ -64,13 +69,10 @@
                                             </svg>
                                         </button> -->
 
-                                        <button class="btnico" 
-                                            onclick="openEditModal(this)"
-                                            data-uid="<?= $row['uid']; ?>"
+                                        <button class="btnico" onclick="openEditModal(this)" data-uid="<?= $row['uid']; ?>"
                                             data-name="<?= htmlspecialchars($row['title']); ?>"
-                                            data-path="<?= htmlspecialchars($row['path']);   ?>"
-                                            data-image="<?= htmlspecialchars($row['image']); ?>"
-                                        >
+                                            data-path="<?= htmlspecialchars($row['path']); ?>"
+                                            data-image="<?= htmlspecialchars($row['image']); ?>">
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -94,14 +96,15 @@
                                     </div>
                                 </td>
                             </tr>
-                    <?php }
+                        <?php }
                     } ?>
                 </tbody>
             </table>
         </div>
     </div>
     <!-- Add module -->
-    <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <form id="categoryForm" enctype="multipart/form-data">
                 <div class="modal-content">
@@ -119,12 +122,13 @@
                             <label class="form-label">Category</label>
                             <select class="form-control" name="category" id="category">
                                 <option value="">Select Category</option>
-                                <?php 
-                                    if(!empty($category)){
-                                    foreach($category as $key){
-                                    ?>
-                                    <option value="<?= $key['uid']; ?>"><?= $key['title']; ?></option>
-                                <?php }} ?>
+                                <?php
+                                if (!empty($category)) {
+                                    foreach ($category as $key) {
+                                        ?>
+                                        <option value="<?= $key['uid']; ?>"><?= $key['title']; ?></option>
+                                    <?php }
+                                } ?>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -143,7 +147,8 @@
     <!-- Add module -->
 
     <!-- Edit module -->
-    <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <form id="editCategoryModalForm" enctype="multipart/form-data">
                 <div class="modal-content">
@@ -163,12 +168,13 @@
                             <label class="form-label">Category</label>
                             <select class="form-control" name="path" id="editPath">
                                 <option value="">Select Category</option>
-                                <?php 
-                                    if(!empty($category)){
-                                    foreach($category as $key){
-                                    ?>
-                                    <option value="<?= $key['uid']; ?>"><?= $key['title']; ?></option>
-                                <?php }} ?>
+                                <?php
+                                if (!empty($category)) {
+                                    foreach ($category as $key) {
+                                        ?>
+                                        <option value="<?= $key['uid']; ?>"><?= $key['title']; ?></option>
+                                    <?php }
+                                } ?>
                             </select>
                         </div>
                         <!-- Upload Image -->
@@ -193,101 +199,159 @@
     </div>
     <!-- Edit module -->
 
-<script>
-    /** Created */
-    $(document).ready(function () {
-        $('#categoryForm').on('submit', function (e) {
-            e.preventDefault();
+    <script>
 
-            $('.text-danger').remove();
-            let isValid = true;
-            let formData = new FormData(this);
-            
-            $('#categoryForm input, #categoryForm select').each(function () {
-                const input = $(this);
-                const name = input.attr('name');
-                const value = input.val().trim();
-                if (name !== 'category' && value === '') {
-                    isValid = false;
-                    input.after('<div class="text-danger mt-1">This field is required</div>');
-                }
-            });
-            if (!isValid) {
-                return;
-            }
-
-            const $button = $('#saveButton');
-            $button.prop('disabled', true).text('Loading...');
-
-            $.ajax({
-                url: BASE_URL +'/admin/api/category/created', 
-                method: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    MessSuccess.fire({
-                        icon: 'success',
-                        title: response.message || 'Category Add Successful',
-                    }); 
-                    location.reload();
-                },
-                error: function (xhr) {
-                    console.error('Error:', xhr.responseText);
-                    MessError.fire({
-                        icon: 'error',
-                        title: 'An error occurred. Please try again.',
-                    });
-                }
+        $(document).ready(function () {
+            $('#categoryTable').DataTable({
+                columnDefs: [{
+                    type: 'num',
+                    targets: 0
+                } // if first column is numeric ID
+                ],
+                order: [
+                    [0, 'asc']
+                ]
             });
         });
-    });
-    /** Created */
+        /** Created */
+        $(document).ready(function () {
+            $('#categoryForm').on('submit', function (e) {
+                e.preventDefault();
 
-    /** Update */
-    function openEditModal(button) {
-        const btn = $(button);
-        $('#editCategoryUid').val(btn.data('uid'));
-        $('#editName').val(btn.data('name'));
-        $('#editPath').val(btn.data('path'));
+                $('.text-danger').remove();
+                let isValid = true;
+                let formData = new FormData(this);
 
-        const imageUrl = btn.data('image');
+                $('#categoryForm input, #categoryForm select').each(function () {
+                    const input = $(this);
+                    const name = input.attr('name');
+                    const value = input.val().trim();
+                    if (name !== 'category' && value === '') {
+                        isValid = false;
+                        input.after('<div class="text-danger mt-1">This field is required</div>');
+                    }
+                });
+                if (!isValid) {
+                    return;
+                }
 
-        if (imageUrl) {
-            const fullImageUrl = BASE_URL + '/' + imageUrl;
-            $('#categoryOldImage').attr('src', fullImageUrl).show();
-            $('#oldImagePreview').show();
-        } else {
-            $('#categoryOldImage').hide();
-            $('#oldImagePreview').hide();
+                const $button = $('#saveButton');
+                $button.prop('disabled', true).text('Loading...');
+
+                $.ajax({
+                    url: BASE_URL + '/admin/api/category/created',
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        MessSuccess.fire({
+                            icon: 'success',
+                            title: response.message || 'Category Add Successful',
+                        });
+                        location.reload();
+                    },
+                    error: function (xhr) {
+                        console.error('Error:', xhr.responseText);
+                        MessError.fire({
+                            icon: 'error',
+                            title: 'An error occurred. Please try again.',
+                        });
+                    }
+                });
+            });
+        });
+        /** Created */
+
+        /** Update */
+        function openEditModal(button) {
+            const btn = $(button);
+            $('#editCategoryUid').val(btn.data('uid'));
+            $('#editName').val(btn.data('name'));
+            $('#editPath').val(btn.data('path'));
+
+            const imageUrl = btn.data('image');
+
+            if (imageUrl) {
+                const fullImageUrl = BASE_URL + '/' + imageUrl;
+                $('#categoryOldImage').attr('src', fullImageUrl).show();
+                $('#oldImagePreview').show();
+            } else {
+                $('#categoryOldImage').hide();
+                $('#oldImagePreview').hide();
+            }
+            $('#editCategoryModal').modal('show');
         }
-        $('#editCategoryModal').modal('show');
-    }
-    $(document).ready(function () {
-        $('#editCategoryModalForm').on('submit', function (e) {
-            e.preventDefault();
+        $(document).ready(function () {
+            $('#editCategoryModalForm').on('submit', function (e) {
+                e.preventDefault();
 
-            $('.text-danger').remove();
-            let isValid = true;
-            let formData = new FormData(this);
-            
-            $('#editcategoryForm input, #editcategoryForm select').each(function () {
-                const input = $(this);
-                const name = input.attr('name');
-                const value = input.val().trim();
-                if (name !== 'category' && value === '') {
-                    isValid = false;
-                    input.after('<div class="text-danger mt-1">This field is required</div>');
+                $('.text-danger').remove();
+                let isValid = true;
+                let formData = new FormData(this);
+
+                $('#editcategoryForm input, #editcategoryForm select').each(function () {
+                    const input = $(this);
+                    const name = input.attr('name');
+                    const value = input.val().trim();
+                    if (name !== 'category' && value === '') {
+                        isValid = false;
+                        input.after('<div class="text-danger mt-1">This field is required</div>');
+                    }
+                });
+                if (!isValid) {
+                    return;
+                }
+
+                const $button = $('#editBtn');
+                $button.prop('disabled', true).text('Loading...');
+                $.ajax({
+                    url: BASE_URL + '/admin/api/category/update',
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        MessSuccess.fire({
+                            icon: 'success',
+                            title: response.message || 'Update Successful',
+                        });
+                        location.reload();
+                    },
+                    error: function (xhr) {
+                        console.error('Error:', xhr.responseText);
+                        MessError.fire({
+                            icon: 'error',
+                            title: 'An error occurred. Please try again.',
+                        });
+                    }
+                });
+            });
+        });
+        /** Update */
+
+        /** Deleted */
+        function deleteCategory(uid) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Do you really want to delete this Category?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteCategoryDetails(uid);
                 }
             });
-            if (!isValid) {
-                return;
-            }
+        }
+        function deleteCategoryDetails(uid) {
+            const formData = new FormData();
+            formData.append('uid', uid);
 
-            const $button = $('#editBtn');
-            $button.prop('disabled', true).text('Loading...');
             $.ajax({
-                url: BASE_URL +'/admin/api/category/update', 
+                url: BASE_URL + '/admin/api/category/delete',
                 method: 'POST',
                 data: formData,
                 processData: false,
@@ -295,8 +359,8 @@
                 success: function (response) {
                     MessSuccess.fire({
                         icon: 'success',
-                        title: response.message || 'Update Successful',
-                    }); 
+                        title: response.message || 'Vendor deleted successfully',
+                    });
                     location.reload();
                 },
                 error: function (xhr) {
@@ -307,75 +371,30 @@
                     });
                 }
             });
-        });
-    });
-    /** Update */
+        }
+        /** Deleted */
 
-    /** Deleted */
-    function deleteCategory(uid) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'Do you really want to delete this Category?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel',
-            reverseButtons: true,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                deleteCategoryDetails(uid);
-            }
-        });
-    }
-    function deleteCategoryDetails(uid) {
-        const formData = new FormData();
-        formData.append('uid', uid); 
+        /** Update Status */
+        function handleStatusChange(checkbox, uid) {
+            const status = checkbox.checked ? 'active' : 'inactive';
+            fetch(BASE_URL + '/admin/api/category/update-status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    uid: uid,
+                    status: status
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
 
-        $.ajax({
-            url: BASE_URL + '/admin/api/category/delete',
-            method: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                MessSuccess.fire({
-                    icon: 'success',
-                    title: response.message || 'Vendor deleted successfully',
+                })
+                .catch(error => {
+                    console.error("Error updating status:", error);
+                    alert("Failed to update status");
                 });
-                location.reload();
-            },
-            error: function (xhr) {
-                console.error('Error:', xhr.responseText);
-                MessError.fire({
-                    icon: 'error',
-                    title: 'An error occurred. Please try again.',
-                });
-            }
-        });
-    }
-    /** Deleted */
-
-    /** Update Status */
-    function handleStatusChange(checkbox, uid) {
-        const status = checkbox.checked ? 'active' : 'inactive';
-        fetch(BASE_URL + '/admin/api/category/update-status', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                uid: uid,
-                status: status
-            }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            
-        })
-        .catch(error => {
-            console.error("Error updating status:", error);
-            alert("Failed to update status");
-        });
-    }
-    /** Update Status */
+        }
+        /** Update Status */
     </script>

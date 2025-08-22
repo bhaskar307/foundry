@@ -15,6 +15,7 @@ class WebModel extends Model
         $builder = $db->table('category c');
         $builder->select('c.*, cp.title AS path_name');
         $builder->join('category cp', 'cp.uid = c.path', 'left');
+        $builder->orderBy('c.created_at', 'desc');
         $builder->where('c.status !=', DELETED_STATUS);
         $result = $builder->get()->getResultArray();
 

@@ -5,7 +5,7 @@ namespace App\Controllers\Admin;
 use App\Controllers\Common;
 use App\Services\Admin\WebService;
 use App\Models\CommonModel;
-
+use App\Models\Customer\WebModel;
 use CodeIgniter\API\ResponseTrait;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -14,13 +14,16 @@ class WebController extends Common
 {
     protected $webService;
     protected $commonModel;
+    protected $webmodel;
+
     protected $db;
     public function __construct()
     {
         $this->session = session();
         $this->webService = new WebService();
         $this->commonModel = new CommonModel();
-        $this->db =   \Config\Database::connect();
+        $this->db = \Config\Database::connect();
+        $this->webmodel = new WebModel();
     }
 
     /** Index */
@@ -44,10 +47,11 @@ class WebController extends Common
         if (!$payload) {
             return redirect()->to(base_url('admin/login'));
         }
-
+        $data['statics'] = $this->webmodel->getStatics();
+        // $this->dd($data) ; 
         return
             view('admin/templates/header.php') .
-            view('admin/dashboard.php') .
+            view('admin/dashboard.php' , $data) .
             view('admin/templates/footer.php');
     }
 
@@ -173,7 +177,7 @@ class WebController extends Common
         $resp['vendor'] = $this->commonModel->getAllData(VENDOR_TABLE, ['status' => ACTIVE_STATUS]);
         $resp['customer'] = $this->commonModel->getAllData(CUSTOMER_TABLE, ['status' => ACTIVE_STATUS]);
         $resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE, ['status' => ACTIVE_STATUS]);
-      
+
 
         return
             view('admin/templates/header.php') .
@@ -208,18 +212,18 @@ class WebController extends Common
             return redirect()->to(base_url('admin/login'));
         }
         $getAllTags = $this->db->table('meta_tags')->orderBy('id', 'desc')->where('status', 'active')->get()->getResultArray();
-        $data['metaDeatils'] =  $getAllTags;
+        $data['metaDeatils'] = $getAllTags;
         // $this->dd($data);
         return
             view('admin/templates/header.php') .
-            view('admin/seo_tags.php' , $data) .
+            view('admin/seo_tags.php', $data) .
             view('admin/templates/footer.php');
     }
 
     /** Logout */
     public function logout()
     {
-        $auth_cookie   = deleteJwtToken(ADMIN_JWT_TOKEN);
+        $auth_cookie = deleteJwtToken(ADMIN_JWT_TOKEN);
         return redirect()
             ->to(base_url('admin/login'))
             ->setCookie($auth_cookie);
