@@ -12,12 +12,15 @@ class ApiService
     protected $validation;
     protected $apiModel;
     protected $commonModel;
+    protected $db;
+
 
     public function __construct()
     {
         $this->validation = \Config\Services::validation();
         $this->apiModel = new ApiModel();
         $this->commonModel = new CommonModel();
+        $this->db =   \Config\Database::connect();
     }
 
     /** Login */
@@ -682,7 +685,18 @@ class ApiService
         }
         $categoryUid = $data['uid'];
 
+
+
         try {
+
+            // $category = $this->db->table(CATEGORY_TABLE)->where('uid',  $categoryUid)->get()->getRow();
+            // if (!$category) {
+            //     return [false, 200, 'Category not found.', ['error' => 'Invalid UID']];
+            // }
+
+            // if (!empty($category->path)) {
+            //     return [false, 200, "You can't delete this category because it has a sub-category.", []];
+            // }
             $updateData = [
                 'status'     => DELETED_STATUS,
                 'updated_by' => $data['user_id'] ?? NULL,
