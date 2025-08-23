@@ -125,15 +125,15 @@
 
             let title = willBeVerified ? "Are you sure?" : "Are you sure?";
             let text = willBeVerified ?
-                "Do you want to verify this product?" :
-                "Do you want to mark this product as NOT verified?";
+                "Do you want to approval this product?" :
+                "Do you want to mark this product as NOT approval?";
 
             Swal.fire({
                 title: title,
                 text: text,
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonText: willBeVerified ? 'Yes, verify it!' : 'Yes, unverify it!',
+                confirmButtonText: willBeVerified ? 'Yes, approval it!' : 'Yes, not  approval it!',
                 cancelButtonText: 'Cancel',
                 reverseButtons: true,
             }).then((result) => {
@@ -165,7 +165,7 @@
                     if (data.success) {
                         MessSuccess.fire({
                             icon: 'success',
-                            title: isChecked ? 'Product verified successfully!' : 'Product unverified successfully!',
+                            title: isChecked ? 'Product approval successfully!' : 'Product not  approval successfully!',
                         });
                     } else {
                         console.error("Failed to update product verification status:", data.message);

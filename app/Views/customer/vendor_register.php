@@ -2,22 +2,27 @@
      <div class="container">
          <div class="row justify-content-center">
              <div class="col-md-6">
-                 <form id="vendorForm" enctype="multipart/form-data" action="#" method="post">
+                 <form id="vendorForm" enctype="multipart/form-data" method="">
                      <div class="d-flex flex-column gap-3">
                          <div class="position-relative p-4 rounded-10 bg-light border overflow-hidden text-center">
-
                              <div class="d-inline-flex mb-1">
-                                 <img id="avatarPreviewVendor" src="<?= base_url('assets/customer/images/upload-image.svg') ?>" alt="Avatar Preview" class="rounded-circle" width="80" height="80" style="object-fit: cover;">
+                                 <img id="avatarPreviewVendor"
+                                     src="<?= base_url('assets/customer/images/upload-image.svg') ?>"
+                                     alt="Avatar Preview"
+                                     class="rounded-circle"
+                                     width="80" height="80"
+                                     style="object-fit: cover;">
                              </div>
                              <strong class="d-block mb-1">Upload Logo*</strong>
-                             <small class="d-block" style="color:#666">Choose a clear Logo to help others recognize you. JPG, PNG, or GIF formats are supported. Max size: 2MB.</small>
+                             <small class="d-block" style="color:#666">
+                                 Choose a clear Logo to help others recognize you. JPG, PNG, or GIF formats are supported. Max size: 2MB.
+                             </small>
                              <input style="opacity: 0;"
                                  class="form-control position-absolute start-0 end-0 top-0 bottom-0"
                                  name="image"
                                  type="file"
                                  id="avatarInputVendor"
                                  accept="image/*" required>
-
                          </div>
 
                          <div class="position-relative">
@@ -33,12 +38,11 @@
                              <input type="text" name="company" class="form-control" placeholder="Company Name*" required>
                          </div>
                          <div class="position-relative">
-                             <input type="number" name="gst" class="form-control" placeholder="GST/Tax ID">
+                             <input type="text" name="gst" class="form-control" placeholder="GST/Tax ID">
                          </div>
                          <div class="position-relative">
-                             <input type="url" name="website" class="form-control" placeholder="Website" required>
+                             <input type="url" name="website" class="form-control" placeholder="Website">
                          </div>
-
                          <div class="position-relative">
                              <input type="text" name="country" class="form-control" placeholder="Country*" required>
                          </div>
@@ -52,24 +56,25 @@
                              <textarea name="address" class="form-control" rows="3" placeholder="Address*" required></textarea>
                          </div>
 
-
-                         <!-- <div class="position-relative">
-                              <input type="password" name="password" class="form-control" placeholder="Password">
-                         </div> -->
-                         <!-- <div class="form-check">
-                             <input class="form-check-input" type="checkbox" value="" id="Remember" checked>
-                             <label class="form-check-label" for="Remember">Remember me</label>
-                         </div> -->
-                         <button id="vendorRegisterBtn" type="submit" class="btn btn-primary justify-content-center w-100">Register</button>
+                         <button id="vendorRegisterBtn" type="submit" class="btn btn-primary justify-content-center w-100">
+                             Register
+                         </button>
                      </div>
                  </form>
+
+
+
              </div>
          </div>
      </div>
  </section>
  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
  <script>
+     const base_url = "<?= base_url() ?>";
+     console.log("=-=-=-=-=-=-=-=-=-=-=-=-=-=-" , base_url);
+     
      document.getElementById("avatarInputVendor").addEventListener("change", function(event) {
+
          console.log("input");
 
          const file = event.target.files[0];
@@ -81,19 +86,23 @@
              reader.readAsDataURL(file);
          }
      });
+
+
      document.getElementById("vendorForm").addEventListener("submit", function(e) {
+         console.log("=====");
+
          e.preventDefault();
 
          let form = document.getElementById("vendorForm");
          let submitBtn = document.getElementById("vendorRegisterBtn");
 
-         // Disable the button
+         // Disable button
          submitBtn.disabled = true;
          submitBtn.textContent = "Please wait...";
 
          let formData = new FormData(form);
 
-         fetch("https://devs.v-xplore.com/foundry/admin/api/created-vendor", {
+         fetch(base_url + "/admin/api/created-vendor", {
                  method: "POST",
                  body: formData
              })
@@ -107,22 +116,35 @@
                          icon: 'success',
                          confirmButtonText: 'OK'
                      });
+
                      setTimeout(function() {
-                         window.location.href = "https://devs.v-xplore.com/foundry/";
+                         window.location.href = base_url;
                      }, 2000);
 
+                     form.reset();
+                     document.getElementById("avatarPreviewVendor").src = "<?= base_url('assets/customer/images/upload-image.svg') ?>";
+
                  } else {
-                     alert("Error: " + (res.message || "Failed to create vendor."));
-                     // Re-enable the button
-                     submitBtn.disabled = false;
-                     submitBtn.textContent = "Register";
+                     Swal.fire({
+                         title: 'Error!',
+                         text: res.message || "Failed to create vendor.",
+                         icon: 'error',
+                         confirmButtonText: 'OK'
+                     });
                  }
+                 submitBtn.disabled = false;
+                 submitBtn.textContent = "Register";
              })
              .catch(error => {
                  console.error("Request error:", error);
-                 alert("Something went wrong. Please try again.");
+                 Swal.fire({
+                     title: 'Error!',
+                     text: "Something went wrong. Please try again.",
+                     icon: 'error',
+                     confirmButtonText: 'OK'
+                 });
 
-                 // Re-enable the button
+                 // Re-enable button
                  submitBtn.disabled = false;
                  submitBtn.textContent = "Register";
              });

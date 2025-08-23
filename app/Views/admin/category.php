@@ -24,7 +24,7 @@
                         <th>Title</th>
                         <th>Image</th>
                         <!-- <th>Path</th> -->
-                        <th>Status</th>
+                        <th class="text-center">Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -38,7 +38,7 @@
                                     <div class="text-nowrap text-center"><?= $i++; ?></div>
                                 </td>
                                 <td>
-                                    <div class="fw-600 h6 m-0"><?= $row['title']; ?></div>
+                                    <div class="fw-600 h6 m-0"><?= $row['title'] ?? "--"; ?></div>
                                 </td>
                                 <td>
                                     <?php if(!empty($row['image'])) { ?>
