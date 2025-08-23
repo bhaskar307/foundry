@@ -158,7 +158,7 @@
 </section> -->
 <section class="py-5">
     <div class="container">
-        <div class="row g-lg-4 g-2">
+        <div class="row g-lg-4 g-2 justify-content-center">
             <div class="col-md-6 col-lg-3 fadeUp" style="transition-delay: 0;">
                 <div class="text-white d-flex align-items-center justify-content-between gap-3 p-3 rounded-10 h-100" style="background-color: #1F58BD;">
                     <div>
@@ -191,7 +191,7 @@
                     </i>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3 fadeUp" style="transition-delay: 0.4s;">
+            <!-- <div class="col-md-6 col-lg-3 fadeUp" style="transition-delay: 0.4s;">
                 <div class="text-white d-flex align-items-center justify-content-between gap-3 p-3 rounded-10 h-100" style="background-color: #CB9C44;">
                     <div>
                         <h4 class="mb-1 text-white"><?= $statics['total_customers'] ?>+</h4>
@@ -204,8 +204,8 @@
                         </svg>
                     </i>
                 </div>
-            </div>
-            <div class="col-md-6 col-lg-3 fadeUp" style="transition-delay: 0.6s;">
+            </div> -->
+            <div class="col-md-6 col-lg-3 fadeUp" style="transition-delay: 0.4s;">
                 <div class="text-white d-flex align-items-center justify-content-between gap-3 p-3 rounded-10 h-100" style="background-color: #9049C2;">
                     <div>
                         <h4 class="mb-1 text-white"><?= $statics['total_country'] ?>+</h4>
@@ -607,7 +607,8 @@
     </div>
 </section>
 <script>
-    const BASE_URL = "https://devs.v-xplore.com/foundry/customer/api/product-search?search=";
+    const baseUrl = " <?= base_url(); ?>"
+    const BASE_URL = baseUrl + "/customer/api/product-search?search=";
     const searchInput = document.getElementById("searchInput");
     const searchResults = document.getElementById("searchResults");
     let categoryID = '';
@@ -707,14 +708,15 @@
 
 
     function redirectProductListPage(productUid) {
-        window.location.href = `https://devs.v-xplore.com/foundry/product/${productUid}`;
+        window.location.href = baseUrl + `/product/${productUid}`;
     }
 
-    console.log("============lower ", categoryID);
+  
 
     function serachBtnforProductList() {
         if (!categoryID) {
-            alert("No category ID found");
+            console.log();
+            ("No category ID found");
             return;
         }
 

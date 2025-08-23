@@ -12,12 +12,15 @@ class ApiService
     protected $validation;
     protected $apiModel;
     protected $commonModel;
+    protected $db;
+
 
     public function __construct()
     {
         $this->validation = \Config\Services::validation();
         $this->apiModel = new ApiModel();
         $this->commonModel = new CommonModel();
+        $this->db =   \Config\Database::connect();
     }
 
     /** Login */
@@ -430,8 +433,8 @@ class ApiService
                 'updated_by' => $data['user_id'] ?? NULL,
                 'updated_at' => date('Y-m-d H:i:s')
             ];
-            
-            
+
+
             $this->sendPasswordAfterVendor($vendorUid);
 
             $success = $this->commonModel->UpdateData(VENDOR_TABLE, ['uid' => $vendorUid], $updateData);
@@ -466,7 +469,7 @@ class ApiService
             ->getRow();
 
         if (!$getVendor) {
-            return false; 
+            return false;
         }
 
         $email = $getVendor->email ?? "";
@@ -482,7 +485,7 @@ class ApiService
                 'password_send_status' => 1,
                 'password' => $hashedPassword,
             ];
-
+            $base_url = base_url();
             try {
                 $db->table('vendor')
                     ->set($updatedPayload)
@@ -495,7 +498,7 @@ class ApiService
                 Your account has been successfully created and activated.<br><br>
                 <b>Login Email:</b> $email<br>
                 <b>Password:</b> $plainPassword<br><br>
-                You can log in here: <a href='https://devs.v-xplore.com/foundry/vendor/login'>Login Page</a><br><br>
+                You can log in here: <a href= $base_url . '/vendor/login'>Login Page</a><br><br>
                 Thank you for registering with Mlodin Foundry.<br><br>
                 Regards,<br>
                 Team Mlodin Foundry
@@ -682,7 +685,18 @@ class ApiService
         }
         $categoryUid = $data['uid'];
 
+
+
         try {
+
+            // $category = $this->db->table(CATEGORY_TABLE)->where('uid',  $categoryUid)->get()->getRow();
+            // if (!$category) {
+            //     return [false, 200, 'Category not found.', ['error' => 'Invalid UID']];
+            // }
+
+            // if (!empty($category->path)) {
+            //     return [false, 200, "You can't delete this category because it has a sub-category.", []];
+            // }
             $updateData = [
                 'status'     => DELETED_STATUS,
                 'updated_by' => $data['user_id'] ?? NULL,

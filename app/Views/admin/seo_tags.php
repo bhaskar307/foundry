@@ -127,7 +127,7 @@
         <div class="modal-dialog">
             <form id="editCategoryModalForm" enctype="multipart/form-data">
                 <div class="modal-content">
-                    <input type="text" id="editSeoTagsId" name="seoTagUid">
+                    <input type="hidden" id="editSeoTagsId" name="seoTagUid">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editCategoryModalLabel">Update Seo</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

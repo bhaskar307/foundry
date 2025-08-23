@@ -21,6 +21,7 @@ class WebModel extends Model
 
         return $result;
     }
+
     public function getCategoryData()
     {
         $db = \Config\Database::connect();
