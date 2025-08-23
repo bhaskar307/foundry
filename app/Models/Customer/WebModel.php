@@ -127,30 +127,33 @@ class WebModel extends Model
         $builder = $db->table('product p');
 
         $builder->select('
-    p.*, 
-    v.name AS vendor_name,
-    v.is_verify AS is_vendor_verify,
-    v.company AS vendor_company,
-    (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) AS total_customer_review,
-    (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) AS total_rating,
-    (
-        CASE 
-            WHEN (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) > 0 
-            THEN ROUND((SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) / (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid), 1)
-            ELSE 0
-        END
-    ) AS total_rating_percent,
-   (SELECT pi.image 
-     FROM product_image pi 
-     WHERE pi.product_id = p.uid 
-       
-       AND pi.main_image = 1 
-     LIMIT 1
-    ) AS main_image
-');
+                p.*, 
+                v.name AS vendor_name,
+                v.is_verify AS is_vendor_verify,
+                v.company AS vendor_company,
+                (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) AS total_customer_review,
+                (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) AS total_rating,
+                (
+                    CASE 
+                        WHEN (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) > 0 
+                        THEN ROUND((SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) / (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid), 1)
+                        ELSE 0
+                    END
+                ) AS total_rating_percent,
+            (SELECT pi.image 
+                FROM product_image pi 
+                WHERE pi.product_id = p.uid 
+                
+                AND pi.main_image = 1 
+                LIMIT 1
+                ) AS main_image
+            ');
 
         $builder->join('vendor v', 'v.uid = p.vendor_id', 'inner');
         $builder->where('p.status', ACTIVE_STATUS);
+        $builder->where('v.status', ACTIVE_STATUS);
+        $builder->where('p.is_verify', 1);
+        $builder->where('p.is_admin_allow', true);
         $builder->orderBy('p.is_verify', 'DESC');
         $builder->orderBy('p.uid', 'DESC');
         $builder->limit(10);
@@ -160,7 +163,7 @@ class WebModel extends Model
     }
 
 
-    public function getFilteredProductDetails($categoryUid = [], $priceFrom = 0, $priceTo = 50000)
+    public function getFilteredProductDetails($categoryUid = [], $priceFrom = 0, $priceTo = 100000)
     {
         $db = \Config\Database::connect();
         $builder = $db->table('product p');
@@ -189,8 +192,10 @@ class WebModel extends Model
                             LIMIT 1
                             ) AS main_image
                     ');
-        $builder->join('vendor v', 'v.uid = p.vendor_id');
+        $builder->join('vendor v', 'v.uid = p.vendor_id', 'inner');
+        // $builder->join('vendor v', 'v.uid = p.vendor_id');
         $builder->where('p.status', ACTIVE_STATUS);
+
 
         // Category filter
         if (!empty($categoryUid) && is_array($categoryUid)) {
@@ -201,12 +206,20 @@ class WebModel extends Model
         }
 
         // Price range filter
-        if (is_numeric($priceFrom) && is_numeric($priceTo)) {
-            $builder->where('p.price >=', $priceFrom);
-            $builder->where('p.price <=', $priceTo);
-        }
+        // if (is_numeric($priceFrom) && is_numeric($priceTo)) {
+        //     $builder->where('p.price >=', $priceFrom);
+        //     $builder->where('p.price <=', $priceTo);
+        // }
+        $builder->where('v.status', ACTIVE_STATUS);
+        $builder->orderBy('p.is_verify', 'DESC');
+
+        $builder->where('p.status', ACTIVE_STATUS);
+        $builder->where('v.status', ACTIVE_STATUS);
+        // $builder->where('p.is_verify', 1);
+        $builder->where('p.is_admin_allow', true);
         $builder->orderBy('p.is_verify', 'DESC');
         $builder->orderBy('p.uid', 'DESC');
+        
         $result = $builder->get()->getResultArray();
         return $result;
     }
@@ -300,6 +313,7 @@ class WebModel extends Model
         $builder->join('vendor v', 'v.uid = p.vendor_id', 'inner');
         $builder->where('p.status', ACTIVE_STATUS);
         $builder->orderBy('p.is_verify', 'DESC');
+
         $builder->orderBy('p.uid', 'DESC');
         $builder->where('p.category_id', $categoryUid);
         $result = $builder->get()->getResultArray();
@@ -326,7 +340,7 @@ class WebModel extends Model
             'total_customers' => $this->getTotalCustomers(),
             'total_products' => $this->getTotalProducts(),
             'total_country' => $this->getVendorCountryCountry(),
-            'total_request' => $this->getAllRequestCount(),
+            'total_request' => $this->getCustomerTotalRequest(),
         ];
     }
 
@@ -369,6 +383,14 @@ class WebModel extends Model
     {
         $db = \Config\Database::connect();
         $builder = $db->table('product');
+        $builder->where('status', ACTIVE_STATUS);
+        return $builder->countAllResults();
+    }
+
+    public function getCustomerTotalRequest()
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('request');
         $builder->where('status', ACTIVE_STATUS);
         return $builder->countAllResults();
     }

@@ -27,12 +27,14 @@
                         <th>Image</th>
                         <th>Country</th>
                         <th>Company</th>
+                        <th>Is Verify</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (!empty($resp)) {
+
                         foreach ($resp as $row) {
                             ?>
                             <tr>
@@ -67,18 +69,23 @@
                                         <?php if ($row['status'] != 'deleted') { ?>
                                             <input class="form-check-input" type="checkbox" role="switch"
                                                 id="flexSwitchCheckChecked_<?= $row['id']; ?>"
+                                                onchange="handleVendotVerify(this, '<?= $row['uid']; ?>')"
+                                                <?= ($row['is_verify'] == "1") ? 'checked' : ''; ?>>
+                                            <label class="form-check-label" for="flexSwitchCheckChecked_<?= $row['id']; ?>"></label>
+                                        <?php } ?>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="form-check form-switch d-flex justify-content-center">
+                                        <?php if ($row['status'] != 'deleted') { ?>
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckChecked_<?= $row['id']; ?>"
                                                 onchange="handleStatusChange(this, '<?= $row['uid']; ?>')"
                                                 <?= ($row['status'] == ACTIVE_STATUS) ? 'checked' : ''; ?>>
                                             <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                                         <?php } ?>
                                     </div>
-                                    <!-- <?php
-                                    $bgColor = ($row['status'] === 'Active') ? '#FFE4E3' : '#D1FAE5';
-                                    $textColor = ($row['status'] === 'Active') ? '#AB3D3C' : '#065F46';
-                                    ?>
-                                    <button class="btn rounded-pill" style="background-color: <?= $bgColor ?>; color: <?= $textColor ?>;">
-                                        <?= $row['status']; ?>
-                                    </button> -->
                                 </td>
 
                                 <td style="max-width: 120px;">
@@ -440,5 +447,30 @@
                     alert("Failed to update status");
                 });
         }
+
+        function handleVendotVerify(checkbox, uid) {
+            const status = checkbox.checked ? 1 : 0;
+            console.log(status);
+            fetch(BASE_URL + 'admin/api/vendor-verify', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        uid: uid,
+                        is_verify: status
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+
+                })
+                .catch(error => {
+                    console.error("Error updating status:", error);
+                    alert("Failed to update status");
+                });
+        }
+
+
         /** Update Status */
     </script>

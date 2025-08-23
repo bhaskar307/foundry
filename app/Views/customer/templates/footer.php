@@ -131,7 +131,7 @@
                 <!-- <div class="col-md-6 text-center text-md-start">
                     <a href="">Terms of Use</a> | <a href="">Privacy Policy</a>
                 </div> -->
-                <div class="col-md-6 text-center text-md-end">
+                <div class="col-md-12 text-center">
                     <div>© <?= date('Y') ?> FoundryBiz. All rights reserved.</div>
                 </div>
             </div>

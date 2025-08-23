@@ -5,10 +5,13 @@ namespace App\Controllers\Admin;
 use App\Controllers\Common;
 use App\Services\Admin\WebService;
 use App\Models\CommonModel;
-use App\Models\Customer\WebModel;
+use App\Models\Vendors\WebModel as vendorModel;
 use CodeIgniter\API\ResponseTrait;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+
+use App\Models\Customer\WebModel as customerModel;
+use App\Models\Admin\WebModel as adminWebModel;
 
 class WebController extends Common
 {
@@ -17,13 +20,15 @@ class WebController extends Common
     protected $webmodel;
 
     protected $db;
+    protected $vendorWebModel;
+    protected $customerModel;
+    protected $adminWebModel;
     public function __construct()
     {
         $this->session = session();
         $this->webService = new WebService();
         $this->commonModel = new CommonModel();
-        $this->db = \Config\Database::connect();
-        $this->webmodel = new WebModel();
+        $this->db =   \Config\Database::connect();
     }
 
     /** Index */
@@ -47,11 +52,10 @@ class WebController extends Common
         if (!$payload) {
             return redirect()->to(base_url('admin/login'));
         }
-        $data['statics'] = $this->webmodel->getStatics();
-        // $this->dd($data) ; 
+
         return
             view('admin/templates/header.php') .
-            view('admin/dashboard.php' , $data) .
+            view('admin/dashboard.php') .
             view('admin/templates/footer.php');
     }
 
@@ -93,9 +97,12 @@ class WebController extends Common
             return redirect()->to(base_url('admin/login'));
         }
 
-        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE, ['status' => ACTIVE_STATUS]);
+        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE, ['status' => ACTIVE_STATUS,'path' => '']);
         //$resp['resp'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status !=' => DELETED_STATUS]);
         $resp['resp'] = $this->webService->getCategoryData();
+        // echo '<pre>';
+        // print_r($resp['resp']);
+        // die();
         return
             view('admin/templates/header.php') .
             view('admin/category.php', $resp) .
@@ -132,19 +139,19 @@ class WebController extends Common
     }
 
     /** View Product Details */
-    public function view_product()
-    {
-        $payload = $this->validateJwtWebToken();
-        if (!$payload) {
-            return redirect()->to(base_url('admin/login'));
-        }
-        $productId = $this->request->getGet('productId');
-        $resp['resp'] = $this->webService->getProductsDetailsByProductId($productId);
-        return
-            view('admin/templates/header.php') .
-            view('admin/view_product.php', $resp) .
-            view('admin/templates/footer.php');
-    }
+    // public function view_product()
+    // {
+    //     $payload = $this->validateJwtWebToken();
+    //     if (!$payload) {
+    //         return redirect()->to(base_url('admin/login'));
+    //     }
+    //     $productId = $this->request->getGet('productId');
+    //     $resp['resp'] = $this->webService->getProductsDetailsByProductId($productId);
+    //     return
+    //         view('admin/templates/header.php') .
+    //         view('admin/view_product.php', $resp) .
+    //         view('admin/templates/footer.php');
+    // }
 
     /** View vendor Details */
     public function view_vendor_details()
@@ -227,5 +234,74 @@ class WebController extends Common
         return redirect()
             ->to(base_url('admin/login'))
             ->setCookie($auth_cookie);
+    }
+
+    // public function view_product($productId)
+    // {
+    //     $payload = $this->validateJwtWebTokenVendor();
+    //     if (!$payload) {
+    //         return redirect()->to(base_url('vendor/login'));
+    //     }
+    //     $resp['resp'] = $this->webService->getProductsDetailsByProductId($payload->user_id, $productId);
+    //     $resp['images'] = $this->vendorWebModel->getProductImage($productId);
+    //     $resp['category'] = $this->commonModel->getCategory();
+    //     return
+    //         view('vendors/templates/header.php') .
+    //         view('vendors/view_product.php', $resp) .
+    //         view('vendors/templates/footer.php');
+    // }
+
+
+    public function view_product($productId)
+    {
+
+        $payload = $this->validateJwtWebToken();
+        if (!$payload) {
+            return redirect()->to(base_url('admin/login'));
+        }
+        // // $productId = $this->request->getGet('productId');
+        // echo  $productId;
+        $resp['resp'] = $this->webService->getProductsDetailsByProductId($productId);
+        $resp['images'] = $this->vendorWebModel->getProductImage($productId);
+        $resp['category'] = $this->commonModel->getCategory();
+
+        // $this->dd($resp);
+        return
+            view('admin/templates/header.php') .
+            view('admin/view_product.php', $resp) .
+            view('admin/templates/footer.php');
+    }
+
+
+    public function getCategories()
+    {
+        $categories = $this->db->table('category')->get()->getResultArray();
+        $tree = $this->buildTree($categories);
+
+        $this->apiSuccess(
+            200,
+            'category tree',
+            $tree
+        );
+    }
+
+
+
+    private function buildTree($elements, $parentId = null)
+    {
+        $branch = [];
+        foreach ($elements as $element) {
+            $elementParent = $element['path'] === "" ? null : $element['path'];
+
+            if ($elementParent == $parentId) {
+                $children = $this->buildTree($elements, $element['uid']);
+                if ($children) {
+                    $element['children'] = $children;
+                }
+                $branch[] = $element;
+            }
+        }
+
+        return $branch;
     }
 }

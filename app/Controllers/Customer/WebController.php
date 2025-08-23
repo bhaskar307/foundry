@@ -59,7 +59,7 @@ class WebController extends Common
             // echo '<pre>';
             // print_r($filterData);
             // die();
-            $resp['categoryUid'] = $filterData['categories'];
+            $resp['categoryUid'] =    $filterData['categories'];
             $resp['priceFrom'] = $filterData['price']['from'];
             $resp['priceTo'] = $filterData['price']['to'];
             $resp['name'] = $filterData['name'] ?? '';
@@ -70,7 +70,8 @@ class WebController extends Common
             $resp['priceTo'] = 50000;
         }
         $db = \Config\Database::connect();
-
+        // print_r($resp);
+        // die;
 
         // $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE, ['status' => ACTIVE_STATUS]);
         $builder = $db->table(CATEGORY_TABLE);
@@ -102,12 +103,15 @@ class WebController extends Common
         $resp['review'] = $this->webService->getCustomerReview();
         $resp['vendorCountryList'] = $this->webmodel->getVendorCountryList();
 
-        // $this->dd($resp);.
+
         $metaTags = [
             'meta_title' => 'Product Filter',
             'meta_description' => 'Equip your project with the best. Foundry offers a full range of heavy-duty machines and commercial equipment built for performance and durability. Find the power you need, delivered straight to your site'
         ];
 
+        // echo'<pre>';
+        // print_r($resp['product']);
+        // die;
         return
             view('customer/templates/header.php', $metaTags) .
             view('customer/product_list.php', $resp) .

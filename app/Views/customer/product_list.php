@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row g-4">
             <div class="col-md-4 col-lg-3">
-                <div class="rounded-10 border d-flex flex-column overflow-hidden">
+                <div class="rounded-10 border d-flex flex-column overflow-hidden position-sticky" style="top:100px;">
                     <div class="p-3 bg-light d-flex align-items-center gap-1 accordion-button shadow-none" style="border-radius: 10px 10px 0 0;" data-bs-toggle="collapse" data-bs-target="#productFilter">
                         <i style="line-height: 0">
                             <svg height="16" viewBox="0 0 511 511.99982" width="16" xmlns="http://www.w3.org/2000/svg">
@@ -46,7 +46,7 @@
                                 </script>
                             </div>
                             <div class="d-flex flex-column gap-1">
-                                <h6 class="mb-2">Category</h6>
+                                <h6 class="mb-2">Categories</h6>
                                 <?php if (!empty($category)) : ?>
                                     <?php foreach ($category as $row): ?>
                                         <?php
@@ -187,8 +187,9 @@
                                 </div>
                                 <div class="col-4">
                                     <select id="ratingValue" class="form-select form-select-sm" style="height:40px;font-size:14px;">
-                                        <option>Rating(⭐) High to Low</option>
-                                        <option>Rating(⭐) Low to High</option>
+                                        <option selected>All (Rating)</option>
+                                        <option> High to Low (Rating)</option>
+                                        <option>Low to High(Rating) </option>
                                     </select>
                                 </div>
                             </div>
@@ -222,10 +223,31 @@
     </div>
 </section>
 <script>
-    // Render products
+    function handleCategoryChange(checkbox) {
+        const selected = [];
+        document.querySelectorAll('.category-checkbox:checked').forEach(cb => {
+            selected.push(cb.value);
+        });
+
+        const filterData = {
+            categories: selected,
+            price: {
+                from: priceRange.from,
+                to: priceRange.to
+            },
+
+        };
+
+        const jsonStr = JSON.stringify(filterData);
+        const base64 = btoa(jsonStr);
+        const url = "<?= base_url('product-list?filter=') ?>" + encodeURIComponent(base64);
+
+        window.location.href = url;
+    }
     const productsData = <?= json_encode($product) ?>;
+
     let currentPage = 1;
-    const itemsPerPage = 6;
+    const itemsPerPage = 15;
 
     function renderProductsPaginated(page = 1) {
         currentPage = page;
@@ -262,7 +284,6 @@
 
         document.querySelector('.pagination').innerHTML = paginationHTML;
 
-        // Add click events
         document.querySelectorAll('.page-link').forEach(el => {
             el.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -300,16 +321,16 @@
                     empty: '#E0E0E0'
                 } [fill];
                 return `
-        <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <linearGradient id="halfGradient">
-                    <stop offset="50%" stop-color="#F6AB27"/>
-                    <stop offset="50%" stop-color="#E0E0E0"/>
-                </linearGradient>
-            </defs>
-            <path d="M50 5L61 35H95L67 57L78 90L50 70L22 90L33 57L5 35H39L50 5Z" fill="${color}"/>
-        </svg>
-        `;
+                <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="halfGradient">
+                            <stop offset="50%" stop-color="#F6AB27"/>
+                            <stop offset="50%" stop-color="#E0E0E0"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M50 5L61 35H95L67 57L78 90L50 70L22 90L33 57L5 35H39L50 5Z" fill="${color}"/>
+                </svg>
+                `;
             };
 
             // Build stars HTML
@@ -395,49 +416,48 @@
         console.log("Search Input Value:", this.value);
 
     });
+
     $(document).ready(function() {
         $("#ratingValue").on("change", function() {
             let selected = $(this).val();
             let filtered = [...productsData]; // clone original array
 
-            if (selected === "Rating(⭐) High to Low") {
-                filtered.sort((a, b) => b.rating - a.rating);
-            } else if (selected === "Rating(⭐) Low to High") {
-                filtered.sort((a, b) => a.rating - b.rating);
+            console.log("Before Sort:", filtered);
+
+            if (selected === "High to Low (Rating)") {
+
+                filtered.sort((a, b) => b.total_rating_percent - a.total_rating_percent);
+            } else if (selected === "Low to High(Rating)") {
+                filtered.sort((a, b) => a.total_rating_percent - b.total_rating_percent);
             }
 
-            console.log("Sorted Products:", filtered);
+          
             renderProducts(filtered);
         });
     });
+
     // Initial render
     renderProducts(productsData);
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
-    // console.log("============productsData", productsData);
-
-    // Category change function
-    function handleCategoryChange(checkbox) {
-        const selected = [];
-        document.querySelectorAll('.category-checkbox:checked').forEach(cb => {
-            selected.push(cb.value);
-        });
-
-        const filterData = {
-            categories: selected,
-            price: {
-                from: priceRange.from,
-                to: priceRange.to
-            },
-
-        };
-
-        const jsonStr = JSON.stringify(filterData);
-        const base64 = btoa(jsonStr);
-        const url = "<?= base_url('product-list?filter=') ?>" + encodeURIComponent(base64);
-        window.location.href = url;
-    }
-
     // function handleCategoryChange(checkbox) {
     //     const selected = [];
     //     document.querySelectorAll('.category-checkbox:checked').forEach(cb => {

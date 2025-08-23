@@ -42,7 +42,7 @@
             <table id="tableRatings" class=" display border">
                 <thead>
                     <tr>
-                        <th>Customer Details</th>
+                        <th class="text-start">Customer Details</th>
                         <th>Product Name</th>
                         <th>Rating</th>
                         <th>Review</th>
@@ -56,14 +56,10 @@
                             ?>
                             <tr>
                                 <td>
-                                    <div class="fw-600 h6 m-0">
-                                        <div class="d-flex align-items-center">
-                                            <div class="text-nowrap">
-                                                <strong><?= $row['customer_name']; ?></strong>
-                                                <br><small class="text-muted">Eml: <?= $row['customer_email']; ?></small>
-                                                <br><small class="text-muted">Mob: <?= $row['customer_mobile']; ?></small>
-                                            </div>
-                                        </div>
+                                    <div class="text-nowrap text-start">
+                                        <div><?= $row['customer_name']; ?></div>
+                                        <small class="text-muted d-block">Email: <?= $row['customer_email']; ?></small>
+                                        <small class="text-muted d-block">Mob: <?= $row['customer_mobile']; ?></small>
                                     </div>
                                 </td>
                                 <td>

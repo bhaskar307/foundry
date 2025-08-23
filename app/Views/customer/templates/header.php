@@ -62,7 +62,7 @@ if (!empty($jwt)) {
                                 <a href="<?= base_url('product-list') ?>" <?php if ($lastSegment == 'product-list') { ?>class="active" <?php } ?>>Shop</a>
                             </li>
                             <li>
-                                <a href="<?= base_url('category') ?>" <?php if ($lastSegment == 'category') { ?>class="active" <?php } ?>>Category</a>
+                                <a href="<?= base_url('category') ?>" <?php if ($lastSegment == 'category') { ?>class="active" <?php } ?>>Categories</a>
                             </li>
                             <li>
                                 <a href="https://www.youtube.com/channel/UCqG_zja0MNnAPVdB4FpRBbg" target="_blank" rel="noopener noreferrer">
@@ -360,7 +360,7 @@ if (!empty($jwt)) {
                                         <small class="text-danger d-block" id="error-phone"></small>
                                     </div>
                                     <div>
-                                        <input type="tel" id="company" name="company" class="form-control" placeholder="company" required>
+                                        <input type="tel" id="company" name="company" class="form-control" placeholder="Company*" required>
                                         <small class="text-danger d-block" id="error-company"></small>
                                     </div>
                                     <!-- <div>
@@ -437,7 +437,10 @@ if (!empty($jwt)) {
             //     document.getElementById('error-avatar').textContent = 'Profile image is required.';
             //     hasError = true;
             // }
-
+            if (!company) {
+                document.getElementById('error-company').textContent = 'Company name is required.';
+                hasError = true;
+            }
             if (!name) {
                 document.getElementById('error-name').textContent = 'Name is required.';
                 hasError = true;

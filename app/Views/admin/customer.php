@@ -9,9 +9,9 @@
             <table id="tableCustomer" class=" display border">
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th  class="text-nowrap text-start">Name</th>
                         <th>Image</th>
-                        <th>Dob</th>
+                  
                         <th>Company</th>
                         <th>Status</th>
                         <th>Actions</th>
@@ -25,8 +25,8 @@
 
                                 <td>
                                     <div class="fw-600 h6 m-0">
-                                        <div class="d-flex align-items-center">
-                                            <div class="text-nowrap">
+                                        <div class="d-flex justify-content-start">
+                                            <div class="text-nowrap text-start">
                                                 <strong><?= $row['name']; ?></strong>
                                                 <br><small class="text-muted">Eml: <?= $row['email']; ?></small>
                                                 <br><small class="text-muted">Mob: <?= $row['mobile']; ?></small>
@@ -45,9 +45,7 @@
                                     <?php } ?>
                                 </td>
 
-                                <td>
-                                    <div class="fw-600 h6 m-0"><?= date('jS F, Y', strtotime($row['dob'])); ?></div>
-                                </td>
+                               
                                 <td>
                                     <div class="fw-600 h6 m-0"><?= !empty($row['company']) ? $row['company'] : "---" ?></div>
 

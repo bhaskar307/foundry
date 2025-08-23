@@ -97,7 +97,7 @@ class ApiService
                 'name'              =>   $name,
                 'slug'              => $slug,
                 'description'       => $data['description'],
-                'price'             => $data['product_price'],
+                'price'             => $data['product_price'] ?? 1000,
                 'brand'             => $data['product_brand'],
                 'html_description'  => $data['content'],
                 'vendor_id'         => $data['user_id'],
@@ -639,14 +639,15 @@ class ApiService
             $addData = [
                 'name'              => $data['name'],
                 'description'       => $data['description'],
-                'price'             => $data['product_price'] ?? 0,
+                'price'             => $data['product_price'] ?? 1000,
                 'brand'             => $data['product_brand'] ?? null,
-                'html_description'  => $data['content'],
+                'html_description'  => $data['content'] ?? "",
                 'vendor_id'         => $data['user_id'],
                 'category_id'       => $data['category'],
                 'subcategory_id'    => $data['subcategory'] ?? null,
                 'image'             => $image_path,
                 'created_by'        => $data['user_id'] ?? NULL,
+                'is_admin_allow'    => 0 , 
             ];
             $success = $this->commonModel->UpdateData(PRODUCT_TABLE, ['uid' => $data['uid']], $addData);
 
