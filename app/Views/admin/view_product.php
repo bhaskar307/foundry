@@ -46,7 +46,7 @@
             <div class="row g-3">
                 <div id="previewContainer" class="d-flex flex-wrap gap-2 col-12"></div>
                 <div class="col-md-6">
-                    <label class="mb-1 d-block" for="company_logo">Uploaded Product Image</label>
+                    <label class="mb-1 d-block" for="company_logo">Upload Product Image (Single or Multiple)</label>
                     <input type="file" name="images[]" id="imageInput" class="form-control" accept="image/*" multiple
                         disabled>
                 </div>

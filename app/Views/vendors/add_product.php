@@ -24,7 +24,7 @@
 
                     <div class="col-md-6 col-lg-4">
                         <div class="form-floating">
-                            <select class="form-control" name="category" id="category" required> 
+                            <select class="form-control" name="category" id="category" required>
                                 <option value="">Select category</option>
                                 <?php if (!empty($category)) {
                                     foreach ($category as $key) { ?>
@@ -56,7 +56,7 @@
                         </div>
                     </div>
 
-                    <div style="display: none;"  class="col-lg-6">
+                    <div style="display: none;" class="col-lg-6">
                         <div class="form-floating">
                             <input type="text" class="form-control" name="product_brand" id="product_brand" placeholder="Enter Product Brand" value="">
                             <label for="Brand">Brand<span class="text-danger">*</span></label>
@@ -65,18 +65,18 @@
 
                     <div class="col-lg-12">
                         <div class="form-floating">
-                            <textarea class="form-control" name="description" id="description" placeholder="Company Description" style="height: 100px;" ></textarea>
+                            <textarea class="form-control" name="description" id="description" placeholder="Company Description" style="height: 100px;"></textarea>
                             <label for="company_description">Description</label>
                         </div>
                     </div>
 
-                    <textarea  style="display: none;"  name="content" id="content" rows="10" cols="90" class="form-control documentTextEditor"></textarea>
+                    <textarea style="display: none;" name="content" id="content" rows="10" cols="90" class="form-control documentTextEditor"></textarea>
 
                     <div class="col-lg-12">
-                        <label for="company_logo">Uploaded Product Image</label>
+                        <label for="company_logo">Upload Product Image (Single or Multiple)</label>
                         <input type="file" name="images[]" id="imageInput" class="form-control" accept="image/*" multiple>
                     </div>
-                    <div  id="previewContainer" class="d-flex flex-wrap gap-2"></div>
+                    <div id="previewContainer" class="d-flex flex-wrap gap-2"></div>
 
                     <!-- Submit Buttons -->
                     <div class="col-lg-12 d-flex justify-content-end gap-2">
