@@ -26,16 +26,16 @@
                          </div>
 
                          <div class="position-relative">
-                             <input type="text" name="name" class="form-control" placeholder="Name*" required>
+                             <input type="text" name="name" inputmode="text" autocomplete="name" autocapitalize="words" class="form-control" placeholder="Name*" required>
                          </div>
                          <div class="position-relative">
-                             <input type="email" name="email" class="form-control" placeholder="Email id*" required>
+                             <input type="email" name="email" inputmode="email" autocomplete="email" class="form-control" placeholder="Email id*" required>
                          </div>
                          <div class="position-relative">
-                             <input type="tel" name="mobile" class="form-control" placeholder="Phone Number*" required>
+                             <input type="tel" name="mobile" inputmode="tel" autocomplete="tel" class="form-control" placeholder="Phone Number*" required>
                          </div>
                          <div class="position-relative">
-                             <input type="text" name="company" class="form-control" placeholder="Company Name*" required>
+                             <input type="text" name="company" inputmode="text" autocomplete="organization" autocapitalize="words" class="form-control" placeholder="Company Name*" required>
                          </div>
                          <div class="position-relative">
                              <input type="text" name="gst" class="form-control" placeholder="GST/Tax ID">
@@ -112,7 +112,7 @@
                  if (response.ok && res.success) {
                      Swal.fire({
                          title: 'Success!',
-                         text: 'Thank you for registering with Foundry as a vendor.',
+                         text: 'Thank you for Registering with FoundryBiz as a Seller!',
                          icon: 'success',
                          confirmButtonText: 'OK'
                      });

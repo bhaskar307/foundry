@@ -33,7 +33,14 @@ class WebController extends Common
         //$resp['product'] = $this->commonModel->getAllData(PRODUCT_TABLE,['status' => ACTIVE_STATUS]);
         $resp['product'] = $this->webService->getAllProductDetails();
         $resp['review'] = $this->webService->getCustomerReview();
-
+        
+        // $targetCount = 20;
+        // while (count($resp['product']) < $targetCount) {
+        //     foreach ($resp['product'] as $p) {
+        //         if (count($resp['product']) >= $targetCount) break;
+        //         $resp['product'][] = $p; // duplicate same product
+        //     }
+        // }
         $resp['statics'] = $this->webmodel->getStatics();
         $homePageMetaTags = $this->db->table('meta_tags')->where('page_name', 'home')->get()->getRow();
         $metaTags = [
@@ -63,15 +70,18 @@ class WebController extends Common
             $resp['priceFrom'] = $filterData['price']['from'];
             $resp['priceTo'] = $filterData['price']['to'];
             $resp['name'] = $filterData['name'] ?? '';
+            $resp['countries'] = $filterData['countries'] ?? '';
+            $resp['vendor_type'] = $filterData['vendorStatus'] ?? '';
         } else {
             $resp['name'] = '';
             $resp['categoryUid'] = [];
             $resp['priceFrom'] = 100;
             $resp['priceTo'] = 50000;
+            $resp['countries'] = [];
+            $resp['vendor_type'] = '';
         }
         $db = \Config\Database::connect();
-        // print_r($resp);
-        // die;
+        
 
         // $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE, ['status' => ACTIVE_STATUS]);
         $builder = $db->table(CATEGORY_TABLE);
@@ -98,7 +108,13 @@ class WebController extends Common
 
         $resp['category'] =  $categoryTree;
         //$resp['product'] = $this->webService->getProductList($resp['categoryUid'],$resp['priceFrom'],$resp['priceTo']);
-        $resp['product'] = $this->webService->getFilteredProductDetails($resp['categoryUid'], $resp['priceFrom'], $resp['priceTo']);
+        $resp['product'] = $this->webService->getFilteredProductDetails(
+            $resp['categoryUid'],
+            $resp['priceFrom'],
+            $resp['priceTo'],
+            $resp['countries'],
+            $resp['vendor_type']
+        );
 
         $resp['review'] = $this->webService->getCustomerReview();
         $resp['vendorCountryList'] = $this->webmodel->getVendorCountryList();
@@ -110,7 +126,7 @@ class WebController extends Common
         ];
 
         // echo'<pre>';
-        // print_r($resp['product']);
+        // print_r($resp);
         // die;
         return
             view('customer/templates/header.php', $metaTags) .
@@ -138,7 +154,7 @@ class WebController extends Common
     public function product_details($slug)
     {
 
-        // print_r($slug) ; 
+
         $db = \Config\Database::connect();
         $payload = $this->validateJwtWebTokenCustomer();
 
@@ -183,8 +199,6 @@ class WebController extends Common
             );
         }
 
-        // print_r($resp['vendor']);
-        // die;
 
         return
             view('customer/templates/header.php', $metaTags) .

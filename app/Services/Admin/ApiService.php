@@ -331,13 +331,16 @@ class ApiService
                     ['error' => 'Database insert failed']
                 ];
             }
-            $subject  = 'Thank you for registering with Foundry as a vendor';
-            $message = "🎉 Thank you for registering with Foundry as a vendor!
-                        We’re reviewing your account, 
-                        and once it’s activated, 
-                        your login credentials will be shared with you via email.";
+            $subject = VENDOR_REGISTER_EMAIL_SUBJECT_FOR_SELLER;
 
-            $this->sendVendorPasswordToEmail($data['email'], $subject,   $message);
+            $message = "
+                        <p>🎉 Thank you for registering with <strong>FoundryBiz</strong> as a Seller!</p>
+                        <p>We’re reviewing your account, and once it’s activated, your login credentials will be shared with you via email.</p>
+                        <p>Thank You,<br>FoundryBiz Team</p>
+                     ";
+
+            $this->sendVendorPasswordToEmail($data['email'], $subject, $message);
+
 
             return [
                 true,
@@ -485,7 +488,7 @@ class ApiService
                 'password_send_status' => 1,
                 'password' => $hashedPassword,
             ];
-            $base_url = base_url();
+            $base_url = base_url('vendor/login');
             try {
                 $db->table('vendor')
                     ->set($updatedPayload)
@@ -498,10 +501,10 @@ class ApiService
                 Your account has been successfully created and activated.<br><br>
                 <b>Login Email:</b> $email<br>
                 <b>Password:</b> $plainPassword<br><br>
-                You can log in here: <a href= $base_url . '/vendor/login'>Login Page</a><br><br>
-                Thank you for registering with Mlodin Foundry.<br><br>
+                You can log in here: <a href= '{$base_url}'>Login Page</a><br><br>
+                Thank you for registering with FoundryBiz.<br><br>
                 Regards,<br>
-                Team Mlodin Foundry
+                Team FoundryBiz
             ";
 
                 $this->sendVendorPasswordToEmail($email, $subject, $message);
@@ -890,7 +893,7 @@ class ApiService
     {
         $emailService = \Config\Services::email();
         $emailService->setTo($email);
-        $emailService->setFrom('www.bd.project@gmail.com', 'Foundry');
+        $emailService->setFrom(EMAIL, EMAIL_APP_NAME);
         $emailService->setSubject($subject);
         $emailService->setMessage(
             $message
@@ -905,7 +908,7 @@ class ApiService
     {
         $emailService = \Config\Services::email();
         $emailService->setTo($email);
-        $emailService->setFrom('www.bd.project@gmail.com', 'Foundry');
+        $emailService->setFrom(EMAIL, EMAIL_APP_NAME);
         $emailService->setSubject('Your Account Password');
         $emailService->setMessage(
             "Dear $name,<br>" .

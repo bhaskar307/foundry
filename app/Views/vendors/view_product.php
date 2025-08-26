@@ -77,10 +77,15 @@
                     </select>
                 </div>
                 <div class="col-md-12">
-                    <label class="mb-1 d-block" for="description">Description</label>
-                    <textarea class="form-control" name="description" id="description"
+                    <label class="mb-1 d-block" for="description">Short Description</label>
+                    <textarea  rows="10" cols="90" class="form-control documentTextEditor" name="description" id="description"
                         style="height: 120px;" readonly><?= esc($resp['description'] ?? '') ?></textarea>
                 </div>
+                <!-- <div class="col-md-12">
+                    <label class="mb-1 d-block" for="description">Long Description</label>
+                    <textarea rows="10" cols="90" class="form-control documentTextEditor" name="content" id="content"
+                        style="height: 120px;" readonly><?= esc($resp['html_description'] ?? '') ?></textarea>
+                </div> -->
                 <div class="col-md-12 d-flex justify-content-end">
                     <button type="button" id="submitProductinputs" class="btn btn-primary">
                         Update
@@ -172,7 +177,10 @@
             contentType: false,
             success: function(response) {
                 if (response.success) {
-                    alert("Product updated successfully.");
+                    MessError.fire({
+                        icon: 'success',
+                        title: 'Product updated successfully.',
+                    });
                     location.reload();
                 } else {
                     alert("Error: " + response.message);
@@ -201,7 +209,11 @@
                 }),
                 success: function(response) {
                     if (response.success) {
-                        alert("Image deleted successfully.");
+
+                        MessError.fire({
+                            icon: 'success',
+                            title: 'Image deleted successfully.',
+                        });
                         location.reload(); // Reload the page to reflect changes
                     } else {
                         alert("Error deleting image: " + response.message);

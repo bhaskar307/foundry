@@ -414,7 +414,7 @@ class ApiService
     {
         $emailService = \Config\Services::email();
         $emailService->setTo($email);
-        $emailService->setFrom('www.bd.project@gmail.com', 'Foundry');
+        $emailService->setFrom(EMAIL, 'Foundry');
         $emailService->setSubject('Your OTP Code');
         $emailService->setMessage(
             "Dear $name,<br>" .

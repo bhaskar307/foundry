@@ -13,10 +13,10 @@
 
                             foreach ($resp['images'] as $row) {
                             ?>
-                            <div class="swiper-slide">
-                                <img class="drift-img" src="<?= base_url($row['image']) ?>"
-                                    data-zoom="<?= base_url($row['image']) ?>" />
-                            </div>
+                                <div class="swiper-slide">
+                                    <img class="drift-img" src="<?= base_url($row['image']) ?>"
+                                        data-zoom="<?= base_url($row['image']) ?>" />
+                                </div>
                             <?php }
                             ?>
                         </div>
@@ -31,8 +31,8 @@
                         <?php
                         foreach ($resp['images'] as $row) {
                         ?>
-                        <div class="swiper-slide"><img src="<?= base_url($row['image']) ?>" width="100" height="100" />
-                        </div>
+                            <div class="swiper-slide"><img src="<?= base_url($row['image']) ?>" width="100" height="100" />
+                            </div>
                         <?php }
                         ?>
                     </div>
@@ -41,66 +41,66 @@
                     href="https://cdnjs.cloudflare.com/ajax/libs/drift-zoom/1.3.1/drift-basic.min.css" />
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/drift-zoom/1.3.1/Drift.min.js"></script>
                 <script>
-                let drift;
+                    let drift;
 
-                const thumbSwiper = new Swiper(".thumb-slider", {
-                    spaceBetween: 10,
-                    slidesPerView: 3,
-                    freeMode: true,
-                    watchSlidesProgress: true,
-                    breakpoints: {
-                        640: {
-                            slidesPerView: 3
+                    const thumbSwiper = new Swiper(".thumb-slider", {
+                        spaceBetween: 10,
+                        slidesPerView: 3,
+                        freeMode: true,
+                        watchSlidesProgress: true,
+                        breakpoints: {
+                            640: {
+                                slidesPerView: 3
+                            },
+                            768: {
+                                slidesPerView: 4
+                            },
+                            1024: {
+                                slidesPerView: 5
+                            },
                         },
-                        768: {
-                            slidesPerView: 4
-                        },
-                        1024: {
-                            slidesPerView: 5
-                        },
-                    },
-                });
+                    });
 
-                const mainSwiper = new Swiper(".product-main-slider", {
-                    spaceBetween: 10,
-                    navigation: {
-                        nextEl: ".swiper-button-next",
-                        prevEl: ".swiper-button-prev",
-                    },
-                    thumbs: {
-                        swiper: thumbSwiper,
-                    },
-                    on: {
-                        init: function() {
-                            initDriftZoom();
+                    const mainSwiper = new Swiper(".product-main-slider", {
+                        spaceBetween: 10,
+                        navigation: {
+                            nextEl: ".swiper-button-next",
+                            prevEl: ".swiper-button-prev",
                         },
-                        slideChangeTransitionEnd: function() {
-                            setTimeout(() => {
+                        thumbs: {
+                            swiper: thumbSwiper,
+                        },
+                        on: {
+                            init: function() {
                                 initDriftZoom();
-                            }, 100);
+                            },
+                            slideChangeTransitionEnd: function() {
+                                setTimeout(() => {
+                                    initDriftZoom();
+                                }, 100);
+                            }
+                        }
+                    });
+
+                    function initDriftZoom() {
+                        // Remove old zoom pane if it exists
+                        const oldPane = document.querySelector(".drift-zoom-pane");
+                        if (oldPane) oldPane.remove();
+
+                        // Select new active image
+                        const activeImage = document.querySelector(".product-main-slider .swiper-slide-active .drift-img");
+                        const paneContainer = document.querySelector(".zoom-wrapper-container");
+
+                        if (activeImage && paneContainer) {
+                            // Recreate new Drift instance
+                            drift = new Drift(activeImage, {
+                                paneContainer: paneContainer,
+                                inlinePane: 768,
+                                zoomFactor: 2,
+                                containInline: true,
+                            });
                         }
                     }
-                });
-
-                function initDriftZoom() {
-                    // Remove old zoom pane if it exists
-                    const oldPane = document.querySelector(".drift-zoom-pane");
-                    if (oldPane) oldPane.remove();
-
-                    // Select new active image
-                    const activeImage = document.querySelector(".product-main-slider .swiper-slide-active .drift-img");
-                    const paneContainer = document.querySelector(".zoom-wrapper-container");
-
-                    if (activeImage && paneContainer) {
-                        // Recreate new Drift instance
-                        drift = new Drift(activeImage, {
-                            paneContainer: paneContainer,
-                            inlinePane: 768,
-                            zoomFactor: 2,
-                            containInline: true,
-                        });
-                    }
-                }
                 </script>
             </div>
             <div class="col-md-6">
@@ -141,45 +141,40 @@
                             (<?= $resp['total_customer_review'] ?> reviews)</small>
                     </div>
 
-                    <p><?= $resp['description']; ?></p>
-
-
                     <?php if (!empty($vendor)) { ?>
-                    <?php
+                        <?php
                         $vendor = $vendor[0];
                         $image = base_url($vendor['image']) ?? base_url('assets/customer/images/default_vendor.png');
                         ?>
-                    <div class="p-3 rounded-10 border d-flex align-items-center gap-3 mb-3">
-                        <i style="line-height: 0;">
-                            <img src="<?= $image ?>" class="rounded-10 object-fit-cover" width="80" height="80">
-                        </i>
-                        <div>
-                            <div class="d-flex flex-column gap-1">
-                                <?php if (!empty($vendor['is_verify']) && $vendor['is_verify'] == 1): ?>
-                                <small class="d-flex align-items-center gap-1">
-                                    <i style="line-height: 0;">
-                                        <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                                d="M9.69883 1.04935C9.56974 0.843073 9.37955 0.682175 9.15473 0.589057C8.92992 0.495939 8.68167 0.475233 8.44454 0.529821L6.76156 0.916427C6.58908 0.956072 6.40986 0.956072 6.23739 0.916427L4.5544 0.529821C4.31727 0.475233 4.06902 0.495939 3.84421 0.589057C3.6194 0.682175 3.42921 0.843073 3.30012 1.04935L2.38281 2.5134C2.28921 2.66317 2.16284 2.78955 2.01308 2.88409L0.549128 3.80146C0.343218 3.93044 0.182567 4.12034 0.0894753 4.34478C-0.00361686 4.56922 -0.0245326 4.81708 0.0296313 5.05395L0.416212 6.73891C0.455711 6.9111 0.455711 7.09 0.416212 7.26219L0.0296313 8.94621C-0.0247431 9.18322 -0.00393263 9.43128 0.0891696 9.65592C0.182272 9.88055 0.34304 10.0706 0.549128 10.1996L2.01308 11.117C2.16284 11.2106 2.28921 11.337 2.38375 11.4868L3.30106 12.9508C3.56502 13.373 4.0686 13.5817 4.5544 13.4703L6.23739 13.0837C6.40986 13.0441 6.58908 13.0441 6.76156 13.0837L8.44548 13.4703C8.68247 13.5247 8.93052 13.5039 9.15514 13.4108C9.37976 13.3177 9.56979 13.1569 9.69883 12.9508L10.6161 11.4868C10.7097 11.337 10.8361 11.2106 10.9859 11.117L12.4508 10.1996C12.6569 10.0704 12.8175 9.88015 12.9105 9.65534C13.0034 9.43052 13.024 9.18233 12.9693 8.94528L12.5837 7.26219C12.544 7.0897 12.544 6.91046 12.5837 6.73798L12.9703 5.05395C13.0247 4.81704 13.004 4.56905 12.9111 4.34442C12.8182 4.1198 12.6576 3.9297 12.4517 3.80052L10.9868 2.88315C10.8372 2.78937 10.7108 2.66296 10.6171 2.5134L9.69883 1.04935ZM9.228 4.9126C9.2859 4.80613 9.30024 4.68136 9.26802 4.56453C9.23579 4.44771 9.15951 4.34793 9.05523 4.28621C8.95094 4.22448 8.82678 4.20561 8.70887 4.23358C8.59096 4.26154 8.48849 4.33415 8.42302 4.43613L5.9753 8.57927L4.4973 7.1639C4.45346 7.11887 4.40099 7.08314 4.34304 7.05883C4.28508 7.03452 4.22283 7.02214 4.15998 7.02241C4.09714 7.02269 4.03499 7.03562 3.97725 7.06043C3.91951 7.08524 3.86736 7.12143 3.82391 7.16683C3.78045 7.21224 3.74659 7.26593 3.72434 7.32471C3.70208 7.38348 3.69189 7.44614 3.69437 7.50894C3.69686 7.57174 3.71196 7.6334 3.73878 7.69023C3.76561 7.74707 3.80361 7.79792 3.85051 7.83976L5.75439 9.6642C5.80535 9.71292 5.86665 9.74951 5.93373 9.77122C6.00081 9.79292 6.07192 9.7992 6.14176 9.78957C6.21161 9.77994 6.27837 9.75465 6.33707 9.7156C6.39577 9.67655 6.44488 9.62473 6.48075 9.56403L9.228 4.9126Z"
-                                                fill="#3A9F6C"></path>
-                                        </svg>
-                                    </i>
-                                    <span class="fw-600">Verified</span>
-                                </small>
-                                <?php endif; ?>
-                                <h5 class="m-0">
-                                    <?= $vendor['company'] ?>
-                                </h5>
-                                <small class="d-block"><?= $vendor['city'] ?>, <?= $vendor['states'] ?>, India</small>
+                        <div class="p-3 rounded-10 border d-flex align-items-center gap-3 mb-3">
+                            <i style="line-height: 0;">
+                                <img src="<?= $image ?>" class="rounded-10 object-fit-cover" width="80" height="80">
+                            </i>
+                            <div>
+                                <div class="d-flex flex-column gap-1">
+                                    <?php if (!empty($vendor['is_verify']) && $vendor['is_verify'] == 1): ?>
+                                        <small class="d-flex align-items-center gap-1">
+                                            <i style="line-height: 0;">
+                                                <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M9.69883 1.04935C9.56974 0.843073 9.37955 0.682175 9.15473 0.589057C8.92992 0.495939 8.68167 0.475233 8.44454 0.529821L6.76156 0.916427C6.58908 0.956072 6.40986 0.956072 6.23739 0.916427L4.5544 0.529821C4.31727 0.475233 4.06902 0.495939 3.84421 0.589057C3.6194 0.682175 3.42921 0.843073 3.30012 1.04935L2.38281 2.5134C2.28921 2.66317 2.16284 2.78955 2.01308 2.88409L0.549128 3.80146C0.343218 3.93044 0.182567 4.12034 0.0894753 4.34478C-0.00361686 4.56922 -0.0245326 4.81708 0.0296313 5.05395L0.416212 6.73891C0.455711 6.9111 0.455711 7.09 0.416212 7.26219L0.0296313 8.94621C-0.0247431 9.18322 -0.00393263 9.43128 0.0891696 9.65592C0.182272 9.88055 0.34304 10.0706 0.549128 10.1996L2.01308 11.117C2.16284 11.2106 2.28921 11.337 2.38375 11.4868L3.30106 12.9508C3.56502 13.373 4.0686 13.5817 4.5544 13.4703L6.23739 13.0837C6.40986 13.0441 6.58908 13.0441 6.76156 13.0837L8.44548 13.4703C8.68247 13.5247 8.93052 13.5039 9.15514 13.4108C9.37976 13.3177 9.56979 13.1569 9.69883 12.9508L10.6161 11.4868C10.7097 11.337 10.8361 11.2106 10.9859 11.117L12.4508 10.1996C12.6569 10.0704 12.8175 9.88015 12.9105 9.65534C13.0034 9.43052 13.024 9.18233 12.9693 8.94528L12.5837 7.26219C12.544 7.0897 12.544 6.91046 12.5837 6.73798L12.9703 5.05395C13.0247 4.81704 13.004 4.56905 12.9111 4.34442C12.8182 4.1198 12.6576 3.9297 12.4517 3.80052L10.9868 2.88315C10.8372 2.78937 10.7108 2.66296 10.6171 2.5134L9.69883 1.04935ZM9.228 4.9126C9.2859 4.80613 9.30024 4.68136 9.26802 4.56453C9.23579 4.44771 9.15951 4.34793 9.05523 4.28621C8.95094 4.22448 8.82678 4.20561 8.70887 4.23358C8.59096 4.26154 8.48849 4.33415 8.42302 4.43613L5.9753 8.57927L4.4973 7.1639C4.45346 7.11887 4.40099 7.08314 4.34304 7.05883C4.28508 7.03452 4.22283 7.02214 4.15998 7.02241C4.09714 7.02269 4.03499 7.03562 3.97725 7.06043C3.91951 7.08524 3.86736 7.12143 3.82391 7.16683C3.78045 7.21224 3.74659 7.26593 3.72434 7.32471C3.70208 7.38348 3.69189 7.44614 3.69437 7.50894C3.69686 7.57174 3.71196 7.6334 3.73878 7.69023C3.76561 7.74707 3.80361 7.79792 3.85051 7.83976L5.75439 9.6642C5.80535 9.71292 5.86665 9.74951 5.93373 9.77122C6.00081 9.79292 6.07192 9.7992 6.14176 9.78957C6.21161 9.77994 6.27837 9.75465 6.33707 9.7156C6.39577 9.67655 6.44488 9.62473 6.48075 9.56403L9.228 4.9126Z"
+                                                        fill="#3A9F6C"></path>
+                                                </svg>
+                                            </i>
+                                            <span class="fw-600">Verified</span>
+                                        </small>
+                                    <?php endif; ?>
+                                    <h5 class="m-0">
+                                        <?= $vendor['company'] ?>
+                                    </h5>
+                                    <!-- <small class="d-block"><?= $vendor['city'] ?>, <?= $vendor['states'] ?>, India</small> -->
+                                </div>
                             </div>
                         </div>
-                    </div>
 
                     <?php } ?>
                     <div class="d-flex gap-3">
-                        <!--  data-bs-toggle="modal" data-bs-target="#requestAQuote" -->
-
                         <button class="btn btn-primary d-inline-flex gap-2 " onclick="openCustomerVendorDetails()">
                             <i style="line-height: 0;">
                                 <svg width="12" height="16" viewBox="0 0 12 16" fill="none"
@@ -189,23 +184,22 @@
                                         fill="white" />
                                 </svg>
                             </i>
-                            <span>View Seller Details </span> <!-- <span>Request A Quote</span> -->
+                            <span>View Seller Details </span>
                         </button>
-
-                        <!-- <button class="btn bg-white text-dark d-inline-flex gap-2 border">
-                            <i style="line-height: 0;">
-                                <svg width="16" height="16" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M10.0889 8.15V1C10.0889 0.734784 9.9835 0.48043 9.79597 0.292893C9.60843 0.105357 9.35408 0 9.08886 0C8.82364 0 8.56929 0.105357 8.38175 0.292893C8.19422 0.48043 8.08886 0.734784 8.08886 1V8.15L5.86886 5.374C5.78841 5.2669 5.68725 5.17706 5.57141 5.10981C5.45557 5.04256 5.32739 4.99926 5.1945 4.9825C5.0616 4.96573 4.92669 4.97584 4.79777 5.01221C4.66886 5.04859 4.54856 5.11049 4.44403 5.19425C4.3395 5.27801 4.25286 5.38192 4.18926 5.49981C4.12565 5.61769 4.08638 5.74716 4.07378 5.88051C4.06117 6.01387 4.07548 6.1484 4.11586 6.27611C4.15625 6.40383 4.22188 6.52213 4.30886 6.624L8.30886 11.624C8.40256 11.7408 8.5213 11.8351 8.6563 11.8998C8.7913 11.9646 8.93913 11.9982 9.08886 11.9982C9.2386 11.9982 9.38642 11.9646 9.52142 11.8998C9.65643 11.8351 9.77516 11.7408 9.86886 11.624L13.8689 6.624C13.9558 6.52213 14.0215 6.40383 14.0619 6.27611C14.1022 6.1484 14.1166 6.01387 14.1039 5.88051C14.0913 5.74716 14.0521 5.61769 13.9885 5.49981C13.9249 5.38192 13.8382 5.27801 13.7337 5.19425C13.6292 5.11049 13.5089 5.04859 13.3799 5.01221C13.251 4.97584 13.1161 4.96573 12.9832 4.9825C12.8503 4.99926 12.7222 5.04256 12.6063 5.10981C12.4905 5.17706 12.3893 5.2669 12.3089 5.374L10.0889 8.15Z" fill="#4B4D56" />
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M6.74587 12.874L4.44687 10H2.08887C1.55843 10 1.04973 10.2107 0.674654 10.5858C0.299581 10.9609 0.0888672 11.4696 0.0888672 12V16C0.0888672 16.5304 0.299581 17.0391 0.674654 17.4142C1.04973 17.7893 1.55843 18 2.08887 18H16.0889C16.6193 18 17.128 17.7893 17.5031 17.4142C17.8782 17.0391 18.0889 16.5304 18.0889 16V12C18.0889 11.4696 17.8782 10.9609 17.5031 10.5858C17.128 10.2107 16.6193 10 16.0889 10H13.7309L11.4309 12.874C11.1498 13.2253 10.7933 13.5089 10.3879 13.7037C9.98237 13.8986 9.53825 13.9998 9.08837 13.9998C8.63849 13.9998 8.19436 13.8986 7.78888 13.7037C7.38339 13.5089 7.02693 13.2253 6.74587 12.874ZM14.0889 13C13.8237 13 13.5693 13.1054 13.3818 13.2929C13.1942 13.4804 13.0889 13.7348 13.0889 14C13.0889 14.2652 13.1942 14.5196 13.3818 14.7071C13.5693 14.8946 13.8237 15 14.0889 15H14.0989C14.3641 15 14.6184 14.8946 14.806 14.7071C14.9935 14.5196 15.0989 14.2652 15.0989 14C15.0989 13.7348 14.9935 13.4804 14.806 13.2929C14.6184 13.1054 14.3641 13 14.0989 13H14.0889Z" fill="#4B4D56" />
-                                </svg>
-                            </i>
-                            <span>Download Brochure</span>
-                        </button> -->
-
                     </div>
+                    <p class="d-flex gap-3 mt-3"><?= $resp['description']; ?></p>
                 </div>
             </div>
-            <?php if (!empty($resp['html_description'])): ?> <?php endif; ?>
+            <?php if (!empty($resp['html_description'])): ?>
+                <!-- <div class="col-12">
+                    <div class="card text-bg-dark m-0">
+                        <h5 class="card-header">Description</h5>
+                        <div class="card-body listStyle">
+                            <?= $resp['html_description']; ?>
+                        </div>
+                    </div>
+                </div> -->
+            <?php endif; ?>
             <div class="col-12">
                 <div class="card text-bg-dark m-0 fadeUp">
                     <h5 class="card-header">Customer Reviews</h5>
@@ -214,16 +208,16 @@
                             <?php if (!empty($reviews)) {
                                 foreach ($reviews as $row) {
                             ?>
-                            <div class="bg-light p-3 rounded-10">
-                                <div class="d-flex align-items-center justify-content-between mb-3">
-                                    <div class="d-flex align-items-center gap-3">
-                                        <i style="line-height: 0;">
-                                            <img src="<?= !empty($row['customer_image']) ? base_url($row['customer_image']) : 'https://app.pagarai.com/public/images/user.svg' ?>"
-                                                alt="" class="rounded-circle" height="60" width="60">
-                                        </i>
-                                        <div class="">
-                                            <strong class="d-block"><?= $row['customer_name'] ?></strong>
-                                            <?php
+                                    <div class="bg-light p-3 rounded-10">
+                                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <i style="line-height: 0;">
+                                                    <img src="<?= !empty($row['customer_image']) ? base_url($row['customer_image']) : 'https://app.pagarai.com/public/images/user.svg' ?>"
+                                                        alt="" class="rounded-circle" height="60" width="60">
+                                                </i>
+                                                <div class="">
+                                                    <strong class="d-block"><?= $row['customer_name'] ?></strong>
+                                                    <?php
                                                     $rating = $row['rating'];
                                                     $fullStars = floor($rating);
                                                     $halfStar = ($rating - $fullStars) >= 0.5;
@@ -243,19 +237,19 @@
                                                 SVG;
                                                     };
                                                     ?>
-                                            <i style="display: flex; gap: 2px; line-height: 0;">
-                                                <?php
+                                                    <i style="display: flex; gap: 2px; line-height: 0;">
+                                                        <?php
                                                         for ($i = 0; $i < $fullStars; $i++) echo $starSvg('full');
                                                         if ($halfStar) echo $starSvg('half');
                                                         for ($i = 0; $i < $emptyStars; $i++) echo $starSvg('empty');
                                                         ?>
-                                            </i>
+                                                    </i>
+                                                </div>
+                                            </div>
+                                            <small><?= $row['created_at'] ?></small>
                                         </div>
+                                        <div><?= $row['review'] ?></div>
                                     </div>
-                                    <small><?= $row['created_at'] ?></small>
-                                </div>
-                                <div><?= $row['review'] ?></div>
-                            </div>
                             <?php }
                             } ?>
                         </div>
@@ -263,9 +257,9 @@
                             <button class="btn btn-primary d-inline-flex gap-2" data-bs-toggle="modal"
                                 data-bs-target="#giveReviewModal">
                                 <?php if (!empty($customerDetails)) { ?>
-                                <span>Leave A Review</span>
+                                    <span>Leave A Review</span>
                                 <?php } else { ?>
-                                <span>Sign in to leave a Review</span>
+                                    <span>Sign in to leave a Review</span>
                                 <?php } ?>
                             </button>
                         </div>
@@ -278,44 +272,44 @@
             });
             ?>
             <?php if (!empty($filteredProducts)) { ?>
-            <div class="col-12">
-                <h2 class="mb-3">You Might Also Like</h2>
-                <div class="px-3 position-relative fadeUp">
-                    <div class="swiper slide4">
-                        <div class="swiper-wrapper">
-                            <?php foreach ($filteredProducts as $row) {
+                <div class="col-12">
+                    <h2 class="mb-3">You Might Also Like</h2>
+                    <div class="px-3 position-relative fadeUp">
+                        <div class="swiper slide4">
+                            <div class="swiper-wrapper">
+                                <?php foreach ($filteredProducts as $row) {
 
                                     if ($row['uid'] == $resp['uid']) {
                                         continue;
                                     }
                                 ?>
-                            <?php if ($row['slug'] === null) {
+                                    <?php if ($row['slug'] === null) {
                                         $slug = $row['uid'];
                                     } else {
                                         $slug = $row['slug'];
                                     } ?>
 
-                            <div class="swiper-slide">
-                                <a href="<?= base_url('product/' . $slug) ?>"
-                                    class="h-100 rounded-10 border bg-white overflow-hidden d-block">
-                                    <img src="<?= base_url($row['main_image']) ?>" alt="" class="w-100 object-fit-cover"
-                                        style="height:250px;">
-                                    <div class="p-lg-3 p-2">
-                                        <h5 class="mb-1" style="height:50px;">
-                                            <?= substr(strip_tags($row['name']), 0, 40) ?><?= strlen(strip_tags($row['name'])) > 40 ? '...' : '' ?>
-                                        </h5>
+                                    <div class="swiper-slide">
+                                        <a href="<?= base_url('product/' . $slug) ?>"
+                                            class="h-100 rounded-10 border bg-white overflow-hidden d-block">
+                                            <img src="<?= base_url($row['main_image']) ?>" alt="" class="w-100 object-fit-cover"
+                                                style="height:250px;">
+                                            <div class="p-lg-3 p-2">
+                                                <h5 class="mb-1" style="height:50px;">
+                                                    <?= substr(strip_tags($row['name']), 0, 40) ?><?= strlen(strip_tags($row['name'])) > 40 ? '...' : '' ?>
+                                                </h5>
 
-                                        <?php if (!empty($row['is_verify']) && $vendor['is_verify'] == 1): ?>
-                                        <span class="badge bg-success">
-                                            <i class="bi bi-check-circle-fill"></i> Sponsored
-                                        </span>
-                                        <?php endif; ?>
-                                        <!-- <small class="d-flex align-items-center gap-1">
+                                                <?php if (!empty($row['is_verify']) && $vendor['is_verify'] == 1): ?>
+                                                    <span class="badge bg-success">
+                                                        <i class="bi bi-check-circle-fill"></i> Sponsored
+                                                    </span>
+                                                <?php endif; ?>
+                                                <!-- <small class="d-flex align-items-center gap-1">
 
                                                 <span class="fw-600">Price: <?= $row['price']; ?></span> // vendor_name 
                                                     <span class="fw-600">Supplier Name: <?= $row['vendor_name']; ?></span>
                                                 </small> -->
-                                        <?php
+                                                <?php
                                                 // Rating display
                                                 $rating = $row['total_rating_percent'];
                                                 $fullStars = floor($rating);
@@ -336,139 +330,140 @@
                                                         SVG;
                                                 };
                                                 ?>
-                                        <i style="display: flex; gap: 2px; line-height: 0;">
-                                            <?php
+                                                <i style="display: flex; gap: 2px; line-height: 0;">
+                                                    <?php
                                                     for ($i = 0; $i < $fullStars; $i++) echo $starSvg('full');
                                                     if ($halfStar) echo $starSvg('half');
                                                     for ($i = 0; $i < $emptyStars; $i++) echo $starSvg('empty');
                                                     ?>
-                                        </i>
-                                        <small style="color: #666;"><?= $row['total_rating_percent'] ?>
-                                            (<?= $row['total_rating_percent'] ?> reviews)</small>
-
-                                        <div class="my-1" style="color: #666;">
-                                            <?= substr(strip_tags($row['description']), 0, 95) ?><?= strlen(strip_tags($row['description'])) > 95 ? '...' : '' ?>
-                                        </div>
-
-                                        <div
-                                            class="text-dark fw-600 d-flex gap-2 justify-content-between align-items-center">
-                                            <span><?= $vendor['company'] ?></span>
-                                            <?php if (!empty($vendor['is_verify']) && $vendor['is_verify'] == 1): ?>
-                                            <small class="d-flex align-items-center gap-1">
-                                                <span class="fw-600">Verified</span>
-                                                <i style="line-height: 0;">
-                                                    <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                                            d="M9.69883 1.04935C9.56974 0.843073 9.37955 0.682175 9.15473 0.589057C8.92992 0.495939 8.68167 0.475233 8.44454 0.529821L6.76156 0.916427C6.58908 0.956072 6.40986 0.956072 6.23739 0.916427L4.5544 0.529821C4.31727 0.475233 4.06902 0.495939 3.84421 0.589057C3.6194 0.682175 3.42921 0.843073 3.30012 1.04935L2.38281 2.5134C2.28921 2.66317 2.16284 2.78955 2.01308 2.88409L0.549128 3.80146C0.343218 3.93044 0.182567 4.12034 0.0894753 4.34478C-0.00361686 4.56922 -0.0245326 4.81708 0.0296313 5.05395L0.416212 6.73891C0.455711 6.9111 0.455711 7.09 0.416212 7.26219L0.0296313 8.94621C-0.0247431 9.18322 -0.00393263 9.43128 0.0891696 9.65592C0.182272 9.88055 0.34304 10.0706 0.549128 10.1996L2.01308 11.117C2.16284 11.2106 2.28921 11.337 2.38375 11.4868L3.30106 12.9508C3.56502 13.373 4.0686 13.5817 4.5544 13.4703L6.23739 13.0837C6.40986 13.0441 6.58908 13.0441 6.76156 13.0837L8.44548 13.4703C8.68247 13.5247 8.93052 13.5039 9.15514 13.4108C9.37976 13.3177 9.56979 13.1569 9.69883 12.9508L10.6161 11.4868C10.7097 11.337 10.8361 11.2106 10.9859 11.117L12.4508 10.1996C12.6569 10.0704 12.8175 9.88015 12.9105 9.65534C13.0034 9.43052 13.024 9.18233 12.9693 8.94528L12.5837 7.26219C12.544 7.0897 12.544 6.91046 12.5837 6.73798L12.9703 5.05395C13.0247 4.81704 13.004 4.56905 12.9111 4.34442C12.8182 4.1198 12.6576 3.9297 12.4517 3.80052L10.9868 2.88315C10.8372 2.78937 10.7108 2.66296 10.6171 2.5134L9.69883 1.04935ZM9.228 4.9126C9.2859 4.80613 9.30024 4.68136 9.26802 4.56453C9.23579 4.44771 9.15951 4.34793 9.05523 4.28621C8.95094 4.22448 8.82678 4.20561 8.70887 4.23358C8.59096 4.26154 8.48849 4.33415 8.42302 4.43613L5.9753 8.57927L4.4973 7.1639C4.45346 7.11887 4.40099 7.08314 4.34304 7.05883C4.28508 7.03452 4.22283 7.02214 4.15998 7.02241C4.09714 7.02269 4.03499 7.03562 3.97725 7.06043C3.91951 7.08524 3.86736 7.12143 3.82391 7.16683C3.78045 7.21224 3.74659 7.26593 3.72434 7.32471C3.70208 7.38348 3.69189 7.44614 3.69437 7.50894C3.69686 7.57174 3.71196 7.6334 3.73878 7.69023C3.76561 7.74707 3.80361 7.79792 3.85051 7.83976L5.75439 9.6642C5.80535 9.71292 5.86665 9.74951 5.93373 9.77122C6.00081 9.79292 6.07192 9.7992 6.14176 9.78957C6.21161 9.77994 6.27837 9.75465 6.33707 9.7156C6.39577 9.67655 6.44488 9.62473 6.48075 9.56403L9.228 4.9126Z"
-                                                            fill="#3A9F6C"></path>
-                                                    </svg>
                                                 </i>
-                                            </small>
-                                            <?php endif; ?>
-                                        </div>
+                                                <small style="color: #666;"><?= $row['total_rating_percent'] ?>
+                                                    (<?= $row['total_rating_percent'] ?> reviews)</small>
+
+                                                <div class="my-1" style="color: #666;">
+                                                    <?= substr(strip_tags($row['description']), 0, 95) ?><?= strlen(strip_tags($row['description'])) > 95 ? '...' : '' ?>
+                                                </div>
+
+                                                <div
+                                                    class="text-dark fw-600 d-flex gap-2 justify-content-between align-items-center">
+                                                    <span><?= $vendor['company'] ?></span>
+                                                    <?php if (!empty($vendor['is_verify']) && $vendor['is_verify'] == 1): ?>
+                                                        <small class="d-flex align-items-center gap-1">
+                                                            <span class="fw-600">Verified</span>
+                                                            <i style="line-height: 0;">
+                                                                <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
+                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                        d="M9.69883 1.04935C9.56974 0.843073 9.37955 0.682175 9.15473 0.589057C8.92992 0.495939 8.68167 0.475233 8.44454 0.529821L6.76156 0.916427C6.58908 0.956072 6.40986 0.956072 6.23739 0.916427L4.5544 0.529821C4.31727 0.475233 4.06902 0.495939 3.84421 0.589057C3.6194 0.682175 3.42921 0.843073 3.30012 1.04935L2.38281 2.5134C2.28921 2.66317 2.16284 2.78955 2.01308 2.88409L0.549128 3.80146C0.343218 3.93044 0.182567 4.12034 0.0894753 4.34478C-0.00361686 4.56922 -0.0245326 4.81708 0.0296313 5.05395L0.416212 6.73891C0.455711 6.9111 0.455711 7.09 0.416212 7.26219L0.0296313 8.94621C-0.0247431 9.18322 -0.00393263 9.43128 0.0891696 9.65592C0.182272 9.88055 0.34304 10.0706 0.549128 10.1996L2.01308 11.117C2.16284 11.2106 2.28921 11.337 2.38375 11.4868L3.30106 12.9508C3.56502 13.373 4.0686 13.5817 4.5544 13.4703L6.23739 13.0837C6.40986 13.0441 6.58908 13.0441 6.76156 13.0837L8.44548 13.4703C8.68247 13.5247 8.93052 13.5039 9.15514 13.4108C9.37976 13.3177 9.56979 13.1569 9.69883 12.9508L10.6161 11.4868C10.7097 11.337 10.8361 11.2106 10.9859 11.117L12.4508 10.1996C12.6569 10.0704 12.8175 9.88015 12.9105 9.65534C13.0034 9.43052 13.024 9.18233 12.9693 8.94528L12.5837 7.26219C12.544 7.0897 12.544 6.91046 12.5837 6.73798L12.9703 5.05395C13.0247 4.81704 13.004 4.56905 12.9111 4.34442C12.8182 4.1198 12.6576 3.9297 12.4517 3.80052L10.9868 2.88315C10.8372 2.78937 10.7108 2.66296 10.6171 2.5134L9.69883 1.04935ZM9.228 4.9126C9.2859 4.80613 9.30024 4.68136 9.26802 4.56453C9.23579 4.44771 9.15951 4.34793 9.05523 4.28621C8.95094 4.22448 8.82678 4.20561 8.70887 4.23358C8.59096 4.26154 8.48849 4.33415 8.42302 4.43613L5.9753 8.57927L4.4973 7.1639C4.45346 7.11887 4.40099 7.08314 4.34304 7.05883C4.28508 7.03452 4.22283 7.02214 4.15998 7.02241C4.09714 7.02269 4.03499 7.03562 3.97725 7.06043C3.91951 7.08524 3.86736 7.12143 3.82391 7.16683C3.78045 7.21224 3.74659 7.26593 3.72434 7.32471C3.70208 7.38348 3.69189 7.44614 3.69437 7.50894C3.69686 7.57174 3.71196 7.6334 3.73878 7.69023C3.76561 7.74707 3.80361 7.79792 3.85051 7.83976L5.75439 9.6642C5.80535 9.71292 5.86665 9.74951 5.93373 9.77122C6.00081 9.79292 6.07192 9.7992 6.14176 9.78957C6.21161 9.77994 6.27837 9.75465 6.33707 9.7156C6.39577 9.67655 6.44488 9.62473 6.48075 9.56403L9.228 4.9126Z"
+                                                                        fill="#3A9F6C"></path>
+                                                                </svg>
+                                                            </i>
+                                                        </small>
+                                                    <?php endif; ?>
+                                                </div>
+
+                                            </div>
+                                        </a>
                                     </div>
-                                </a>
+                                <?php } ?>
                             </div>
-                            <?php } ?>
+                        </div>
+                        <div class="slide4Swiper-button-next position-absolute top-50 translate-middle-y end-0" style="z-index: 1;">
+                            <svg width="40" height="40" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g filter="url(#filter0_dd_126_1253)">
+                                    <rect x="4" y="3" width="44" height="44" rx="10" fill="white" />
+                                    <path
+                                        d="M34.2148 25L34.6079 24.5822L35 25L34.6079 25.4178L34.2148 25ZM17.5553 25.5902C17.408 25.5902 17.2668 25.528 17.1626 25.4173C17.0585 25.3066 17 25.1565 17 25C17 24.8435 17.0585 24.6934 17.1626 24.5827C17.2668 24.472 17.408 24.4098 17.5553 24.4098V25.5902ZM27.9442 17.5L34.6079 24.5822L33.8216 25.4178L27.1578 18.3357L27.9442 17.5ZM34.6079 25.4178L27.9442 32.5L27.1578 31.6643L33.8216 24.5822L34.6079 25.4178ZM34.2148 25.5902H17.5553V24.4098H34.2148V25.5902Z"
+                                        fill="#1C2730" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_dd_126_1253" x="0" y="0" width="52" height="52" filterUnits="userSpaceOnUse"
+                                        color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feColorMatrix in="SourceAlpha" type="matrix"
+                                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                        <feMorphology radius="1" operator="dilate" in="SourceAlpha"
+                                            result="effect1_dropShadow_126_1253" />
+                                        <feOffset dy="1" />
+                                        <feGaussianBlur stdDeviation="1.5" />
+                                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
+                                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_126_1253" />
+                                        <feColorMatrix in="SourceAlpha" type="matrix"
+                                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                        <feOffset dy="1" />
+                                        <feGaussianBlur stdDeviation="1" />
+                                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+                                        <feBlend mode="normal" in2="effect1_dropShadow_126_1253"
+                                            result="effect2_dropShadow_126_1253" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_126_1253"
+                                            result="shape" />
+                                    </filter>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="slide4Swiper-button-prev position-absolute top-50 translate-middle-y start-0"
+                            style="z-index: 1;">
+                            <svg width="40" height="40" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g filter="url(#filter0_dd_126_1251)">
+                                    <rect x="48" y="47" width="44" height="44" rx="10" transform="rotate(-180 48 47)"
+                                        fill="white" />
+                                    <path
+                                        d="M17.7852 25L17.3921 25.4178L17 25L17.3921 24.5822L17.7852 25ZM34.4447 24.4098C34.592 24.4098 34.7332 24.472 34.8374 24.5827C34.9415 24.6934 35 24.8435 35 25C35 25.1565 34.9415 25.3066 34.8374 25.4173C34.7332 25.528 34.592 25.5902 34.4447 25.5902V24.4098ZM24.0558 32.5L17.3921 25.4178L18.1784 24.5822L24.8422 31.6643L24.0558 32.5ZM17.3921 24.5822L24.0558 17.5L24.8422 18.3357L18.1784 25.4178L17.3921 24.5822ZM17.7852 24.4098H34.4447V25.5902H17.7852V24.4098Z"
+                                        fill="#1C2730" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_dd_126_1251" x="0" y="0" width="52" height="52" filterUnits="userSpaceOnUse"
+                                        color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feColorMatrix in="SourceAlpha" type="matrix"
+                                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                        <feMorphology radius="1" operator="dilate" in="SourceAlpha"
+                                            result="effect1_dropShadow_126_1251" />
+                                        <feOffset dy="1" />
+                                        <feGaussianBlur stdDeviation="1.5" />
+                                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
+                                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_126_1251" />
+                                        <feColorMatrix in="SourceAlpha" type="matrix"
+                                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                        <feOffset dy="1" />
+                                        <feGaussianBlur stdDeviation="1" />
+                                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+                                        <feBlend mode="normal" in2="effect1_dropShadow_126_1251"
+                                            result="effect2_dropShadow_126_1251" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_126_1251"
+                                            result="shape" />
+                                    </filter>
+                                </defs>
+                            </svg>
                         </div>
                     </div>
-                    <div class="slide4Swiper-button-next position-absolute top-50 translate-middle-y end-0" style="z-index: 1;">
-                        <svg width="40" height="40" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g filter="url(#filter0_dd_126_1253)">
-                                <rect x="4" y="3" width="44" height="44" rx="10" fill="white" />
-                                <path
-                                    d="M34.2148 25L34.6079 24.5822L35 25L34.6079 25.4178L34.2148 25ZM17.5553 25.5902C17.408 25.5902 17.2668 25.528 17.1626 25.4173C17.0585 25.3066 17 25.1565 17 25C17 24.8435 17.0585 24.6934 17.1626 24.5827C17.2668 24.472 17.408 24.4098 17.5553 24.4098V25.5902ZM27.9442 17.5L34.6079 24.5822L33.8216 25.4178L27.1578 18.3357L27.9442 17.5ZM34.6079 25.4178L27.9442 32.5L27.1578 31.6643L33.8216 24.5822L34.6079 25.4178ZM34.2148 25.5902H17.5553V24.4098H34.2148V25.5902Z"
-                                    fill="#1C2730" />
-                            </g>
-                            <defs>
-                                <filter id="filter0_dd_126_1253" x="0" y="0" width="52" height="52" filterUnits="userSpaceOnUse"
-                                    color-interpolation-filters="sRGB">
-                                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                                    <feColorMatrix in="SourceAlpha" type="matrix"
-                                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                                    <feMorphology radius="1" operator="dilate" in="SourceAlpha"
-                                        result="effect1_dropShadow_126_1253" />
-                                    <feOffset dy="1" />
-                                    <feGaussianBlur stdDeviation="1.5" />
-                                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
-                                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_126_1253" />
-                                    <feColorMatrix in="SourceAlpha" type="matrix"
-                                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                                    <feOffset dy="1" />
-                                    <feGaussianBlur stdDeviation="1" />
-                                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
-                                    <feBlend mode="normal" in2="effect1_dropShadow_126_1253"
-                                        result="effect2_dropShadow_126_1253" />
-                                    <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_126_1253"
-                                        result="shape" />
-                                </filter>
-                            </defs>
-                        </svg>
-                    </div>
-                    <div class="slide4Swiper-button-prev position-absolute top-50 translate-middle-y start-0"
-                        style="z-index: 1;">
-                        <svg width="40" height="40" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g filter="url(#filter0_dd_126_1251)">
-                                <rect x="48" y="47" width="44" height="44" rx="10" transform="rotate(-180 48 47)"
-                                    fill="white" />
-                                <path
-                                    d="M17.7852 25L17.3921 25.4178L17 25L17.3921 24.5822L17.7852 25ZM34.4447 24.4098C34.592 24.4098 34.7332 24.472 34.8374 24.5827C34.9415 24.6934 35 24.8435 35 25C35 25.1565 34.9415 25.3066 34.8374 25.4173C34.7332 25.528 34.592 25.5902 34.4447 25.5902V24.4098ZM24.0558 32.5L17.3921 25.4178L18.1784 24.5822L24.8422 31.6643L24.0558 32.5ZM17.3921 24.5822L24.0558 17.5L24.8422 18.3357L18.1784 25.4178L17.3921 24.5822ZM17.7852 24.4098H34.4447V25.5902H17.7852V24.4098Z"
-                                    fill="#1C2730" />
-                            </g>
-                            <defs>
-                                <filter id="filter0_dd_126_1251" x="0" y="0" width="52" height="52" filterUnits="userSpaceOnUse"
-                                    color-interpolation-filters="sRGB">
-                                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                                    <feColorMatrix in="SourceAlpha" type="matrix"
-                                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                                    <feMorphology radius="1" operator="dilate" in="SourceAlpha"
-                                        result="effect1_dropShadow_126_1251" />
-                                    <feOffset dy="1" />
-                                    <feGaussianBlur stdDeviation="1.5" />
-                                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
-                                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_126_1251" />
-                                    <feColorMatrix in="SourceAlpha" type="matrix"
-                                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                                    <feOffset dy="1" />
-                                    <feGaussianBlur stdDeviation="1" />
-                                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
-                                    <feBlend mode="normal" in2="effect1_dropShadow_126_1251"
-                                        result="effect2_dropShadow_126_1251" />
-                                    <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_126_1251"
-                                        result="shape" />
-                                </filter>
-                            </defs>
-                        </svg>
-                    </div>
+                    <script>
+                        var swiper = new Swiper(".slide4", {
+                            slidesPerView: 1,
+                            loop: true,
+                            navigation: {
+                                nextEl: ".slide4Swiper-button-next",
+                                prevEl: ".slide4Swiper-button-prev",
+                            },
+                            breakpoints: {
+                                640: {
+                                    slidesPerView: 1,
+                                    spaceBetween: 10,
+                                },
+                                768: {
+                                    slidesPerView: 3,
+                                    spaceBetween: 20,
+                                },
+                                1024: {
+                                    slidesPerView: 4,
+                                    spaceBetween: 30,
+                                },
+                            },
+                        });
+                    </script>
                 </div>
-                <script>
-                    var swiper = new Swiper(".slide4", {
-                        slidesPerView: 1,
-                        loop: true,
-                        navigation: {
-                            nextEl: ".slide4Swiper-button-next",
-                            prevEl: ".slide4Swiper-button-prev",
-                        },
-                        breakpoints: {
-                            640: {
-                                slidesPerView: 1,
-                                spaceBetween: 10,
-                            },
-                            768: {
-                                slidesPerView: 3,
-                                spaceBetween: 20,
-                            },
-                            1024: {
-                                slidesPerView: 4,
-                                spaceBetween: 30,
-                            },
-                        },
-                    });
-                </script>
-            </div>
             <?php } ?>
-        </div> 
+        </div>
     </div>
 </section>
 
@@ -480,62 +475,69 @@
 
 <!--=================Request A Quote Modal=================-->
 <?php if (!empty($customerDetails)) { ?>
-<div class="modal fade" id="requestAQuote" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">View Seller Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <div class="d-flex flex-column gap-2">
-                        <div><strong>Company Name:</strong> <span id="sellerName"><?= $vendor['company'] ?></span></div>
-                        <!-- <div><strong>Email:</strong> <span id="sellerEmail"><?= $vendor['email'] ?></span></div> -->
-                        <div><strong>Phone:</strong> <span id="sellerPhone">+91 <?= $vendor['mobile'] ?></span></div>
-                        <div><strong>Country:</strong> <span id="sellerPhone"><?= $vendor['country'] ?></span></div>
-                        <div>
-                            <strong>Website:</strong>
-                            <a id="sellerPhone" href="<?= $vendor['website'] ?>" target="_blank">
-                                <?= $vendor['website'] ?>
-                            </a>
-                        </div>
-
-                    </div>
+    <div class="modal fade" id="requestAQuote" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">View Seller Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="#" method="post" class="" onsubmit="">
-                    <div class="d-flex flex-column gap-3 mb-3">
-                        <input type='hidden' name="productId" id="productId" value="<?= $resp['uid'] ?>">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="d-flex flex-column gap-2">
+                            <div><strong>Seller Name:</strong> <span id="sellerName"><?= $vendor['name'] ?></span></div>
+                            <!-- <div><strong>Email:</strong> <span id="sellerEmail"><?= $vendor['email'] ?></span></div> -->
+                            <div><strong>Phone:</strong> <span id="sellerPhone">+91 <?= $vendor['mobile'] ?></span></div>
+                            <div>
+                                <strong>Address:</strong>
+                                <span id="sellerPhone">
+                                    <?= $vendor['country'] ?> ,
+                                    <?= $vendor['city'] ?> ,
+                                    <?= $vendor['states'] ?>
+                                </span>
+                            </div>
+                            <div>
+                                <strong>Website:</strong>
+                                <a id="sellerPhone" href="<?= $vendor['website'] ?>" target="_blank">
+                                    <?= $vendor['website'] ?>
+                                </a>
+                            </div>
+
+                        </div>
                     </div>
-                </form>
+                    <form action="#" method="post" class="" onsubmit="">
+                        <div class="d-flex flex-column gap-3 mb-3">
+                            <input type='hidden' name="productId" id="productId" value="<?= $resp['uid'] ?>">
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 <?php } else { ?>
 
-<div class="modal fade" id="requestAQuote" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <form class="modal-content review-form">
-            <div class="modal-header">
-                <h5 class="modal-title">View Seller Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-                <!-- Actual review form -->
-                <div id="loginFirst">
-                    Please login first to view seller .
+    <div class="modal fade" id="requestAQuote" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <form class="modal-content review-form">
+                <div class="modal-header">
+                    <h5 class="modal-title">View Seller Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary w-100 justify-content-center"
-                    onclick="openLoginModal1()">OK</button>
-            </div>
-        </form>
+                <div class="modal-body">
+                    <!-- Actual review form -->
+                    <div id="loginFirst">
+                        Please login first to view seller .
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary w-100 justify-content-center"
+                        onclick="openLoginModal1()">OK</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
 
 <?php } ?>
@@ -543,257 +545,258 @@
 
 <?php if (!empty($customerDetails)) { ?>
 
-<div class="modal fade" id="giveReviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <form class="modal-content review-form" onsubmit="submitReview(event)">
-            <div class="modal-header">
-                <h5 class="modal-title">Leave a Review</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <input type='hidden' name="productUid" id="productUid" value="<?= $resp['uid'] ?>">
-                <div class="d-flex flex-column gap-3">
-                    <div class="position-relative">
-                        <div class="star-rating">
-                            <input type="radio" name="rating" id="star5" value="5"><label for="star5">★</label>
-                            <input type="radio" name="rating" id="star4" value="4"><label for="star4">★</label>
-                            <input type="radio" name="rating" id="star3" value="3"><label for="star3">★</label>
-                            <input type="radio" name="rating" id="star2" value="2"><label for="star2">★</label>
-                            <input type="radio" name="rating" id="star1" value="1"><label for="star1">★</label>
+    <div class="modal fade" id="giveReviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <form class="modal-content review-form" onsubmit="submitReview(event)">
+                <div class="modal-header">
+                    <h5 class="modal-title">Leave a Review</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type='hidden' name="productUid" id="productUid" value="<?= $resp['uid'] ?>">
+                    <div class="d-flex flex-column gap-3">
+                        <div class="position-relative">
+                            <div class="star-rating">
+                                <input type="radio" name="rating" id="star5" value="5"><label for="star5">★</label>
+                                <input type="radio" name="rating" id="star4" value="4"><label for="star4">★</label>
+                                <input type="radio" name="rating" id="star3" value="3"><label for="star3">★</label>
+                                <input type="radio" name="rating" id="star2" value="2"><label for="star2">★</label>
+                                <input type="radio" name="rating" id="star1" value="1"><label for="star1">★</label>
+                            </div>
+                            <div id="rating-error" class="text-danger small mt-1"></div>
                         </div>
-                        <div id="rating-error" class="text-danger small mt-1"></div>
-                    </div>
 
-                    <div class="position-relative">
-                        <textarea class="form-control" name="details" rows="3" placeholder="Message"></textarea>
-                        <div id="details-error" class="text-danger small mt-1"></div>
+                        <div class="position-relative">
+                            <textarea class="form-control" name="details" rows="3" placeholder="Message"></textarea>
+                            <div id="details-error" class="text-danger small mt-1"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary w-100 justify-content-center">Submit</button>
-            </div>
-        </form>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary w-100 justify-content-center">Submit</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
 <?php } else { ?>
 
-<div class="modal fade" id="giveReviewModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <form class="modal-content review-form">
-            <div class="modal-header">
-                <h5 class="modal-title">Give Your Review</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-                <!-- Actual review form -->
-                <div id="loginFirst">
-                    Please login first to submit a review.
+    <div class="modal fade" id="giveReviewModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <form class="modal-content review-form">
+                <div class="modal-header">
+                    <h5 class="modal-title">Give Your Review</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary w-100 justify-content-center"
-                    onclick="openLoginModal()">OK</button>
-            </div>
-        </form>
+                <div class="modal-body">
+                    <!-- Actual review form -->
+                    <div id="loginFirst">
+                        Please login first to submit a review.
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary w-100 justify-content-center"
+                        onclick="openLoginModal()">OK</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
 <?php } ?>
 
 
 <script>
-function openCustomerVendorDetails() {
-    const productId = document.getElementById('productId')?.value;
-    const message = document.getElementById('message')?.value || "";
-    console.log("Sending productId:", productId);
+    function openCustomerVendorDetails() {
+        const productId = document.getElementById('productId')?.value;
+        const message = document.getElementById('message')?.value || "";
+        console.log("Sending productId:", productId);
 
 
-    const vendorDetails = document.getElementById('requestAQuote');
-    const showVendorDetails = bootstrap.Modal.getOrCreateInstance(vendorDetails);
-    showVendorDetails.show();
+        const vendorDetails = document.getElementById('requestAQuote');
+        const showVendorDetails = bootstrap.Modal.getOrCreateInstance(vendorDetails);
+        showVendorDetails.show();
 
 
-    fetch(`${BASE_URL1}customer/api/request/created`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                productId,
-                message
+        fetch(`${BASE_URL1}customer/api/request/created`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    productId,
+                    message
+                })
             })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("API Response:", data);
+            .then(response => response.json())
+            .then(data => {
+                console.log("API Response:", data);
 
-            if (data.status === "success") {
+                if (data.status === "success") {
 
-                if (typeof aonsolve !== "undefined" && typeof aonsolve.log === "function") {
-                    aonsolve.log("Quote request submitted successfully for product " + productId);
+                    if (typeof aonsolve !== "undefined" && typeof aonsolve.log === "function") {
+                        aonsolve.log("Quote request submitted successfully for product " + productId);
+                    }
+                    console.log("API success:", data.message);
+                    // optional success alert
+                    // MessSuccess.fire({
+                    //     icon: 'success',
+                    //     title: data.message || 'Quote request submitted successfully.',
+                    // });
+
+                } else {
+                    console.error("API Error:", data.message);
+                    // MessError.fire({
+                    //     icon: 'error',
+                    //     title: data.message || 'Failed to submit quote request.',
+                    // });
                 }
-                console.log("API success:", data.message);
-                // optional success alert
-                // MessSuccess.fire({
-                //     icon: 'success',
-                //     title: data.message || 'Quote request submitted successfully.',
-                // });
-
-            } else {
-                console.error("API Error:", data.message);
+            })
+            .catch(error => {
+                console.error("API Error:", error);
                 // MessError.fire({
                 //     icon: 'error',
-                //     title: data.message || 'Failed to submit quote request.',
+                //     title: 'Something went wrong. Please try again.',
                 // });
-            }
-        })
-        .catch(error => {
-            console.error("API Error:", error);
-            // MessError.fire({
-            //     icon: 'error',
-            //     title: 'Something went wrong. Please try again.',
-            // });
-        });
-}
+            });
+    }
 </script>
 
 
 
 
 <script>
-const BASE_URL1 = "<?= base_url(); ?>";
-function submitReview(event) {
-    event.preventDefault();
-    document.getElementById('rating-error').textContent = '';
-    document.getElementById('details-error').textContent = '';
-    const productUid = document.getElementById('productUid')?.value;
-    const rating = document.querySelector('input[name="rating"]:checked');
-    const detailsInput = document.querySelector('textarea[name="details"]');
-    const details = detailsInput.value.trim();
-    let hasError = false;
-    if (!rating) {
-        document.getElementById('rating-error').textContent = "Please select a rating.";
-        hasError = true;
-    }
-    if (!details) {
-        document.getElementById('details-error').textContent = "Please write a review message.";
-        hasError = true;
-    }
-    if (hasError) return;
+    const BASE_URL1 = "<?= base_url(); ?>";
 
-    const data = {
-        productId: productUid,
-        rating: rating.value,
-        review: details
-    };
+    function submitReview(event) {
+        event.preventDefault();
+        document.getElementById('rating-error').textContent = '';
+        document.getElementById('details-error').textContent = '';
+        const productUid = document.getElementById('productUid')?.value;
+        const rating = document.querySelector('input[name="rating"]:checked');
+        const detailsInput = document.querySelector('textarea[name="details"]');
+        const details = detailsInput.value.trim();
+        let hasError = false;
+        if (!rating) {
+            document.getElementById('rating-error').textContent = "Please select a rating.";
+            hasError = true;
+        }
+        if (!details) {
+            document.getElementById('details-error').textContent = "Please write a review message.";
+            hasError = true;
+        }
+        if (hasError) return;
 
-    fetch(`${BASE_URL1}customer/api/rating/created`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(data => {
-                    // Show error message from API response
-                    MessError.fire({
-                        icon: 'error',
-                        title: data.message || 'Something went wrong',
-                    });
-                    throw new Error(data.message || 'Request failed');
-                });
-            }
-            return response.json();
-        })
-        .then(result => {
-            // Success feedback
-            MessSuccess.fire({
-                icon: 'success',
-                title: 'Review submitted successfully!',
-            });
-            window.location.reload();
-        })
-        .catch(error => {
-            console.error(error);
-            document.getElementById('details-error').textContent = "Failed to submit review. Please try again.";
-        });
-}
+        const data = {
+            productId: productUid,
+            rating: rating.value,
+            review: details
+        };
 
-function openLoginModal() {
-    // Hide the review modal
-    const reviewModalEl = document.getElementById('giveReviewModal');
-    const reviewModal = bootstrap.Modal.getInstance(reviewModalEl);
-    reviewModal.hide();
-
-    // Show the login modal
-    const loginModalEl = document.getElementById('loginRegisterModal'); // make sure the ID matches
-    const loginModal = new bootstrap.Modal(loginModalEl);
-    loginModal.show();
-}
-
-function openLoginModal1() {
-    // Hide the review modal
-    const reviewModalEl = document.getElementById('requestAQuote');
-    const reviewModal = bootstrap.Modal.getInstance(reviewModalEl);
-    reviewModal.hide();
-
-    // Show the login modal
-    const loginModalEl = document.getElementById('loginRegisterModal'); // make sure the ID matches
-    const loginModal = new bootstrap.Modal(loginModalEl);
-    loginModal.show();
-}
-
-function submitQuote(event) {
-    event.preventDefault();
-    const productId = document.getElementById('productId').value;
-    const message = document.querySelector('textarea[placeholder="Message"]').value;
-    // console.log("Quote Request Data:", {
-    //     productId,
-    //     message
-    // });
-    const btn = document.getElementById('btnQuoteSubmit');
-    // Disable button to prevent multiple submissions
-
-    fetch(`${BASE_URL1}customer/api/request/created`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                productId,
-                message
+        fetch(`${BASE_URL1}customer/api/rating/created`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
             })
-        })
-        .then(response => response.json())
-        .then(data => {
-            btn.disabled = true;
-            if (data.success) {
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        // Show error message from API response
+                        MessError.fire({
+                            icon: 'error',
+                            title: data.message || 'Something went wrong',
+                        });
+                        throw new Error(data.message || 'Request failed');
+                    });
+                }
+                return response.json();
+            })
+            .then(result => {
+                // Success feedback
                 MessSuccess.fire({
                     icon: 'success',
-                    title: 'Request submitted successfully!',
+                    title: 'Review submitted successfully!',
                 });
                 window.location.reload();
-            } else {
+            })
+            .catch(error => {
+                console.error(error);
+                document.getElementById('details-error').textContent = "Failed to submit review. Please try again.";
+            });
+    }
+
+    function openLoginModal() {
+        // Hide the review modal
+        const reviewModalEl = document.getElementById('giveReviewModal');
+        const reviewModal = bootstrap.Modal.getInstance(reviewModalEl);
+        reviewModal.hide();
+
+        // Show the login modal
+        const loginModalEl = document.getElementById('loginRegisterModal'); // make sure the ID matches
+        const loginModal = new bootstrap.Modal(loginModalEl);
+        loginModal.show();
+    }
+
+    function openLoginModal1() {
+        // Hide the review modal
+        const reviewModalEl = document.getElementById('requestAQuote');
+        const reviewModal = bootstrap.Modal.getInstance(reviewModalEl);
+        reviewModal.hide();
+
+        // Show the login modal
+        const loginModalEl = document.getElementById('loginRegisterModal'); // make sure the ID matches
+        const loginModal = new bootstrap.Modal(loginModalEl);
+        loginModal.show();
+    }
+
+    function submitQuote(event) {
+        event.preventDefault();
+        const productId = document.getElementById('productId').value;
+        const message = document.querySelector('textarea[placeholder="Message"]').value;
+        // console.log("Quote Request Data:", {
+        //     productId,
+        //     message
+        // });
+        const btn = document.getElementById('btnQuoteSubmit');
+        // Disable button to prevent multiple submissions
+
+        fetch(`${BASE_URL1}customer/api/request/created`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    productId,
+                    message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                btn.disabled = true;
+                if (data.success) {
+                    MessSuccess.fire({
+                        icon: 'success',
+                        title: 'Request submitted successfully!',
+                    });
+                    window.location.reload();
+                } else {
+                    MessError.fire({
+                        icon: 'error',
+                        title: data.message || 'Failed to submit quote request.',
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("API Error:", error);
                 MessError.fire({
                     icon: 'error',
-                    title: data.message || 'Failed to submit quote request.',
+                    title: 'Something went wrong. Please try again.',
                 });
-            }
-        })
-        .catch(error => {
-            console.error("API Error:", error);
-            MessError.fire({
-                icon: 'error',
-                title: 'Something went wrong. Please try again.',
             });
-        });
-}
+    }
 </script>
 <script>
     var MessSuccess = Swal.mixin({

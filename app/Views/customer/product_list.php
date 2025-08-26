@@ -46,6 +46,23 @@
                                 </script>
                             </div>
                             <div class="d-flex flex-column gap-1">
+                                <h6 class="mb-2">Seller Type</h6>
+
+                                <div class="form-check">
+                                    <input class="form-check-input seller-type-checkbox" onclick="handleCategoryChange(this)" type="checkbox"
+                                        id="seller_type_verify" value="1" <?php if (!empty($vendor_type) && $vendor_type == 1) echo 'checked'; ?>>
+                                    <label class="form-check-label" for="seller_type_verify">Verified Only ✅</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input seller-type-checkbox" onclick="handleCategoryChange(this)"
+                                        type="checkbox" id="seller_type_none_verify" value="0" <?php if (!empty($vendor_type) && $vendor_type == 0) echo 'checked'; ?>>
+                                    <label class="form-check-label" for="seller_type_none_verify">Unverified</label>
+                                </div>
+                            </div>
+
+
+                            <div class="d-flex flex-column gap-1">
                                 <h6 class="mb-2">Categories</h6>
                                 <?php if (!empty($category)) : ?>
                                     <?php foreach ($category as $row): ?>
@@ -98,20 +115,21 @@
 
                                     <?php if (!empty($vendorCountryList)) : ?>
                                         <?php foreach ($vendorCountryList as $country): ?>
-
                                             <div class="form-check m-0">
                                                 <input
                                                     class="form-check-input country-checkbox"
                                                     type="checkbox"
                                                     value="<?= esc($country['country']); ?>"
                                                     id="country_<?= esc($country['country']); ?>"
-                                                    <?= strtolower($country['country']) === 'india' ? 'checked' : '' ?>>
+                                                    <?= (is_array($countries) && in_array($country['country'], $countries)) ? 'checked' : '' ?> onchange="handleCategoryChange(this)">
+
                                                 <label class="form-check-label" for="country_<?= esc($country['country']); ?>">
                                                     <?= esc($country['country']); ?>
                                                 </label>
                                             </div>
                                         <?php endforeach; ?>
                                     <?php endif; ?>
+
                                     <!-- <div class="form-check m-0">
                                         <input class="form-check-input" type="checkbox" value="india" id="india" checked>
 
@@ -223,11 +241,31 @@
     </div>
 </section>
 <script>
+    console.log("hsdjkhfajhj");
+
     function handleCategoryChange(checkbox) {
+        // uncheck all other seller-type checkboxes
+        document.querySelectorAll('.seller-type-checkbox').forEach(cb => {
+            if (cb !== checkbox) {
+                cb.checked = false;
+            }
+        });
+
         const selected = [];
         document.querySelectorAll('.category-checkbox:checked').forEach(cb => {
             selected.push(cb.value);
         });
+
+        let selectedCountries = [];
+        document.querySelectorAll('.country-checkbox:checked').forEach(cb => {
+            selectedCountries.push(cb.value);
+        });
+
+        let selectedSellerType = null;
+        const checkedSeller = document.querySelector('.seller-type-checkbox:checked');
+        if (checkedSeller) {
+            selectedSellerType = checkedSeller.value;
+        }
 
         const filterData = {
             categories: selected,
@@ -235,15 +273,20 @@
                 from: priceRange.from,
                 to: priceRange.to
             },
-
+            countries: selectedCountries,
+            vendorStatus: selectedSellerType // now it's single value, not array
         };
 
+        console.log("-================", filterData);
+        // return;
         const jsonStr = JSON.stringify(filterData);
         const base64 = btoa(jsonStr);
         const url = "<?= base_url('product-list?filter=') ?>" + encodeURIComponent(base64);
 
         window.location.href = url;
     }
+
+
     const productsData = <?= json_encode($product) ?>;
 
     let currentPage = 1;
@@ -346,46 +389,46 @@
             }
             // Append product card
             container.innerHTML += `
-        <div class="col-lg-4 col-6">
-            <a href="product/${slug}" class="h-100 rounded-10 border bg-white overflow-hidden d-block">
-                <img src="${row.main_image}" alt="" class="w-100 object-fit-cover" style="height:250px;">
-                <div class="p-lg-3 p-2">
-                    <h5 class="mb-1" style="height:50px;">
-                        ${row.name.length > 40 ? row.name.slice(0, 40) + '...' : row.name}
-                    </h5>
-                      ${row.is_verify == 1 ? `
-                        <span class="badge bg-success">
-                            <i class="bi bi-check-circle-fill"></i> Sponsored
-                        </span>
-                        ` : ''}
-                    
+            <div class="col-lg-4 col-6">
+                <a href="product/${slug}" class="h-100 rounded-10 border bg-white overflow-hidden d-block">
+                    <img src="${row.main_image}" alt="" class="w-100 object-fit-cover" style="height:250px;">
+                    <div class="p-lg-3 p-2">
+                        <h5 class="mb-1" style="height:50px;">
+                            ${row.name.length > 40 ? row.name.slice(0, 40) + '...' : row.name}
+                        </h5>
+                        ${row.is_verify == 1 ? `
+                            <span class="badge bg-success">
+                                <i class="bi bi-check-circle-fill"></i> Sponsored
+                            </span>
+                            ` : ''}
+                        
 
-                    <div class="d-flex align-items-center justify-content-between">
-                        <i style="display: flex; gap: 2px; line-height: 0;">${starsHtml}</i>
-                        <small style="color: #666;">${rating} (${row.total_customer_review} reviews)</small>
-                    </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <i style="display: flex; gap: 2px; line-height: 0;">${starsHtml}</i>
+                            <small style="color: #666;">${rating} (${row.total_customer_review} reviews)</small>
+                        </div>
 
-                    <div class="my-1" style="color: #666;">
-                        ${row.description.length > 95 ? row.description.slice(0, 95) + '...' : row.description}
-                    </div>
+                        <div class="my-1" style="color: #666;">
+                             ${formatDescription(row.description, 95)}
+                        </div>
 
-                    <div class="text-dark fw-600 d-flex gap-2 justify-content-between align-items-center">
-                        <span>${row.vendor_company}</span>
-                        ${row.is_vendor_verify == 1 ? `
-                            <small class="d-flex align-items-center gap-1">
-                                <span class="fw-600">Verified</span>
-                                <i style="line-height: 0;">
-                                    <!-- Vendor Verify Icon -->
-                                    <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.69883 1.04935C9.56974 0.843073 9.37955 0.682175 9.15473 0.589057C8.92992 0.495939 8.68167 0.475233 8.44454 0.529821L6.76156 0.916427C6.58908 0.956072 6.40986 0.956072 6.23739 0.916427L4.5544 0.529821C4.31727 0.475233 4.06902 0.495939 3.84421 0.589057C3.6194 0.682175 3.42921 0.843073 3.30012 1.04935L2.38281 2.5134C2.28921 2.66317 2.16284 2.78955 2.01308 2.88409L0.549128 3.80146C0.343218 3.93044 0.182567 4.12034 0.0894753 4.34478C-0.00361686 4.56922 -0.0245326 4.81708 0.0296313 5.05395L0.416212 6.73891C0.455711 6.9111 0.455711 7.09 0.416212 7.26219L0.0296313 8.94621C-0.0247431 9.18322 -0.00393263 9.43128 0.0891696 9.65592C0.182272 9.88055 0.34304 10.0706 0.549128 10.1996L2.01308 11.117C2.16284 11.2106 2.28921 11.337 2.38375 11.4868L3.30106 12.9508C3.56502 13.373 4.0686 13.5817 4.5544 13.4703L6.23739 13.0837C6.40986 13.0441 6.58908 13.0441 6.76156 13.0837L8.44548 13.4703C8.68247 13.5247 8.93052 13.5039 9.15514 13.4108C9.37976 13.3177 9.56979 13.1569 9.69883 12.9508L10.6161 11.4868C10.7097 11.337 10.8361 11.2106 10.9859 11.117L12.4508 10.1996C12.6569 10.0704 12.8175 9.88015 12.9105 9.65534C13.0034 9.43052 13.024 9.18233 12.9693 8.94528L12.5837 7.26219C12.544 7.0897 12.544 6.91046 12.5837 6.73798L12.9703 5.05395C13.0247 4.81704 13.004 4.56905 12.9111 4.34442C12.8182 4.1198 12.6576 3.9297 12.4517 3.80052L10.9868 2.88315C10.8372 2.78937 10.7108 2.66296 10.6171 2.5134L9.69883 1.04935ZM9.228 4.9126C9.2859 4.80613 9.30024 4.68136 9.26802 4.56453C9.23579 4.44771 9.15951 4.34793 9.05523 4.28621C8.95094 4.22448 8.82678 4.20561 8.70887 4.23358C8.59096 4.26154 8.48849 4.33415 8.42302 4.43613L5.9753 8.57927L4.4973 7.1639C4.45346 7.11887 4.40099 7.08314 4.34304 7.05883C4.28508 7.03452 4.22283 7.02214 4.15998 7.02241C4.09714 7.02269 4.03499 7.03562 3.97725 7.06043C3.91951 7.08524 3.86736 7.12143 3.82391 7.16683C3.78045 7.21224 3.74659 7.26593 3.72434 7.32471C3.70208 7.38348 3.69189 7.44614 3.69437 7.50894C3.69686 7.57174 3.71196 7.6334 3.73878 7.69023C3.76561 7.74707 3.80361 7.79792 3.85051 7.83976L5.75439 9.6642C5.80535 9.71292 5.86665 9.74951 5.93373 9.77122C6.00081 9.79292 6.07192 9.7992 6.14176 9.78957C6.21161 9.77994 6.27837 9.75465 6.33707 9.7156C6.39577 9.67655 6.44488 9.62473 6.48075 9.56403L9.228 4.9126Z" fill="#3A9F6C"></path>
-                                    </svg>
-                                </i>
-                            </small>
-                        ` : ''}
+                        <div class="text-dark fw-600 d-flex gap-2 justify-content-between align-items-center">
+                            <span>${row.vendor_company}</span>
+                            ${row.is_vendor_verify == 1 ? `
+                                <small class="d-flex align-items-center gap-1">
+                                    <span class="fw-600">Verified</span>
+                                    <i style="line-height: 0;">
+                                        <!-- Vendor Verify Icon -->
+                                        <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.69883 1.04935C9.56974 0.843073 9.37955 0.682175 9.15473 0.589057C8.92992 0.495939 8.68167 0.475233 8.44454 0.529821L6.76156 0.916427C6.58908 0.956072 6.40986 0.956072 6.23739 0.916427L4.5544 0.529821C4.31727 0.475233 4.06902 0.495939 3.84421 0.589057C3.6194 0.682175 3.42921 0.843073 3.30012 1.04935L2.38281 2.5134C2.28921 2.66317 2.16284 2.78955 2.01308 2.88409L0.549128 3.80146C0.343218 3.93044 0.182567 4.12034 0.0894753 4.34478C-0.00361686 4.56922 -0.0245326 4.81708 0.0296313 5.05395L0.416212 6.73891C0.455711 6.9111 0.455711 7.09 0.416212 7.26219L0.0296313 8.94621C-0.0247431 9.18322 -0.00393263 9.43128 0.0891696 9.65592C0.182272 9.88055 0.34304 10.0706 0.549128 10.1996L2.01308 11.117C2.16284 11.2106 2.28921 11.337 2.38375 11.4868L3.30106 12.9508C3.56502 13.373 4.0686 13.5817 4.5544 13.4703L6.23739 13.0837C6.40986 13.0441 6.58908 13.0441 6.76156 13.0837L8.44548 13.4703C8.68247 13.5247 8.93052 13.5039 9.15514 13.4108C9.37976 13.3177 9.56979 13.1569 9.69883 12.9508L10.6161 11.4868C10.7097 11.337 10.8361 11.2106 10.9859 11.117L12.4508 10.1996C12.6569 10.0704 12.8175 9.88015 12.9105 9.65534C13.0034 9.43052 13.024 9.18233 12.9693 8.94528L12.5837 7.26219C12.544 7.0897 12.544 6.91046 12.5837 6.73798L12.9703 5.05395C13.0247 4.81704 13.004 4.56905 12.9111 4.34442C12.8182 4.1198 12.6576 3.9297 12.4517 3.80052L10.9868 2.88315C10.8372 2.78937 10.7108 2.66296 10.6171 2.5134L9.69883 1.04935ZM9.228 4.9126C9.2859 4.80613 9.30024 4.68136 9.26802 4.56453C9.23579 4.44771 9.15951 4.34793 9.05523 4.28621C8.95094 4.22448 8.82678 4.20561 8.70887 4.23358C8.59096 4.26154 8.48849 4.33415 8.42302 4.43613L5.9753 8.57927L4.4973 7.1639C4.45346 7.11887 4.40099 7.08314 4.34304 7.05883C4.28508 7.03452 4.22283 7.02214 4.15998 7.02241C4.09714 7.02269 4.03499 7.03562 3.97725 7.06043C3.91951 7.08524 3.86736 7.12143 3.82391 7.16683C3.78045 7.21224 3.74659 7.26593 3.72434 7.32471C3.70208 7.38348 3.69189 7.44614 3.69437 7.50894C3.69686 7.57174 3.71196 7.6334 3.73878 7.69023C3.76561 7.74707 3.80361 7.79792 3.85051 7.83976L5.75439 9.6642C5.80535 9.71292 5.86665 9.74951 5.93373 9.77122C6.00081 9.79292 6.07192 9.7992 6.14176 9.78957C6.21161 9.77994 6.27837 9.75465 6.33707 9.7156C6.39577 9.67655 6.44488 9.62473 6.48075 9.56403L9.228 4.9126Z" fill="#3A9F6C"></path>
+                                        </svg>
+                                    </i>
+                                </small>
+                            ` : ''}
+                        </div>
                     </div>
-                </div>
-            </a>
-        </div>
+                </a>
+            </div>
     `;
         });
 
@@ -399,6 +442,21 @@
         /small> */
 
     // Local search filter
+
+    function formatDescription(html, limit = 95) {
+        // Strip all HTML tags
+        let div = document.createElement("div");
+        div.innerHTML = html;
+        let text = div.textContent || div.innerText || "";
+
+        // Truncate if too long
+        return text.length > limit ? text.slice(0, limit) + "..." : text;
+    }
+
+
+
+
+
     function filterProducts(searchTerm) {
         const lowerSearch = searchTerm.toLowerCase();
         const filtered = productsData.filter(p =>
@@ -431,7 +489,7 @@
                 filtered.sort((a, b) => a.total_rating_percent - b.total_rating_percent);
             }
 
-          
+
             renderProducts(filtered);
         });
     });

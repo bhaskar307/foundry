@@ -89,6 +89,13 @@ define('OTP_LIST_TABLE', 'otp_list');
 define('REQUEST_LIST_TABLE', 'request');
 define('PRODUCT_RATING_LIST_TABLE', 'product_rating');
 define('PRODUCT_IMAGE_TABLE', 'product_image');
+define('EMAIL', 'moloy@v-xplore.com');
+define('EMAIL_APP_NAME', 'FoundryBiz');
+define('VENDOR_REGISTER_EMAIL_SUBJECT_FOR_SELLER', 'Thank you for registering with FoundryBiz as a Seller');
+define('VENDOR_REGISTER_EMAIL_BODY', 'We’re reviewing your account, and once it’s activated, your login credentials will be shared with you via email.');
+
+
+
 
 
 

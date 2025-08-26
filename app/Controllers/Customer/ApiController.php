@@ -60,7 +60,7 @@ class ApiController extends Common
     public function createdRequest()
     {
         $payload = $this->validateJwtApiTokenCustomer();
-        
+
         $details = $this->request->getJSON(true);
         $details['user_id'] = $payload->user_id;
         $resp = $this->apiService->createdRequest($details);
@@ -102,6 +102,20 @@ class ApiController extends Common
     {
         $search = $this->request->getGet('product_search');
         $resp = $this->apiService->productSearchInProductList($search);
+        if (!$resp[0]) {
+            $this->apiError($resp[1], $resp[2], $resp[3]);
+        } else {
+            $this->apiSuccess($resp[1], $resp[2], $resp[3]);
+        }
+    }
+
+
+    public function forget_password_email_otp_send()
+    {
+        
+        $loginDetails = $this->request->getJSON(true);
+        $resp = $this->apiService->forget_password_email_otp_send($loginDetails);
+         
         if (!$resp[0]) {
             $this->apiError($resp[1], $resp[2], $resp[3]);
         } else {

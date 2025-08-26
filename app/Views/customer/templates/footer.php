@@ -1,7 +1,7 @@
 <footer class="footer">
     <section class="py-5 text-white footerInner" style="background-color: #111827;">
         <div class="container">
-            <div class="row g-4">
+            <div class="row g-4 justify-content-center">
                 <div class="col-md-6 col-lg-3 fadeUp" style="transition-delay: 0;">
                     <img src="<?= base_url('assets/customer/images/logo.svg') ?>" alt="" width="141" height="36">
                     <!-- <div class="my-3">The leading B2B marketplace for foundry equipment and industrial machinery.</div> -->
@@ -49,30 +49,18 @@
                         </li> -->
                     </ul>
                 </div>
-                <!-- <div class="col-md-6 col-lg-3 fadeUp" style="transition-delay: 0.4s;">
+                <div class="col-md-6 col-lg-3 fadeUp" style="transition-delay: 0.4s;">
                     <h5 class="mb-3 text-white fw-600">Company</h5>
                     <ul class="footerMenu">
                         <li>
-                            <a href="">About Us</a>
-                        </li>
-                        <li>
-                            <a href="">Blog/News</a>
-                        </li>
-                        <li>
-                            <a href="">Careers</a>
-                        </li>
-                        <li>
-                            <a href="">Help Center</a>
-                        </li>
-                        <li>
-                            <a href="">Contact Us</a>
+                            <a href="https://www.foundrybiz.com/blogs/">Blogs</a>
                         </li>
                     </ul>
-                </div> -->
+                </div>
                 <div class="col-md-6 col-lg-3 fadeUp" style="transition-delay: 0.6s;">
                     <h5 class="mb-3 text-white fw-600">Contact Us</h5>
                     <div class="d-flex flex-column gap-3">
-                        <a href="tel:0000000000" class="text-white d-flex align-items-center gap-3">
+                        <a href="tel:917821839934" class="text-white d-flex align-items-center gap-3">
                             <i style="line-height: 0;">
                                 <svg version="1.1" width="30" fill="currentColor" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                     viewBox="0 0 473.806 473.806" style="enable-background:new 0 0 473.806 473.806;" xml:space="preserve">

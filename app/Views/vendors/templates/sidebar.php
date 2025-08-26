@@ -28,7 +28,7 @@ $lastSegment = $uri->getSegment($uri->getTotalSegments());
         </div>
         <div class="sidebar-nav overflow-auto">
             <ul class="m-0 p-3 list-unstyled mainmenu" id="mainmenu">
-                <li>
+                <!-- <li>
                     <a href="<?= base_url('vendor/dashboard') ?>" <?= ($lastSegment == 'dashboard') ? 'class="active"' : '' ?>>
                         <i>
                             <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -37,7 +37,7 @@ $lastSegment = $uri->getSegment($uri->getTotalSegments());
                         </i>
                         <span>Dashboard</span>
                     </a>
-                </li>
+                </li> -->
                 <li>
                     <a href="<?= base_url('vendor/products') ?>" <?= ($lastSegment == 'products' || $lastSegment == 'add-product') ? 'class="active"' : '' ?>>
                         <i>

@@ -17,8 +17,6 @@ class WebController extends Common
 {
     protected $webService;
     protected $commonModel;
-    protected $webmodel;
-
     protected $db;
     protected $vendorWebModel;
     protected $customerModel;
@@ -29,6 +27,9 @@ class WebController extends Common
         $this->webService = new WebService();
         $this->commonModel = new CommonModel();
         $this->db =   \Config\Database::connect();
+        $this->vendorWebModel = new vendorModel();
+        $this->customerModel =  new customerModel();
+        $this->adminWebModel = new adminWebModel();
     }
 
     /** Index */
@@ -52,10 +53,12 @@ class WebController extends Common
         if (!$payload) {
             return redirect()->to(base_url('admin/login'));
         }
-
+        $data['matrics'] = $this->customerModel->getStatics();
+        $data['requests'] = $this->adminWebModel->getRequestsDetails(null, null, null, null);
+        // $this->dd($data) ; 
         return
             view('admin/templates/header.php') .
-            view('admin/dashboard.php') .
+            view('admin/dashboard.php', $data) .
             view('admin/templates/footer.php');
     }
 
@@ -97,10 +100,10 @@ class WebController extends Common
             return redirect()->to(base_url('admin/login'));
         }
 
-        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE, ['status' => ACTIVE_STATUS,'path' => '']);
+        $resp['category'] = $this->commonModel->getAllData(CATEGORY_TABLE, ['status' => ACTIVE_STATUS, 'path' => '']);
         //$resp['resp'] = $this->commonModel->getAllData(CATEGORY_TABLE,['status !=' => DELETED_STATUS]);
         $resp['resp'] = $this->webService->getCategoryData();
-        // print_r($resp) ; die ; 
+        // print_r($resp['resp']) ; die ; 
 
         return
             view('admin/templates/header.php') .
@@ -218,7 +221,7 @@ class WebController extends Common
             return redirect()->to(base_url('admin/login'));
         }
         $getAllTags = $this->db->table('meta_tags')->orderBy('id', 'desc')->where('status', 'active')->get()->getResultArray();
-        $data['metaDeatils'] = $getAllTags;
+        $data['metaDeatils'] =  $getAllTags;
         // $this->dd($data);
         return
             view('admin/templates/header.php') .
@@ -229,7 +232,7 @@ class WebController extends Common
     /** Logout */
     public function logout()
     {
-        $auth_cookie = deleteJwtToken(ADMIN_JWT_TOKEN);
+        $auth_cookie   = deleteJwtToken(ADMIN_JWT_TOKEN);
         return redirect()
             ->to(base_url('admin/login'))
             ->setCookie($auth_cookie);
@@ -302,5 +305,41 @@ class WebController extends Common
         }
 
         return $branch;
+    }
+
+    public function send_email()
+    {
+        helper(['form']);
+
+        $email = \Config\Services::email();
+
+        try {
+            
+            $to      = $this->request->getPost('to') ?? 'u5459607@gmail.com';
+            $subject = $this->request->getPost('subject') ?? 'Test Email';
+            $message = $this->request->getPost('message') ?? 'Hi! This is a test email.';
+
+           
+            $email->setFrom(EMAIL, 'FoundryBiz');
+            $email->setTo($to);
+            $email->setSubject($subject);
+            $email->setMessage($message);
+
+   
+            if ($email->send(false)) {
+                echo "✅ Email sent successfully to: <b>{$to}</b>";
+            } else {
+               
+                $error = $email->printDebugger(['headers', 'subject', 'body']);
+                log_message('error', 'Email send failed: ' . print_r($error, true));
+
+                echo "❌ Email failed to send.<br><br>";
+                echo "<pre>" . print_r($error, true) . "</pre>";
+            }
+        } catch (\Exception $e) {
+            
+            
+            echo "⚠️ Email sending error: " . $e->getMessage();
+        }
     }
 }

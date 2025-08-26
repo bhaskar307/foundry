@@ -608,7 +608,9 @@
 </section>
 <script>
     const baseUrl = " <?= base_url(); ?>"
-    const BASE_URL = baseUrl + "/customer/api/product-search?search=";
+    console.log (baseUrl);
+    const BASE_URL = baseUrl + "customer/api/product-search?search=";
+    console.log (BASE_URL);
     const searchInput = document.getElementById("searchInput");
     const searchResults = document.getElementById("searchResults");
     let categoryID = '';

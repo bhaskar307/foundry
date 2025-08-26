@@ -22,24 +22,24 @@
         <div class="row g-3 mb-3">
             <?php foreach ($allImages as $index => $imgData) : ?>
 
-            <div class="col-md-3 col-lg-2 text-center image-col">
-                <!-- Clickable Image -->
-                <div class="position-relative p-3 border rounded">
-                    <img src="<?= base_url($imgData['image']) ?>" alt=""
-                        class="img-fluid <?= $imgData['mainImage'] ? 'rounded-circle' : 'rounded' ?> border border-3 border-primary shadow"
-                        style="width: 120px; height: 120px; object-fit: cover;">
-                    <button class="btn p-0 m-0 border-0 shadow-none position-absolute" style="right:10px;top:10px;" onclick="productImageDelete('<?= $imgData['uid'] ?>')">              
-                        <svg width="30" height="30" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="250" cy="250" r="250" fill="#FF0000"/>
-                        <path d="M271.611 260.406H228.922C223.028 260.406 218.25 255.628 218.25 249.733C218.25 243.839 223.028 239.061 228.922 239.061H271.611C277.506 239.061 282.284 243.839 282.284 249.733C282.284 255.628 277.506 260.406 271.611 260.406Z" fill="white"/>
-                        <path d="M356.991 198.506H143.543C137.649 198.506 132.871 203.284 132.871 209.178C132.871 215.073 137.649 219.851 143.543 219.851H155.656L175.876 358.832C178.095 374.514 191.723 386.339 207.578 386.339H292.956C308.811 386.339 322.439 374.514 324.651 358.875L344.878 219.851H356.991C362.885 219.851 367.663 215.073 367.663 209.178C367.663 203.284 362.885 198.506 356.991 198.506ZM303.523 355.844C302.785 361.06 298.242 364.995 292.956 364.995H207.578C202.292 364.995 197.749 361.06 197.006 355.801L177.225 219.851H323.309L303.523 355.844Z" fill="white"/>
-                        <path d="M175.192 176.662C180.811 178.442 186.81 175.332 188.59 169.713L197.4 141.913C198.811 137.462 202.9 134.472 207.578 134.472H292.957C297.634 134.472 301.723 137.462 303.134 141.913L311.944 169.713C313.719 175.315 319.708 178.449 325.342 176.662C330.961 174.881 334.072 168.883 332.291 163.265L323.481 135.465C319.247 122.104 306.981 113.127 292.957 113.127H207.578C193.554 113.127 181.287 122.104 177.053 135.465L168.243 163.265C166.462 168.884 169.573 174.882 175.192 176.662Z" fill="white"/>
-                        <path d="M228.922 343.65C234.816 343.65 239.594 338.872 239.594 332.978V251.868C239.594 245.973 234.816 241.195 228.922 241.195C223.028 241.195 218.25 245.973 218.25 251.868V332.978C218.25 338.872 223.028 343.65 228.922 343.65Z" fill="white"/>
-                        <path d="M271.611 343.65C277.506 343.65 282.284 338.872 282.284 332.978V251.868C282.284 245.973 277.506 241.195 271.611 241.195C265.717 241.195 260.939 245.973 260.939 251.868V332.978C260.939 338.872 265.717 343.65 271.611 343.65Z" fill="white"/>
-                        </svg>
-                    </button>
+                <div class="col-md-3 col-lg-2 text-center image-col">
+                    <!-- Clickable Image -->
+                    <div class="position-relative p-3 border rounded">
+                        <img src="<?= base_url($imgData['image']) ?>" alt=""
+                            class="img-fluid <?= $imgData['mainImage'] ? 'rounded-circle' : 'rounded' ?> border border-3 border-primary shadow"
+                            style="width: 120px; height: 120px; object-fit: cover;">
+                        <button class="btn p-0 m-0 border-0 shadow-none position-absolute" style="right:10px;top:10px;" onclick="productImageDelete('<?= $imgData['uid'] ?>')">
+                            <svg width="30" height="30" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="250" cy="250" r="250" fill="#FF0000" />
+                                <path d="M271.611 260.406H228.922C223.028 260.406 218.25 255.628 218.25 249.733C218.25 243.839 223.028 239.061 228.922 239.061H271.611C277.506 239.061 282.284 243.839 282.284 249.733C282.284 255.628 277.506 260.406 271.611 260.406Z" fill="white" />
+                                <path d="M356.991 198.506H143.543C137.649 198.506 132.871 203.284 132.871 209.178C132.871 215.073 137.649 219.851 143.543 219.851H155.656L175.876 358.832C178.095 374.514 191.723 386.339 207.578 386.339H292.956C308.811 386.339 322.439 374.514 324.651 358.875L344.878 219.851H356.991C362.885 219.851 367.663 215.073 367.663 209.178C367.663 203.284 362.885 198.506 356.991 198.506ZM303.523 355.844C302.785 361.06 298.242 364.995 292.956 364.995H207.578C202.292 364.995 197.749 361.06 197.006 355.801L177.225 219.851H323.309L303.523 355.844Z" fill="white" />
+                                <path d="M175.192 176.662C180.811 178.442 186.81 175.332 188.59 169.713L197.4 141.913C198.811 137.462 202.9 134.472 207.578 134.472H292.957C297.634 134.472 301.723 137.462 303.134 141.913L311.944 169.713C313.719 175.315 319.708 178.449 325.342 176.662C330.961 174.881 334.072 168.883 332.291 163.265L323.481 135.465C319.247 122.104 306.981 113.127 292.957 113.127H207.578C193.554 113.127 181.287 122.104 177.053 135.465L168.243 163.265C166.462 168.884 169.573 174.882 175.192 176.662Z" fill="white" />
+                                <path d="M228.922 343.65C234.816 343.65 239.594 338.872 239.594 332.978V251.868C239.594 245.973 234.816 241.195 228.922 241.195C223.028 241.195 218.25 245.973 218.25 251.868V332.978C218.25 338.872 223.028 343.65 228.922 343.65Z" fill="white" />
+                                <path d="M271.611 343.65C277.506 343.65 282.284 338.872 282.284 332.978V251.868C282.284 245.973 277.506 241.195 271.611 241.195C265.717 241.195 260.939 245.973 260.939 251.868V332.978C260.939 338.872 265.717 343.65 271.611 343.65Z" fill="white" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-            </div>
             <?php endforeach; ?>
         </div>
         <form id="productForm" method="post" enctype="multipart/form-data">
@@ -52,8 +52,8 @@
                 </div>
                 <div class="col-md-6">
                     <label class="mb-1 d-block" for="name">Product Name</label>
-                        <input type="text" class="form-control" name="name" id="name"
-                            value="<?= esc($resp['name'] ?? '') ?>" readonly>
+                    <input type="text" class="form-control" name="name" id="name"
+                        value="<?= esc($resp['name'] ?? '') ?>" readonly>
                 </div>
                 <div class="col-md-6">
                     <label class="mb-1 d-block" for="category">Category</label>
@@ -61,10 +61,10 @@
                         <option value="">Select category</option>
                         <?php if (!empty($category)) {
                             foreach ($category as $key) { ?>
-                        <option value="<?= $key['uid']; ?>"
-                            <?= ($resp['category_id'] ?? '') == $key['uid'] ? 'selected' : '' ?>>
-                            <?= $key['title']; ?>
-                        </option>
+                                <option value="<?= $key['uid']; ?>"
+                                    <?= ($resp['category_id'] ?? '') == $key['uid'] ? 'selected' : '' ?>>
+                                    <?= $key['title']; ?>
+                                </option>
                         <?php }
                         } ?>
                     </select>
@@ -73,28 +73,33 @@
                     <label class="mb-1 d-block" for="subcategory">Sub Category<span class="text-danger">*</span></label>
                     <select class="form-control" name="subcategory" id="subcategory_id" disabled>
                         <option value="">Select Sub category</option>
-                    </select>        
+                    </select>
                 </div>
                 <div class="col-md-12">
-                    <label class="mb-1 d-block" for="description">Description</label>
-                        <textarea class="form-control" name="description" id="description"
-                            style="height: 120px;" readonly><?= esc($resp['description'] ?? '') ?></textarea>       
+                    <label class="mb-1 d-block " for="description">Short Description</label>
+                    <textarea  rows="10" cols="90" class="form-control documentTextEditor" name="description" id="description"
+                        style="height: 120px;" readonly><?= esc($resp['description'] ?? '') ?></textarea>
                 </div>
+                <!-- <div class="col-md-12">
+                    <label class="mb-1 d-block" for="description">Long Description</label>
+                    <textarea rows="10" cols="90" class="form-control documentTextEditor" name="content" id="content"
+                        style="height: 120px;" readonly><?= esc($resp['html_description'] ?? '') ?></textarea>
+                </div> -->
                 <div class="col-md-12 d-flex justify-content-end">
                     <button type="button" id="submitProductinputs" class="btn btn-primary">
                         Update
-                    </button>            
+                    </button>
                 </div>
             </div>
         </form>
-    </div>  
-</div>                      
+    </div>
+</div>
 
 
 
 
 
-    <script>
+<script>
     const imageInput = document.getElementById('imageInput');
     const previewContainer = document.getElementById('previewContainer');
     let selectedImages = [];
@@ -167,7 +172,11 @@
             contentType: false,
             success: function(response) {
                 if (response.success) {
-                    alert("Product updated successfully.");
+
+                    MessError.fire({
+                        icon: 'success',
+                        title: 'Product updated successfully.',
+                    });
                     location.reload();
                 } else {
                     alert("Error: " + response.message);
@@ -178,9 +187,9 @@
             }
         });
     });
-    </script>
+</script>
 
-    <script>
+<script>
     function productImageDelete(imageID) {
         console.log("Deleting image with ID:", imageID);
 
@@ -196,7 +205,11 @@
                 }),
                 success: function(response) {
                     if (response.success) {
-                        alert("Image deleted successfully.");
+
+                        MessError.fire({
+                            icon: 'success',
+                            title: 'Image deleted successfully.',
+                        });
                         location.reload(); // Reload the page to reflect changes
                     } else {
                         alert("Error deleting image: " + response.message);
@@ -209,9 +222,9 @@
         }
 
     }
-    </script>
+</script>
 
-    <script>
+<script>
     document.getElementById('editBtn').addEventListener('click', function() {
         let form = document.getElementById('productForm');
         let inputs = form.querySelectorAll('input, select, textarea');
@@ -283,4 +296,4 @@
             }
         });
     });
-    </script>
+</script>

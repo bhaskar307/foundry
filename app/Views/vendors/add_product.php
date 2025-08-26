@@ -65,12 +65,14 @@
 
                     <div class="col-lg-12">
                         <div class="form-floating">
-                            <textarea class="form-control" name="description" id="description" placeholder="Company Description" style="height: 100px;"></textarea>
+                            <textarea class="form-control documentTextEditor" name="description" id="description" placeholder="Short  Description" style="height: 100px;"></textarea>
                             <label for="company_description">Description</label>
                         </div>
                     </div>
 
-                    <textarea style="display: none;" name="content" id="content" rows="10" cols="90" class="form-control documentTextEditor"></textarea>
+                    <textarea style="display:none;" name="content" id="content" rows="10" cols="90" class="form-control documentTextEditor">
+
+                    </textarea>
 
                     <div class="col-lg-12">
                         <label for="company_logo">Upload Product Image (Single or Multiple)</label>

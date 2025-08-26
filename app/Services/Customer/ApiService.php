@@ -109,7 +109,7 @@ class ApiService
                 ];
             }
 
-            $this->sendCustomerPasswordToEmail($data['name'], $data['email'], $plainPassword);
+            // $this->sendCustomerPasswordToEmail($data['name'], $data['email'], $plainPassword);
 
             return [
                 true,
@@ -220,7 +220,7 @@ class ApiService
     {
         $emailService = \Config\Services::email();
         $emailService->setTo($email);
-        $emailService->setFrom('www.bd.project@gmail.com', 'Foundry');
+        $emailService->setFrom(EMAIL, EMAIL_APP_NAME);
         $emailService->setSubject('Product Request Confirmation');
 
         $message = "
@@ -228,8 +228,8 @@ class ApiService
             Thank you for your interest in our product.<br>
             We have received your request for: <b>$product_name</b>.<br><br>
             Our team will review your request and get back to you shortly.<br><br>
-            Regards,<br>
-            Foundry Team
+            Thank You,<br>
+            FoundryBiz Team
         ";
 
         $emailService->setMessage($message);
@@ -243,7 +243,7 @@ class ApiService
     {
         $emailService = \Config\Services::email();
         $emailService->setTo($vendor_email);
-        $emailService->setFrom('www.bd.project@gmail.com', 'Foundry');
+        $emailService->setFrom(EMAIL, EMAIL_APP_NAME);
         $emailService->setSubject('New Product Request from a Customer');
 
         $message = "
@@ -256,7 +256,7 @@ class ApiService
 
             Please login to your dashboard to view the details.<br><br>
             Regards,<br>
-            Foundry Team
+            FoundryBiz Team
         ";
 
         $emailService->setMessage($message);
@@ -270,7 +270,7 @@ class ApiService
     {
         $emailService = \Config\Services::email();
         $emailService->setTo($email);
-        $emailService->setFrom('www.bd.project@gmail.com', 'Foundry');
+        $emailService->setFrom(EMAIL, 'Foundry');
         $emailService->setSubject('Your Account Password');
         $emailService->setMessage(
             "Dear $name,<br>" .
@@ -352,5 +352,86 @@ class ApiService
         $result = $builder->get()->getResultArray();
         return [true, 200, 'Products found', ['products' => $result]];
         // return $result;
+    }
+
+
+    public function forget_password_email_otp_send($requestData)
+    {
+        $validationRules = [
+            'email' => 'required|valid_email'
+        ];
+        $validationResult = validateData($requestData, $validationRules);
+        if (!$validationResult['success']) {
+            return [false, $validationResult['status'], $validationResult['message'], $validationResult['errors']];
+        }
+
+        try {
+            // 1. Check customer
+            $success = $this->apiModel->checkCustomerLogin($requestData['email']);
+            if (!$success) {
+                return [false, 401, 'Invalid email', ['invalid_credentials']];
+            }
+
+            if ($success['status'] == INACTIVE_STATUS) {
+                return [false, 401, 'Account Inactive. Please contact Admin.', ['account_inactive']];
+            }
+
+
+            $plainPassword = substr(str_shuffle('ABCDEFGHJKLMNPQRSTUVWXYZ23456789'), 0, 8);
+            $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
+
+
+            $updateData = [
+                'password'   => $hashedPassword,
+                'updated_by' => $success['uid'],
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+
+            $update = $this->commonModel->UpdateData(
+                CUSTOMER_TABLE,
+                ['uid' => $success['uid']],
+                $updateData
+            );
+
+            if (!$update) {
+                return [false, 500, 'Failed to update password in database', []];
+            }
+
+            $subject = "Your FoundryBiz Account Password Reset";
+            $message = "
+            Dear {$success['name']},<br><br>
+            Your password has been reset successfully.<br><br>
+            <b>Login Email:</b> {$requestData['email']}<br>
+            <b>New Password:</b> {$plainPassword}<br><br>
+            You can log in here: <a href='" . base_url() . "'>Login Page</a><br><br>
+            For security reasons, please change this password immediately after login.<br><br>
+            Regards,<br>
+            FoundryBiz Team
+        ";
+
+            $this->sendCustomerEmail($requestData['email'], $subject, $message);
+
+            return [true, 200, "Password reset successfully. New password sent via email.", ["user_id" => $success['uid'], 'pass' => $plainPassword]];
+        } catch (\Throwable $e) {
+            return [false, 500, 'Unexpected server error occurred', [$e->getMessage()]];
+        }
+    }
+
+
+
+
+    private function sendCustomerEmail($email, $subject,  $message)
+    {
+        $emailService = \Config\Services::email();
+        $emailService->setTo($email);
+        $emailService->setFrom(EMAIL, EMAIL_APP_NAME);
+        $emailService->setSubject($subject);
+        $emailService->setMessage(
+            $message
+        );
+
+        if (!$emailService->send()) {
+            log_message('error', 'Failed to send password email to ' . $email);
+        }
     }
 }

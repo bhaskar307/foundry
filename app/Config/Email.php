@@ -33,12 +33,12 @@ class Email extends BaseConfig
     /**
      * SMTP Username
      */
-    public string $SMTPUser = 'www.bd.project@gmail.com';
+    public string $SMTPUser = 'moloy@v-xplore.com';  // 'sales@foundrybiz.com';   // ;  
 
     /**
      * SMTP Password
      */
-    public string $SMTPPass = 'ubih pnuc eaef jriw';
+    public string $SMTPPass = 'oglnycynmtakisbh';   // 'phss hget hxbd bmgu'; // 
 
     /**
      * SMTP Port
@@ -62,7 +62,7 @@ class Email extends BaseConfig
      *             to the server. 'ssl' means implicit SSL. Connection on port
      *             465 should set this to ''.
      */
-    public string $SMTPCrypto = 'ssl';
+    public string $SMTPCrypto = 'tsl';
 
     /**
      * Enable word-wrap

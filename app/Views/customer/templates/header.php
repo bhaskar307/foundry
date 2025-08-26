@@ -23,8 +23,15 @@ if (!empty($jwt)) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="google-site-verification" content="fUyKWOknRbmI_xFEVLsLsm-gQPSPUboaUzzRVVha9FM" />
+
+
     <title>Foundry | <?= !empty($meta_title)  ? $meta_title : "Home" ?></title>
     <meta name="description" content="<?= !empty($meta_description) ? $meta_description : 'Default description for Foundry website' ?>">
+
+    <link rel="icon" href="<?= base_url('assets/customer/images/favicon.webp') ?>" sizes="32x32" />
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.2/swiper-bundle.css" rel="stylesheet">
@@ -41,9 +48,36 @@ if (!empty($jwt)) {
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+
+
+
+    <!-- Google Tag Manager -->
+    <script>
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start': new Date().getTime(),
+                event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-NWC55KJG');
+    </script>
+    <!-- End Google Tag Manager -->
+
 </head>
 
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NWC55KJG"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <header class="header pt-3 position-fixed top-0 start-0 w-100">
         <div class="container">
             <div class="headerBg p-3 rounded-10">
@@ -72,6 +106,9 @@ if (!empty($jwt)) {
                             <li>
                                 <a href="https://www.skool.com/foundryskool/about" target="_blank">Skool</a>
                             </li>
+                            <li>
+                                <a href="<?= base_url('blogs') ?>">Blogs</a>
+                            </li>
                             <!-- <li>
                                 <a  href="<?= base_url('vendor-register') ?>"  <?php if ($lastSegment == 'vendor-register') { ?>class="active" <?php } ?>>Vendor Resgister</a>
                             </li>
@@ -81,14 +118,16 @@ if (!empty($jwt)) {
                         </ul>
                     </nav>
                     <div class="d-flex gap-4 align-items-center justify-content-end p-0 col-lg-3">
-                        <a href="<?= base_url('vendor/login') ?>" target="_blank" class="btn btn-primary h-auto">
-                            <i>
-                                <svg fill="currentColor" width="16" height="16" viewBox="0 -31 512 512" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="m497.09375 60.003906c-.03125 0-.0625-.003906-.09375-.003906h-136v-15c0-24.8125-20.1875-45-45-45h-120c-24.8125 0-45 20.1875-45 45v15h-136c-8.351562 0-15 6.84375-15 15v330c0 24.8125 20.1875 45 45 45h422c24.8125 0 45-20.1875 45-45v-329.683594c0-.019531 0-.039062 0-.058594-.574219-9.851562-6.632812-15.199218-14.90625-15.253906zm-316.09375-15.003906c0-8.269531 6.730469-15 15-15h120c8.269531 0 15 6.730469 15 15v15h-150zm295.1875 45-46.582031 139.742188c-2.042969 6.136718-7.761719 10.257812-14.226563 10.257812h-84.378906v-15c0-8.285156-6.714844-15-15-15h-120c-8.285156 0-15 6.714844-15 15v15h-84.378906c-6.464844 0-12.183594-4.121094-14.226563-10.257812l-46.582031-139.742188zm-175.1875 150v30h-90v-30zm181 165c0 8.269531-6.730469 15-15 15h-422c-8.269531 0-15-6.730469-15-15v-237.566406l23.933594 71.796875c6.132812 18.40625 23.289062 30.769531 42.6875 30.769531h84.378906v15c0 8.285156 6.714844 15 15 15h120c8.285156 0 15-6.714844 15-15v-15h84.378906c19.398438 0 36.554688-12.363281 42.6875-30.769531l23.933594-71.796875zm0 0" />
-                                </svg>
-                            </i>
-                            <span class="text-nowrap">Become a Partner</span>
-                        </a>
+                        <div class="d-none d-md-block">
+                            <a href="<?= base_url('vendor/login') ?>" target="_blank" class="btn btn-primary h-auto">
+                                <i>
+                                    <svg fill="currentColor" width="16" height="16" viewBox="0 -31 512 512" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="m497.09375 60.003906c-.03125 0-.0625-.003906-.09375-.003906h-136v-15c0-24.8125-20.1875-45-45-45h-120c-24.8125 0-45 20.1875-45 45v15h-136c-8.351562 0-15 6.84375-15 15v330c0 24.8125 20.1875 45 45 45h422c24.8125 0 45-20.1875 45-45v-329.683594c0-.019531 0-.039062 0-.058594-.574219-9.851562-6.632812-15.199218-14.90625-15.253906zm-316.09375-15.003906c0-8.269531 6.730469-15 15-15h120c8.269531 0 15 6.730469 15 15v15h-150zm295.1875 45-46.582031 139.742188c-2.042969 6.136718-7.761719 10.257812-14.226563 10.257812h-84.378906v-15c0-8.285156-6.714844-15-15-15h-120c-8.285156 0-15 6.714844-15 15v15h-84.378906c-6.464844 0-12.183594-4.121094-14.226563-10.257812l-46.582031-139.742188zm-175.1875 150v30h-90v-30zm181 165c0 8.269531-6.730469 15-15 15h-422c-8.269531 0-15-6.730469-15-15v-237.566406l23.933594 71.796875c6.132812 18.40625 23.289062 30.769531 42.6875 30.769531h84.378906v15c0 8.285156 6.714844 15 15 15h120c8.285156 0 15-6.714844 15-15v-15h84.378906c19.398438 0 36.554688-12.363281 42.6875-30.769531l23.933594-71.796875zm0 0" />
+                                    </svg>
+                                </i>
+                                <span class="text-nowrap">Become a Partner</span>
+                            </a>
+                        </div>
                         <?php if (empty($user_details)) { ?>
                             <button class="btn btn-primary h-auto" data-bs-toggle="modal" data-bs-target="#loginRegisterModal">
                                 <i>
@@ -118,7 +157,7 @@ if (!empty($jwt)) {
                                 </ul>
                             </div>
                         <?php } ?>
-                        <button class="btnico d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#mobileMenuOffCanvas">
+                        <button class="btnico d-lg-none text-white" data-bs-toggle="offcanvas" data-bs-target="#mobileMenuOffCanvas">
                             <svg fill="currentColor" enable-background="new 0 0 512 512" height="26" viewBox="0 0 512 512" width="26" xmlns="http://www.w3.org/2000/svg">
                                 <path d="m128 102.4c0-14.138 11.462-25.6 25.6-25.6h332.8c14.138 0 25.6 11.462 25.6 25.6s-11.462 25.6-25.6 25.6h-332.8c-14.138 0-25.6-11.463-25.6-25.6zm358.4 128h-460.8c-14.138 0-25.6 11.463-25.6 25.6 0 14.138 11.462 25.6 25.6 25.6h460.8c14.138 0 25.6-11.462 25.6-25.6 0-14.137-11.462-25.6-25.6-25.6zm0 153.6h-230.4c-14.137 0-25.6 11.462-25.6 25.6 0 14.137 11.463 25.6 25.6 25.6h230.4c14.138 0 25.6-11.463 25.6-25.6 0-14.138-11.462-25.6-25.6-25.6z"></path>
                             </svg>
@@ -160,6 +199,9 @@ if (!empty($jwt)) {
                 <li>
                     <a href="https://www.skool.com/foundryskool/about">Skool</a>
                 </li>
+                <li>
+                    <a href="<?= base_url('blogs') ?>" <?php if ($lastSegment == 'blogs') { ?>class="active" <?php } ?>>Blogs</a>
+                </li>
                 <!-- <li>
                     <a href="<?= base_url('vendor-register') ?>" <?php if ($lastSegment == 'vendor-register') { ?>class="active" <?php } ?>>Vendor Resgister</a>
                 </li>
@@ -169,8 +211,19 @@ if (!empty($jwt)) {
             </ul>
         </div>
         <div class="offcanvas-footer bg-dark d-flex flex-column gap-4 p-4">
+            <a href="<?= base_url('vendor/login') ?>" target="_blank" class="btn btn-primary w-100">
+                <i>
+                    <svg fill="currentColor" width="16" height="16" viewBox="0 -31 512 512"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="m497.09375 60.003906c-.03125 0-.0625-.003906-.09375-.003906h-136v-15c0-24.8125-20.1875-45-45-45h-120c-24.8125 0-45 20.1875-45 45v15h-136c-8.351562 0-15 6.84375-15 15v330c0 24.8125 20.1875 45 45 45h422c24.8125 0 45-20.1875 45-45v-329.683594c0-.019531 0-.039062 0-.058594-.574219-9.851562-6.632812-15.199218-14.90625-15.253906zm-316.09375-15.003906c0-8.269531 6.730469-15 15-15h120c8.269531 0 15 6.730469 15 15v15h-150zm295.1875 45-46.582031 139.742188c-2.042969 6.136718-7.761719 10.257812-14.226563 10.257812h-84.378906v-15c0-8.285156-6.714844-15-15-15h-120c-8.285156 0-15 6.714844-15 15v15h-84.378906c-6.464844 0-12.183594-4.121094-14.226563-10.257812l-46.582031-139.742188zm-175.1875 150v30h-90v-30zm181 165c0 8.269531-6.730469 15-15 15h-422c-8.269531 0-15-6.730469-15-15v-237.566406l23.933594 71.796875c6.132812 18.40625 23.289062 30.769531 42.6875 30.769531h84.378906v15c0 8.285156 6.714844 15 15 15h120c8.285156 0 15-6.714844 15-15v-15h84.378906c19.398438 0 36.554688-12.363281 42.6875-30.769531l23.933594-71.796875zm0 0">
+                        </path>
+                    </svg>
+                </i>
+                <span class="text-nowrap">Become a Partner</span>
+            </a>
             <div class="d-flex flex-column gap-3">
-                <a href="tel:0000000000" class="text-white d-flex align-items-center gap-3">
+                <a href="tel:917821839934" class="text-white d-flex align-items-center gap-3">
                     <i style="line-height: 0;">
                         <svg version="1.1" width="30" fill="currentColor" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             viewBox="0 0 473.806 473.806" style="enable-background:new 0 0 473.806 473.806;" xml:space="preserve">
@@ -200,10 +253,10 @@ if (!empty($jwt)) {
                     </i>
                     <div>
                         <h6 class="text-white">Phone</h6>
-                        <div>0000000000</div>
+                        <div>+91 7821839934</div>
                     </div>
                 </a>
-                <a href="mailto:companymail@mail.com" class="text-white d-flex align-items-center gap-3">
+                <a href="mailto:sales@foundrybiz.com" class="text-white d-flex align-items-center gap-3">
                     <i style="line-height: 0;">
                         <svg version="1.1" width="30" fill="currentColor" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
@@ -215,7 +268,7 @@ if (!empty($jwt)) {
                     </i>
                     <div>
                         <h6 class="text-white">Email</h6>
-                        <div>companymail@mail.com</div>
+                        <div>sales@foundrybiz.com</div>
                     </div>
                 </a>
             </div>
@@ -280,7 +333,13 @@ if (!empty($jwt)) {
                                     <button type="submit" class="btn btn-primary justify-content-center w-100">Login</button>
                                 </div>
                             </form>
+                            <div class="mt-2 text-end">
+                                <a href="javascript:void(0);" onclick="forgetPasswordModel()" class="text-decoration-none  fw-semibold">
+                                    Forgot Password?
+                                </a>
+                            </div>
                         </div>
+
                         <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="pills-register-tab" tabindex="0">
                             <form id="registerForm">
                                 <div class="d-flex flex-column gap-3">
@@ -386,11 +445,96 @@ if (!empty($jwt)) {
                                 </div>
                             </form>
                         </div>
+
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- forget password  -->
+
+    <div class="modal fade" id="forgetPasswordModal" tabindex="-1" aria-labelledby="forgetPasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="forgetPasswordForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="forgetPasswordModalLabel">Reset Password</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="email" id="forgetEmail" class="form-control" placeholder="Enter your email" required>
+                        <div id="forgetMessage" class="mt-2 small"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="forgetResetBtn" class="btn btn-primary">Reset Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const BASEURL = "<?= base_url(); ?>";
+
+        function forgetPasswordModel() {
+            var myModal = new bootstrap.Modal(document.getElementById('forgetPasswordModal'));
+            myModal.show();
+            const regModal = bootstrap.Modal.getInstance(document.getElementById('loginRegisterModal'));
+            regModal.hide();
+        }
+
+
+
+        document.getElementById("forgetPasswordForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            let email = document.getElementById("forgetEmail").value;
+            let resetBtn = document.getElementById("forgetResetBtn");
+            resetBtn.disabled = true;
+            resetBtn.innerText = "Please wait...";
+
+            fetch(BASEURL + "customer/api/forget-password-email-check", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email: email
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        MessError.fire({
+                            icon: 'success',
+                            title: data.message,
+                        });
+                        let modal = bootstrap.Modal.getInstance(document.getElementById('forgetPasswordModal'));
+                        modal.hide();
+                    } else {
+                        MessError.fire({
+                            icon: 'error',
+                            title: data.message,
+                        });
+
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("❌ Server error, please try again later.");
+                })
+                .finally(() => {
+                    resetBtn.disabled = false;
+                    resetBtn.innerText = "Reset Password";
+                });
+        });
+    </script>
+
+    </script>
+
     <script>
         document.getElementById("avatarInput").addEventListener("change", function(event) {
             const file = event.target.files[0];
@@ -405,8 +549,6 @@ if (!empty($jwt)) {
     </script>
 
     <script>
-        const BASEURL = "<?= base_url(); ?>";
-
         function redirectToregisterPage() {
             return window.location.href = BASEURL + 'vendor-register';
         }

@@ -4,14 +4,10 @@
             <div class="d-flex align-items-center justify-content-between">
                 <div class="m-0 h5 fw-600">List of Vendors</div>
                 <div class="">
-                    <a href="#" class="btn btn-primary d-flex align-items-center gap-2 py-2" data-bs-toggle="modal"
-                        data-bs-target="#addVendorModal">
+                    <a href="#" class="btn btn-primary d-flex align-items-center gap-2 py-2" data-bs-toggle="modal" data-bs-target="#addVendorModal">
                         <i style="line-height: 0;">
-                            <svg width="16" height="17" viewBox="0 0 16 17" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M14.8571 9.64286H9.14286V15.3571C9.14286 15.6602 9.02245 15.9509 8.80812 16.1653C8.59379 16.3796 8.30311 16.5 8 16.5C7.6969 16.5 7.40621 16.3796 7.19188 16.1653C6.97755 15.9509 6.85714 15.6602 6.85714 15.3571V9.64286H1.14286C0.839753 9.64286 0.549063 9.52245 0.334735 9.30812C0.120408 9.09379 0 8.80311 0 8.5C0 8.1969 0.120408 7.90621 0.334735 7.69188C0.549063 7.47755 0.839753 7.35714 1.14286 7.35714H6.85714V1.64286C6.85714 1.33975 6.97755 1.04906 7.19188 0.834735C7.40621 0.620407 7.6969 0.5 8 0.5C8.30311 0.5 8.59379 0.620407 8.80812 0.834735C9.02245 1.04906 9.14286 1.33975 9.14286 1.64286V7.35714H14.8571C15.1602 7.35714 15.4509 7.47755 15.6653 7.69188C15.8796 7.90621 16 8.1969 16 8.5C16 8.80311 15.8796 9.09379 15.6653 9.30812C15.4509 9.52245 15.1602 9.64286 14.8571 9.64286Z"
-                                    fill="white"></path>
+                            <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14.8571 9.64286H9.14286V15.3571C9.14286 15.6602 9.02245 15.9509 8.80812 16.1653C8.59379 16.3796 8.30311 16.5 8 16.5C7.6969 16.5 7.40621 16.3796 7.19188 16.1653C6.97755 15.9509 6.85714 15.6602 6.85714 15.3571V9.64286H1.14286C0.839753 9.64286 0.549063 9.52245 0.334735 9.30812C0.120408 9.09379 0 8.80311 0 8.5C0 8.1969 0.120408 7.90621 0.334735 7.69188C0.549063 7.47755 0.839753 7.35714 1.14286 7.35714H6.85714V1.64286C6.85714 1.33975 6.97755 1.04906 7.19188 0.834735C7.40621 0.620407 7.6969 0.5 8 0.5C8.30311 0.5 8.59379 0.620407 8.80812 0.834735C9.02245 1.04906 9.14286 1.33975 9.14286 1.64286V7.35714H14.8571C15.1602 7.35714 15.4509 7.47755 15.6653 7.69188C15.8796 7.90621 16 8.1969 16 8.5C16 8.80311 15.8796 9.09379 15.6653 9.30812C15.4509 9.52245 15.1602 9.64286 14.8571 9.64286Z" fill="white"></path>
                             </svg>
                         </i>
                         <span>Add Vendor</span>
@@ -23,12 +19,12 @@
             <table id="vendorTable" class=" display border">
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th class="text-nowrap text-start">Name</th>
                         <th>Image</th>
                         <th>Country</th>
                         <th>Company</th>
-                        <th>Is Verify</th>
-                        <th>Status</th>
+                        <th class="text-center">Verify</th>
+                        <th class="text-center">Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -36,23 +32,18 @@
                     <?php if (!empty($resp)) {
 
                         foreach ($resp as $row) {
-                            ?>
+                    ?>
                             <tr>
                                 <td>
-                                    <div class="fw-600 h6 m-0">
-                                        <div class="d-flex align-items-center">
-                                            <div class="text-nowrap">
-                                                <strong><?= $row['name']; ?></strong>
-                                                <br><small class="text-muted">Eml: <?= $row['email']; ?></small>
-                                                <br><small class="text-muted">Mob: <?= $row['mobile']; ?></small>
-                                            </div>
-                                        </div>
+                                    <div class="text-nowrap text-start">
+                                        <div><?= $row['name']; ?></div>
+                                        <small class="text-muted d-block">Email: <?= $row['email']; ?></small>
+                                        <small class="text-muted d-block">Mob: <?= $row['mobile']; ?></small>
                                     </div>
                                 </td>
                                 <td>
                                     <?php if (!empty($row['image'])) { ?>
-                                        <img src="<?= base_url($row['image']) ?>" alt="Vendor Image"
-                                            style="width: 40px; height: 40px;">
+                                        <img src="<?= base_url($row['image']) ?>" alt="Vendor Image" style="width: 40px; height: 40px;">
                                     <?php } else { ?>
 
                                     <?php } ?>
@@ -86,26 +77,26 @@
                                             <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                                         <?php } ?>
                                     </div>
+
                                 </td>
 
                                 <td style="max-width: 120px;">
                                     <div class="d-flex align-items-center gap-3">
-                                        <a href="<?php echo base_url('admin/view-vendor-details?vendorId=' . $row['uid']) ?>"
-                                            class="btnico">
-                                            <svg width="22" height="16" viewBox="0 0 22 16" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M22 8C22 7.52133 21.7567 7.208 21.27 6.57867C19.4889 4.28 15.5605 0 11 0C6.43945 0 2.51106 4.28 0.729989 6.57867C0.24333 7.208 0 7.52133 0 8C0 8.47867 0.24333 8.792 0.729989 9.42133C2.51106 11.72 6.43945 16 11 16C15.5605 16 19.4889 11.72 21.27 9.42133C21.7567 8.792 22 8.47867 22 8ZM11 12C11.998 12 12.9551 11.5786 13.6607 10.8284C14.3664 10.0783 14.7628 9.06087 14.7628 8C14.7628 6.93913 14.3664 5.92172 13.6607 5.17157C12.9551 4.42143 11.998 4 11 4C10.002 4 9.04495 4.42143 8.33928 5.17157C7.63361 5.92172 7.23717 6.93913 7.23717 8C7.23717 9.06087 7.63361 10.0783 8.33928 10.8284C9.04495 11.5786 10.002 12 11 12Z"
-                                                    fill="#0D9488" />
+                                        <a href="<?php echo base_url('admin/view-vendor-details?vendorId=' . $row['uid']) ?>" class="btnico">
+                                            <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M22 8C22 7.52133 21.7567 7.208 21.27 6.57867C19.4889 4.28 15.5605 0 11 0C6.43945 0 2.51106 4.28 0.729989 6.57867C0.24333 7.208 0 7.52133 0 8C0 8.47867 0.24333 8.792 0.729989 9.42133C2.51106 11.72 6.43945 16 11 16C15.5605 16 19.4889 11.72 21.27 9.42133C21.7567 8.792 22 8.47867 22 8ZM11 12C11.998 12 12.9551 11.5786 13.6607 10.8284C14.3664 10.0783 14.7628 9.06087 14.7628 8C14.7628 6.93913 14.3664 5.92172 13.6607 5.17157C12.9551 4.42143 11.998 4 11 4C10.002 4 9.04495 4.42143 8.33928 5.17157C7.63361 5.92172 7.23717 6.93913 7.23717 8C7.23717 9.06087 7.63361 10.0783 8.33928 10.8284C9.04495 11.5786 10.002 12 11 12Z" fill="#0D9488" />
                                             </svg>
                                         </a>
 
-                                        <button class="btnico" onclick="openEditModal(this)" data-uid="<?= $row['uid']; ?>"
+                                        <button class="btnico"
+                                            onclick="openEditModal(this)"
+                                            data-uid="<?= $row['uid']; ?>"
                                             data-name="<?= htmlspecialchars($row['name']); ?>"
                                             data-email="<?= htmlspecialchars($row['email']); ?>"
                                             data-mobile="<?= htmlspecialchars($row['mobile']); ?>"
                                             data-country="<?= htmlspecialchars($row['country']); ?>"
-                                            data-dob="<?= $row['dob']; ?>" data-image="<?= base_url($row['image'] ?? '') ?>">
+                                            data-dob="<?= $row['dob']; ?>"
+                                            data-image="<?= base_url($row['image'] ?? '') ?>">
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -129,7 +120,7 @@
                                     </div>
                                 </td>
                             </tr>
-                        <?php }
+                    <?php }
                     } ?>
                 </tbody>
             </table>
@@ -156,18 +147,16 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Mobile</label>
-                            <input type="text" class="form-control" name="mobile" id="mobile"
-                                placeholder="Enter Mobile">
+                            <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Enter Mobile">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Country</label>
-                            <input type="text" class="form-control" name="country" id="country"
-                                placeholder="Enter Country">
+                            <input type="text" class="form-control" name="country" id="country" placeholder="Enter Country">
                         </div>
-                        <div class="mb-3">
+                        <!-- <div class="mb-3">
                             <label class="form-label">Dob</label>
                             <input type="date" class="form-control" name="dob" id="dob" placeholder="Enter DOB">
-                        </div>
+                        </div> -->
                         <div class="mb-3">
                             <label class="form-label">Upload Image</label>
                             <input type="file" class="form-control" name="image" id="image" accept="image/*">
@@ -184,8 +173,7 @@
     <!-- Add module -->
 
     <!-- Edit module -->
-    <div class="modal fade" id="editVendorModal" tabindex="-1" aria-labelledby="editVendorModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="editVendorModal" tabindex="-1" aria-labelledby="editVendorModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <form id="editVendorModalForm" enctype="multipart/form-data">
                 <div class="modal-content">
@@ -207,18 +195,16 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Mobile</label>
-                            <input type="text" class="form-control" name="mobile" id="editMobile"
-                                placeholder="Enter Mobile">
+                            <input type="text" class="form-control" name="mobile" id="editMobile" placeholder="Enter Mobile">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Country</label>
-                            <input type="text" class="form-control" name="country" id="editCountry"
-                                placeholder="Enter Country">
+                            <input type="text" class="form-control" name="country" id="editCountry" placeholder="Enter Country">
                         </div>
-                        <div class="mb-3">
+                        <!-- <div class="mb-3">
                             <label class="form-label">Dob</label>
                             <input type="date" class="form-control" name="dob" id="editDob" placeholder="Enter DOB">
-                        </div>
+                        </div> -->
                         <!-- Upload Image -->
                         <div class="mb-3">
                             <label class="form-label">Upload Image</label>
@@ -242,12 +228,12 @@
     <!-- Edit module -->
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#vendorTable').DataTable({
                 columnDefs: [{
-                    type: 'num',
-                    targets: 0
-                } // if first column is numeric ID
+                        type: 'num',
+                        targets: 0
+                    } // if first column is numeric ID
                 ],
                 order: [
                     [0, 'asc']
@@ -255,15 +241,15 @@
             });
         });
         /** Created */
-        $(document).ready(function () {
-            $('#vendorForm').on('submit', function (e) {
+        $(document).ready(function() {
+            $('#vendorForm').on('submit', function(e) {
                 e.preventDefault();
 
                 $('.text-danger').remove();
                 let isValid = true;
                 let formData = new FormData(this);
 
-                $('#vendorForm input').each(function () {
+                $('#vendorForm input').each(function() {
                     const input = $(this);
                     if (input.attr('type') === 'file') {
                         return;
@@ -287,14 +273,14 @@
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function (response) {
+                    success: function(response) {
                         MessSuccess.fire({
                             icon: 'success',
                             title: response.message || 'Registration Successful',
                         });
                         location.reload();
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         console.error('Error:', xhr.responseText);
                         MessError.fire({
                             icon: 'error',
@@ -326,15 +312,15 @@
             }
             $('#editVendorModal').modal('show');
         }
-        $(document).ready(function () {
-            $('#editVendorModalForm').on('submit', function (e) {
+        $(document).ready(function() {
+            $('#editVendorModalForm').on('submit', function(e) {
                 e.preventDefault();
 
                 $('.text-danger').remove();
                 let isValid = true;
                 let formData = new FormData(this);
 
-                $('#editVendorModalForm input').each(function () {
+                $('#editVendorModalForm input').each(function() {
                     const input = $(this);
                     if (input.attr('type') === 'file') {
                         return;
@@ -361,14 +347,14 @@
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function (response) {
+                    success: function(response) {
                         MessSuccess.fire({
                             icon: 'success',
                             title: response.message || 'Update Successful',
                         });
                         location.reload();
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         console.error('Error:', xhr.responseText);
                         MessError.fire({
                             icon: 'error',
@@ -407,14 +393,14 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function (response) {
+                success: function(response) {
                     MessSuccess.fire({
                         icon: 'success',
                         title: response.message || 'Vendor deleted successfully',
                     });
                     location.reload();
                 },
-                error: function (xhr) {
+                error: function(xhr) {
                     console.error('Error:', xhr.responseText);
                     MessError.fire({
                         icon: 'error',
@@ -429,15 +415,15 @@
         function handleStatusChange(checkbox, uid) {
             const status = checkbox.checked ? 'active' : 'inactive';
             fetch(BASE_URL + 'admin/api/vendor-update-status', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    uid: uid,
-                    status: status
-                }),
-            })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        uid: uid,
+                        status: status
+                    }),
+                })
                 .then(response => response.json())
                 .then(data => {
 

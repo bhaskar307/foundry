@@ -156,46 +156,50 @@ class WebModel extends Model
         $builder->where('p.is_admin_allow', true);
         $builder->orderBy('p.is_verify', 'DESC');
         $builder->orderBy('p.uid', 'DESC');
-        $builder->limit(10);
+        $builder->limit(20);
         $result = $builder->get()->getResultArray();
 
         return $result;
     }
-
-
-    public function getFilteredProductDetails($categoryUid = [], $priceFrom = 0, $priceTo = 100000)
-    {
+    public function getFilteredProductDetails(
+        $categoryUid = [],
+        $priceFrom = 0,
+        $priceTo = 100000,
+        $vendorCountries = [],
+        $vendorType = null
+    ) {
         $db = \Config\Database::connect();
         $builder = $db->table('product p');
 
         $builder->select('
-                        p.*, 
-                        v.name AS vendor_name,
-                        v.is_verify AS is_vendor_verify,
-                        v.company AS vendor_company,
-                        (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) AS total_customer_review,
-                        (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) AS total_rating,
-                        (
-                            CASE 
-                                WHEN (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) > 0 
-                                THEN ROUND(
-                                    (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) / 
-                                    (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid), 1)
-                                ELSE 0
-                            END
-                        ) AS total_rating_percent ,
-                         (SELECT pi.image 
-                            FROM product_image pi 
-                            WHERE pi.product_id = p.uid 
-                            
-                            AND pi.main_image = 1 
-                            LIMIT 1
-                            ) AS main_image
-                    ');
+        p.*, 
+        v.name AS vendor_name,
+        v.is_verify AS is_vendor_verify,
+        v.company AS vendor_company,
+        v.country AS vendor_country, 
+        (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) AS total_customer_review,
+        (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) AS total_rating,
+        (
+            CASE 
+                WHEN (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) > 0 
+                THEN ROUND(
+                    (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) / 
+                    (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid), 1
+                )
+                ELSE 0
+            END
+        ) AS total_rating_percent,
+        (
+            SELECT pi.image 
+            FROM product_image pi 
+            WHERE pi.product_id = p.uid AND pi.main_image = 1 
+            LIMIT 1
+        ) AS main_image
+    ');
         $builder->join('vendor v', 'v.uid = p.vendor_id', 'inner');
-        // $builder->join('vendor v', 'v.uid = p.vendor_id');
         $builder->where('p.status', ACTIVE_STATUS);
-
+        $builder->where('v.status', ACTIVE_STATUS);
+        $builder->where('p.is_admin_allow', true);
 
         // Category filter
         if (!empty($categoryUid) && is_array($categoryUid)) {
@@ -205,24 +209,96 @@ class WebModel extends Model
                 ->groupEnd();
         }
 
+        // Country filter
+        if (!empty($vendorCountries) && is_array($vendorCountries)) {
+            $builder->whereIn('v.country', $vendorCountries);
+        }
+
+        // Vendor type filter (0 = not verified, 1 = verified)
+        if ($vendorType !== null && $vendorType !== '') {
+            $builder->where('v.is_verify', (int)$vendorType);
+        }
+
         // Price range filter
         // if (is_numeric($priceFrom) && is_numeric($priceTo)) {
         //     $builder->where('p.price >=', $priceFrom);
         //     $builder->where('p.price <=', $priceTo);
         // }
-        $builder->where('v.status', ACTIVE_STATUS);
-        $builder->orderBy('p.is_verify', 'DESC');
 
-        $builder->where('p.status', ACTIVE_STATUS);
-        $builder->where('v.status', ACTIVE_STATUS);
-        // $builder->where('p.is_verify', 1);
-        $builder->where('p.is_admin_allow', true);
+        // Order
         $builder->orderBy('p.is_verify', 'DESC');
         $builder->orderBy('p.uid', 'DESC');
-        
-        $result = $builder->get()->getResultArray();
-        return $result;
+
+        return $builder->get()->getResultArray();
     }
+
+
+    // public function getFilteredProductDetails($categoryUid = [], $priceFrom = 0, $priceTo = 100000, $vendorCountries, $vendorType)
+    // {
+    //     $db = \Config\Database::connect();
+    //     $builder = $db->table('product p');
+    //     $vendor_type = (bool)$vendorType;
+    //     $builder->select('
+    //                     p.*, 
+    //                     v.name AS vendor_name,
+    //                     v.is_verify AS is_vendor_verify,
+    //                     v.company AS vendor_company,
+    //                     v.country AS vendor_country, 
+    //                     (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) AS total_customer_review,
+    //                     (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) AS total_rating,
+    //                     (
+    //                         CASE 
+    //                             WHEN (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) > 0 
+    //                             THEN ROUND(
+    //                                 (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) / 
+    //                                 (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid), 1)
+    //                             ELSE 0
+    //                         END
+    //                     ) AS total_rating_percent ,
+    //                      (SELECT pi.image 
+    //                         FROM product_image pi 
+    //                         WHERE pi.product_id = p.uid 
+
+    //                         AND pi.main_image = 1 
+    //                         LIMIT 1
+    //                         ) AS main_image
+    //                 ');
+    //     $builder->join('vendor v', 'v.uid = p.vendor_id', 'inner');
+    //     // $builder->join('vendor v', 'v.uid = p.vendor_id');
+    //     $builder->where('p.status', ACTIVE_STATUS);
+
+
+    //     // Category filter
+    //     if (!empty($categoryUid) && is_array($categoryUid)) {
+    //         $builder->groupStart()
+    //             ->whereIn('p.category_id', $categoryUid)
+    //             ->orWhereIn('p.subcategory_id', $categoryUid)
+    //             ->groupEnd();
+    //     }
+    //     if (!empty($vendorCountries) && is_array($vendorCountries)) {
+    //         $builder->whereIn('v.country', $vendorCountries);
+    //     }
+    //     if (!empty($vendorType && is_array($vendorCountries))) {
+    //         $builder->where('v.is_verify', $vendor_type);
+    //     }
+    //     // Price range filter
+    //     // if (is_numeric($priceFrom) && is_numeric($priceTo)) {
+    //     //     $builder->where('p.price >=', $priceFrom);
+    //     //     $builder->where('p.price <=', $priceTo);
+    //     // }
+    //     $builder->where('v.status', ACTIVE_STATUS);
+    //     $builder->orderBy('p.is_verify', 'DESC');
+
+    //     $builder->where('p.status', ACTIVE_STATUS);
+    //     $builder->where('v.status', ACTIVE_STATUS);
+    //     // $builder->where('p.is_verify', 1);
+    //     $builder->where('p.is_admin_allow', true);
+    //     $builder->orderBy('p.is_verify', 'DESC');
+    //     $builder->orderBy('p.uid', 'DESC');
+
+    //     $result = $builder->get()->getResultArray();
+    //     return $result;
+    // }
 
     public function getProductDetailsByProductId($productId)
     {
@@ -325,13 +401,19 @@ class WebModel extends Model
     public function getVendorCountryList()
     {
         $db = \Config\Database::connect();
-        $builder = $db->table('vendor'); // fixed typo from 'venodr'
-        $builder->select('country');
-        $builder->distinct();
-        $builder->where('status', ACTIVE_STATUS);
+        $builder = $db->table('vendor v');
+
+        $builder->select('DISTINCT(v.country)');  // distinct country
+        $builder->join('product p', 'p.vendor_id = v.uid', 'inner'); // only vendors having products
+        $builder->where('v.status', ACTIVE_STATUS);   // vendor active
+        $builder->where('v.is_verify', 1);            // only verified vendors
+        $builder->where('p.status', ACTIVE_STATUS);   // product active
+        $builder->where('p.is_admin_allow', 1);       // product approved (if you use that)
+
         $result = $builder->get()->getResultArray();
         return $result;
     }
+
 
     public function getStatics()
     {
@@ -344,14 +426,6 @@ class WebModel extends Model
         ];
     }
 
-    public function getAllRequestCount()
-    {
-        $db = \Config\Database::connect();
-
-        $builder = $db->table('request');
-        $builder->where('status', ACTIVE_STATUS);
-        return $builder->countAllResults();
-    }
     public function getVendorCountryCountry()
     {
         $db = \Config\Database::connect();

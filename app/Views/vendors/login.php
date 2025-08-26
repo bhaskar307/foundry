@@ -24,13 +24,12 @@
     <div class="vh-100 d-flex align-items-center">
         <div class="container">
             <div class="col-md-6 col-lg-4 p-0 mx-auto">
-                <div class="p-4 rounded-10 shadow-sm bg-white">
+                <div class="p-4 rounded-10 shadow-sm bg-white position-relative">
                     <div class="mb-2 text-center">
                         <img src="<?php echo base_url('assets/admin/images/foundry_logo.webp')?>" alt="" width="75">
                     </div>
                     <div class="" id="loginSection">
-                        <div class="mb-2 fw-bold text-center h4 ">Vendor Portal</div>
-                        <big class="d-block mb-4 text-center text-gray">Vendor Login</big>
+                        <big class="d-block mb-4 text-center text-dark">Vendor Login</big>
                         <form method="post" class="logregform" id="loginForm">
                             <div class="mb-3">
                                 <label class="form-label mb-1 d-block">Email</label>
@@ -115,18 +114,6 @@
                                 </i>
                                 <span>Login</span>
                             </button>
-                            <div class="mt-3 d-flex align-items-center justify-content-center gap-2">
-                                <i style="line-height: 0.8;">
-                                    <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M6.5 13.5C6.5 13.5 12 11.6429 12 7" stroke="#6C757D" stroke-linecap="round" stroke-linejoin="round" />
-                                        <path d="M12 7V1.42857C12 1.42857 10.1667 0.5 6.5 0.5" stroke="#6C757D" stroke-linecap="round" stroke-linejoin="round" />
-                                        <path d="M6.49999 13.5C6.49999 13.5 1 11.6429 1 7" stroke="#6C757D" stroke-linecap="round" stroke-linejoin="round" />
-                                        <path d="M1 7V1.42857C1 1.42857 2.83333 0.5 6.49999 0.5" stroke="#6C757D" stroke-linecap="round" stroke-linejoin="round" />
-                                        <path d="M10.1667 3.28571C6.5 6.07142 5.58333 9.78571 5.58333 9.78571C5.58333 9.78571 4.66667 8.67736 3.75 7.92856" stroke="#6C757D" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </i>
-                                <span>Secure login for authorized personnel only</span>
-                            </div>
                         </form>
                     </div>
 
@@ -158,7 +145,7 @@
 
                     <div class="" id="forgotPasswordSection" style="display: none;">
                         <div class="mb-2 fw-bold text-center h4 ">Forgot Password</div>
-                        <div class="d-block mb-4 text-center text-gray">Forgot your password, please enter your email to send the reset password link.</div>
+                        <div class="d-block mb-4 text-center text-gray">Forgot your password? Please enter your email to receive an OTP.</div>
                         <form id="forgotPasswordForm" class="logregform">
                             <div class="mb-3">
                                 <label class="form-label mb-1 d-block">Email</label>
@@ -182,7 +169,7 @@
                                         <path d="M8 16.5V14.7222H14.2222V2.27778H8V0.5H14.2222C14.7111 0.5 15.1298 0.674222 15.4782 1.02267C15.8267 1.37111 16.0006 1.78948 16 2.27778V14.7222C16 15.2111 15.8261 15.6298 15.4782 15.9782C15.1304 16.3267 14.7117 16.5006 14.2222 16.5H8ZM6.22222 12.9444L5 11.6556L7.26667 9.38889H0V7.61111H7.26667L5 5.34444L6.22222 4.05556L10.6667 8.5L6.22222 12.9444Z" fill="white" />
                                     </svg>
                                 </i>
-                                <span>Send Reset Link</span>
+                                <span>Send OTP</span>
                             </button>
                         </form>
                     </div>
@@ -235,6 +222,31 @@
                             </button>
                         </form>
                     </div>
+                    <div class="text-center mt-3">Don't have an Account? 
+                        <a href="<?= base_url('vendor-register') ?>">
+                            <strong><u>Register as a Partner</u></strong>
+                        </a>
+                    </div>
+                    <small class="mt-3 d-flex align-items-center justify-content-center gap-2">
+                        <i style="line-height: 0.8;">
+                            <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6.5 13.5C6.5 13.5 12 11.6429 12 7" stroke="#6C757D" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M12 7V1.42857C12 1.42857 10.1667 0.5 6.5 0.5" stroke="#6C757D" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M6.49999 13.5C6.49999 13.5 1 11.6429 1 7" stroke="#6C757D" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M1 7V1.42857C1 1.42857 2.83333 0.5 6.49999 0.5" stroke="#6C757D" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M10.1667 3.28571C6.5 6.07142 5.58333 9.78571 5.58333 9.78571C5.58333 9.78571 4.66667 8.67736 3.75 7.92856" stroke="#6C757D" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </i>
+                        <span>Secure login for authorized personnel only</span>
+                    </small>
+                    <div class="d-flex justify-content-center mt-3">
+                        <a href="<?= base_url('') ?>" class="d-flex align-items-center gap-2" style="color:#ccc">
+                            <i style="line-height: 0;">
+                                <svg fill="currentColor" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg" data-name="Layer 2"><path d="m22 11h-17.586l5.293-5.293a1 1 0 1 0 -1.414-1.414l-7 7a1 1 0 0 0 0 1.414l7 7a1 1 0 0 0 1.414-1.414l-5.293-5.293h17.586a1 1 0 0 0 0-2z"/></svg>
+                            </i>
+                            <span>Back to Home</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -261,7 +273,7 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    window.location.href = base_url +'vendor/dashboard';
+                    window.location.href = base_url +'vendor/products';
                 } else {
                     MessError.fire({
                         icon: 'error',
