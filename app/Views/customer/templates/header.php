@@ -190,9 +190,9 @@ if (!empty($jwt)) {
                 <li>
                     <a href="<?= base_url('product-list') ?>" <?php if ($lastSegment == 'product-list') { ?>class="active" <?php } ?>>Shop</a>
                 </li>
-                <!-- <li>
+                <li>
                     <a href="<?= base_url('category') ?>" <?php if ($lastSegment == 'category') { ?>class="active" <?php } ?>>Category</a>
-                </li> -->
+                </li>
                 <li>
                     <a href="https://www.youtube.com/channel/UCqG_zja0MNnAPVdB4FpRBbg">Podcast</a>
                 </li>

@@ -64,7 +64,7 @@ class WebController extends Common
             $decoded = base64_decode($filter);
             $filterData = json_decode($decoded, true); // associative array
             // echo '<pre>';
-            // print_r($filterData);
+            // var_dump($filterData);
             // die();
             $resp['categoryUid'] =    $filterData['categories'];
             $resp['priceFrom'] = $filterData['price']['from'];

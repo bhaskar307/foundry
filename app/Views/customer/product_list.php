@@ -56,9 +56,11 @@
 
                                 <div class="form-check">
                                     <input class="form-check-input seller-type-checkbox" onclick="handleCategoryChange(this)"
-                                        type="checkbox" id="seller_type_none_verify" value="0" <?php if (!empty($vendor_type) && $vendor_type == 0) echo 'checked'; ?>>
+                                        type="checkbox" id="seller_type_none_verify" value="0"
+                                        <?php echo ($vendor_type == 0) ? 'checked' : ''; ?>>
                                     <label class="form-check-label" for="seller_type_none_verify">Unverified</label>
                                 </div>
+
                             </div>
 
 
@@ -241,8 +243,6 @@
     </div>
 </section>
 <script>
-    console.log("hsdjkhfajhj");
-
     function handleCategoryChange(checkbox) {
         // uncheck all other seller-type checkboxes
         document.querySelectorAll('.seller-type-checkbox').forEach(cb => {
@@ -354,8 +354,11 @@
             // Rating logic
             const rating = row.total_rating_percent || 0;
             const fullStars = Math.floor(rating);
+            console.log("===============", fullStars);
+
             const halfStar = (rating - fullStars) >= 0.5;
             const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
 
             const starSvg = (fill) => {
                 const color = {
@@ -364,23 +367,32 @@
                     empty: '#E0E0E0'
                 } [fill];
                 return `
-                <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="halfGradient">
-                            <stop offset="50%" stop-color="#F6AB27"/>
-                            <stop offset="50%" stop-color="#E0E0E0"/>
-                        </linearGradient>
-                    </defs>
-                    <path d="M50 5L61 35H95L67 57L78 90L50 70L22 90L33 57L5 35H39L50 5Z" fill="${color}"/>
-                </svg>
+                    <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="halfGradient">
+                                <stop offset="50%" stop-color="#F6AB27"/>
+                                <stop offset="50%" stop-color="#E0E0E0"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M50 5L61 35H95L67 57L78 90L50 70L22 90L33 57L5 35H39L50 5Z" fill="${color}"/>
+                    </svg>
                 `;
             };
 
-            // Build stars HTML
+            // just decide which type of star
             let starsHtml = '';
-            for (let i = 0; i < fullStars; i++) starsHtml += starSvg('full');
-            if (halfStar) starsHtml += starSvg('half');
-            for (let i = 0; i < emptyStars; i++) starsHtml += starSvg('empty');
+            if (rating >= 0.75) {
+                starsHtml = starSvg('full'); // full star if 0.75+
+            } else if (rating >= 0.25) {
+                starsHtml = starSvg('half'); // half star if between 0.25–0.74
+            } else {
+                starsHtml = starSvg('empty'); // empty star if < 0.25
+            }
+            // let starsHtml = '';
+            // for (let i = 0; i < fullStars; i++) starsHtml += starSvg('full');
+            // if (halfStar) starsHtml += starSvg('half');
+            // for (let i = 0; i < emptyStars; i++) starsHtml += starSvg('empty');
+
             let slug = "";
             if (row.slug === null) {
                 slug = row.uid;
@@ -394,18 +406,20 @@
                     <img src="${row.main_image}" alt="" class="w-100 object-fit-cover" style="height:250px;">
                     <div class="p-lg-3 p-2">
                         <h5 class="mb-1" style="height:50px;">
-                            ${row.name.length > 40 ? row.name.slice(0, 40) + '...' : row.name}
+                            ${row.name.length > 30 ? row.name.slice(0, 30) + '...' : row.name}
                         </h5>
-                        ${row.is_verify == 1 ? `
-                            <span class="badge bg-success">
-                                <i class="bi bi-check-circle-fill"></i> Sponsored
-                            </span>
-                            ` : ''}
-                        
-
-                        <div class="d-flex align-items-center justify-content-between">
-                            <i style="display: flex; gap: 2px; line-height: 0;">${starsHtml}</i>
-                            <small style="color: #666;">${rating} (${row.total_customer_review} reviews)</small>
+                        <div class="d-flex flex-wrap align-items-center justify-content-between gap-1">
+                            <div>
+                                ${row.is_verify == 1 ? `
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-circle-fill"></i> Sponsored
+                                </span>
+                                ` : ''}
+                            </div>
+                            <div class="d-flex align-items-center gap-1">
+                                <i style="display: flex; gap: 2px; line-height: 0;">${starsHtml}</i>
+                                <small style="color: #666;">${rating} (${row.total_customer_review} reviews)</small>
+                            </div>
                         </div>
 
                         <div class="my-1" style="color: #666;">

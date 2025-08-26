@@ -406,7 +406,7 @@ class WebModel extends Model
         $builder->select('DISTINCT(v.country)');  // distinct country
         $builder->join('product p', 'p.vendor_id = v.uid', 'inner'); // only vendors having products
         $builder->where('v.status', ACTIVE_STATUS);   // vendor active
-        $builder->where('v.is_verify', 1);            // only verified vendors
+        // $builder->where('v.is_verify', 1);            // only verified vendors
         $builder->where('p.status', ACTIVE_STATUS);   // product active
         $builder->where('p.is_admin_allow', 1);       // product approved (if you use that)
 

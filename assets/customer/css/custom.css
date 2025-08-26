@@ -7,7 +7,7 @@
 	background: #f1f1f1; 
   }
   ::-webkit-scrollbar-thumb {
-	background: #1F58BD; 
+	background: #1d6eff; 
 	border-radius: 30px;
   }
   ::-webkit-scrollbar-thumb:hover {
@@ -78,7 +78,7 @@ h4 {
   font-weight: 600;
 }
 h5 {
-  font-size: 18px;
+  font-size: 15px;
   line-height: 1.4;
   font-weight: 600;
 }
@@ -135,13 +135,13 @@ h6{
 }
 a {
   transition: all 0.2s linear;
-  color: #1F58BD;
+  color: #1d6eff;
   outline: none;
   text-decoration: none;
 }
 a:hover,
 a:focus {
-  color: #1F58BD;
+  color: #1d6eff;
   transition: all 0.2s linear;
   text-decoration: none !important;
   outline: none !important;
@@ -189,14 +189,26 @@ header.header{
     color: #fff;
 }
 .mainMenu > li > a.active, .mainMenu > li:hover > a{
-    color: #1F58BD;
+    color: #FFFF00;
+}
+header.header .btn-primary{
+    background-color: #FFFF00;
+    border-color: #FFFF00;
+    color: #000;
 }
 .btn-primary{
-    background-color: #1F58BD;
+    background-color: #1d6eff;
+    border-color: #1d6eff;
+    color: #fff;
+}
+.btn-primary:hover, .btn-primary:focus{
+  background-color: #1666ef;
+  border-color: #1666ef;
+  color: #fff;
 }
 .btn-white{
     background-color: #fff;
-    color: #1F58BD;
+    color: #1d6eff;
 }
 .btn{
     height: 45px;
@@ -206,7 +218,7 @@ header.header{
     font-size: 15px;
     box-shadow: none !important;
 }
-.form-control{
+.form-control, .form-select{
     box-shadow: none !important;
     font-size: 14px;
 }
@@ -230,17 +242,23 @@ input[type=number] {
     appearance: textfield;
 }
 .homeHreo{
-    background: linear-gradient(99.34deg, #358167 10.31%, #B3E2D5 28.43%, #C1E2D9 63.22%, #358167 90.93%);
+    background: #f1f1f1;
     padding: 120px 0 50px;
     border-radius: 0 0 30px 30px;
+    color: #000;
+}
+.homeHreo h1, .homeHreo h2{
+  color: #000;
 }
 .homeHreo h1 span{
-    color: #1F58BD;
+    color: #1d6eff;
+    display: inline-flex;
 }
 .innerHero{
-  background: linear-gradient(99.34deg, #358167 10.31%, #B3E2D5 28.43%, #C1E2D9 63.22%, #358167 90.93%);
+  background:#f1f1f1;
     padding: 53px 0 50px;
     border-radius: 0 0 30px 30px;
+    color: #000;
 }
 .headerBg{
   background-color: rgba(0,0,0,0.8);
@@ -299,14 +317,14 @@ input[type=number] {
   border-radius: 100%;
 }
 .footerSoc a:hover{
-  background-color:#1F58BD;
+  background-color:#1d6eff;
   color: #fff !important;
 }
 .footerInner a, .footerMenu a{
   color: #fff;
 }
 .footerInner a:hover, .footerMenu a:hover{
-  color:#1F58BD;
+  color:#1d6eff;
 }
 .footerMenu{
   display: flex;
@@ -417,9 +435,20 @@ input[type=number] {
 .star-rating label:hover ~ label {
   color: gold;
 }
+#loginRegisterModal .nav-pills .nav-link{
+  height: 50px;
+}
+#loginRegisterModal .nav-pills{
+  border-bottom: 1px solid #0d6efd;
+}
+.col5{
+  width: 20%;
+}
 
 @media screen and (max-width: 991px) {
-  
+  .col5{
+    width: 50%;
+  }
 }
 @media screen and (max-width: 767px) {
     h1 {
@@ -428,4 +457,10 @@ input[type=number] {
     h2 {
         font-size: 30px;
     }
+    .col5{
+    width: 100%;
+  }
+  #productContainer h5{
+    font-size: 13px;
+  }
 }

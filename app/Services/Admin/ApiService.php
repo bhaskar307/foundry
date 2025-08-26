@@ -359,7 +359,7 @@ class ApiService
             'email'      => 'required',
             'mobile'      => 'required',
             'country'      => 'required',
-            'dob'      => 'required'
+            
         ];
         $validationResult = validateData($data, $validationRules);
         if (!$validationResult['success']) {
@@ -390,7 +390,7 @@ class ApiService
                 'name'       => $data['name'],
                 'mobile'     => $data['mobile'],
                 'email'      => $data['email'],
-                'dob'        => $data['dob'],
+                'dob'        => $data['dob'] ?? null,
                 'updated_by' => $data['user_id'] ?? NULL,
                 'updated_at' => date('Y-m-d H:i:s')
             ];

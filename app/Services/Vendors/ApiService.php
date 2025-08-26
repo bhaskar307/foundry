@@ -89,7 +89,7 @@ class ApiService
         try {
             $name = $data['name'];
 
-            $slug = $this->generateUniqueSlug($name , $data['user_id']);
+            $slug = $this->generateUniqueSlug($name, $data['user_id']);
 
             $image_path = $image_paths[0] ?? '';
             $addData = [
@@ -107,7 +107,7 @@ class ApiService
                 'created_by'        => $data['user_id'] ?? NULL,
             ];
 
-          
+
 
             $success = $this->commonModel->insertData(PRODUCT_TABLE, $addData);
             if (!empty($image_paths)) {
@@ -147,7 +147,7 @@ class ApiService
     private function generateUniqueSlug($string, $vendorId = null)
     {
 
-       
+
         $slug = strtolower($string);
         $slug = preg_replace('/[^a-z0-9\s-]/', '', $slug);
         $slug = preg_replace('/[\s-]+/', '-', $slug);
@@ -229,7 +229,8 @@ class ApiService
                 'updated_at'   => date('Y-m-d H:i:s')
             ];
             if (!empty($image_path)) {
-                $updateData['image'] = $image_path;
+                // $updateData['image'] = $image_path;
+                $updateData['image'] = '';
             }
 
             $success = $this->commonModel->UpdateData(PRODUCT_TABLE, ['uid' => $productUid], $updateData);
@@ -645,9 +646,9 @@ class ApiService
                 'vendor_id'         => $data['user_id'],
                 'category_id'       => $data['category'],
                 'subcategory_id'    => $data['subcategory'] ?? null,
-                'image'             => $image_path,
+                'image'             => '',
                 'created_by'        => $data['user_id'] ?? NULL,
-                'is_admin_allow'    => 0 , 
+                'is_admin_allow'    => 0,
             ];
             $success = $this->commonModel->UpdateData(PRODUCT_TABLE, ['uid' => $data['uid']], $addData);
 

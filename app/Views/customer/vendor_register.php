@@ -26,7 +26,7 @@
                          </div>
 
                          <div class="position-relative">
-                             <input type="text" name="name" inputmode="text" autocomplete="name" autocapitalize="words" class="form-control" placeholder="Name*" required>
+                             <input type="text" name="name" inputmode="text" autocomplete="name" autocapitalize="words" class="form-control" placeholder="Seller Name*" required>
                          </div>
                          <div class="position-relative">
                              <input type="email" name="email" inputmode="email" autocomplete="email" class="form-control" placeholder="Email id*" required>
