@@ -171,31 +171,34 @@ class WebModel extends Model
         $db = \Config\Database::connect();
         $builder = $db->table('product p');
 
-        $builder->select('
-        p.*, 
-        v.name AS vendor_name,
-        v.is_verify AS is_vendor_verify,
-        v.company AS vendor_company,
-        v.country AS vendor_country, 
-        (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) AS total_customer_review,
-        (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) AS total_rating,
-        (
-            CASE 
-                WHEN (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) > 0 
-                THEN ROUND(
-                    (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) / 
-                    (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid), 1
-                )
-                ELSE 0
-            END
-        ) AS total_rating_percent,
-        (
-            SELECT pi.image 
-            FROM product_image pi 
-            WHERE pi.product_id = p.uid AND pi.main_image = 1 
-            LIMIT 1
-        ) AS main_image
-    ');
+        $builder->select("
+                p.*, 
+                v.name AS vendor_name,
+                v.is_verify AS is_vendor_verify,
+                v.company AS vendor_company,
+                v.country AS vendor_country, 
+                (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) AS total_customer_review,
+                (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) AS total_rating,
+                (
+                    CASE 
+                        WHEN (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid) > 0 
+                        THEN ROUND(
+                            (SELECT SUM(r.rating) FROM product_rating r WHERE r.product_id = p.uid) / 
+                            (SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid), 1
+                        )
+                        ELSE 0
+                    END
+                ) AS total_rating_percent,
+                (
+                    SELECT pi.image 
+                    FROM product_image pi 
+                    WHERE pi.product_id = p.uid 
+                    AND pi.main_image = 1
+                    AND pi.status = 'active'
+                    LIMIT 1
+                ) AS main_image
+            ");
+
         $builder->join('vendor v', 'v.uid = p.vendor_id', 'inner');
         $builder->where('p.status', ACTIVE_STATUS);
         $builder->where('v.status', ACTIVE_STATUS);
@@ -311,6 +314,12 @@ class WebModel extends Model
             v.name AS vendor_name, 
             v.mobile AS vendor_mobile, 
             v.email AS vendor_email, 
+             v.image AS vendor_image, 
+             v.is_verify AS vendor_is_verify , 
+             v.country AS vendor_country,
+             v.states AS vendor_states,
+             v.city AS vendor_city,
+                v.website AS vendor_website,
             cat.title AS category_name,
             (
                 SELECT COUNT(*) FROM product_rating r WHERE r.product_id = p.uid

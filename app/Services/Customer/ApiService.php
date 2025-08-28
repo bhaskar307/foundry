@@ -60,7 +60,7 @@ class ApiService
     {
         $validationRules = [
             'name'      => 'required',
-            'email'     => 'required',
+            'email'     => 'required|valid_email|is_unique[customer.email]',
             'mobile'    => 'required',
             // 'dob'       => 'required',
             'password'  => 'required',

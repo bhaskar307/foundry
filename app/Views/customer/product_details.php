@@ -144,7 +144,7 @@
                     <?php if (!empty($vendor)) { ?>
                         <?php
                         $vendor = $vendor[0];
-                        $image = base_url($vendor['image']) ?? base_url('assets/customer/images/default_vendor.png');
+                        $image = base_url($resp['vendor_image']) ?? base_url('assets/customer/images/default_vendor.png');
                         ?>
                         <div class="p-3 rounded-10 border d-flex align-items-center gap-3 mb-3">
                             <i style="line-height: 0;">
@@ -152,7 +152,7 @@
                             </i>
                             <div>
                                 <div class="d-flex flex-column gap-1">
-                                    <?php if (!empty($vendor['is_verify']) && $vendor['is_verify'] == 1): ?>
+                                    <?php if (!empty($resp['vendor_is_verify']) && $resp['vendor_is_verify'] == 1): ?>
                                         <small class="d-flex align-items-center gap-1">
                                             <i style="line-height: 0;">
                                                 <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
@@ -166,7 +166,7 @@
                                         </small>
                                     <?php endif; ?>
                                     <h5 class="m-0">
-                                        <?= $vendor['company'] ?>
+                                        <?= $resp['vendor_name'] ?>
                                     </h5>
                                     <!-- <small class="d-block"><?= $vendor['city'] ?>, <?= $vendor['states'] ?>, India</small> -->
                                 </div>
@@ -346,8 +346,8 @@
 
                                                 <div
                                                     class="text-dark fw-600 d-flex gap-2 justify-content-between align-items-center">
-                                                    <span><?= $vendor['company'] ?></span>
-                                                    <?php if (!empty($vendor['is_verify']) && $vendor['is_verify'] == 1): ?>
+                                                    <span><?= $row['vendor_name'] ?></span>
+                                                    <?php if (!empty($row['is_vendor_verify']) && $row['is_vendor_verify'] == 1): ?>
                                                         <small class="d-flex align-items-center gap-1">
                                                             <span class="fw-600">Verified</span>
                                                             <i style="line-height: 0;">
@@ -485,21 +485,21 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <div class="d-flex flex-column gap-2">
-                            <div><strong>Seller Name:</strong> <span id="sellerName"><?= $vendor['name'] ?></span></div>
-                            <!-- <div><strong>Email:</strong> <span id="sellerEmail"><?= $vendor['email'] ?></span></div> -->
-                            <div><strong>Phone:</strong> <span id="sellerPhone">+91 <?= $vendor['mobile'] ?></span></div>
+                            <div><strong>Seller Name:</strong> <span id="sellerName"><?= $resp['vendor_name'] ?></span></div>
+                            <!-- <div><strong>Email:</strong> <span id="sellerEmail"><?= $resp['vendor_email'] ?></span></div> -->
+                            <div><strong>Phone:</strong> <span id="sellerPhone"><?= $resp['vendor_mobile'] ?></span></div>
                             <div>
                                 <strong>Address:</strong>
                                 <span id="sellerPhone">
-                                    <?= $vendor['country'] ?> ,
-                                    <?= $vendor['city'] ?> ,
-                                    <?= $vendor['states'] ?>
+                                    <?= $resp['vendor_country'] ?> ,
+                                    <?= $resp['vendor_city'] ?> ,
+                                    <?= $resp['vendor_states'] ?>
                                 </span>
                             </div>
                             <div>
                                 <strong>Website:</strong>
-                                <a id="sellerPhone" href="<?= $vendor['website'] ?>" target="_blank">
-                                    <?= $vendor['website'] ?>
+                                <a id="sellerPhone" href="<?= $resp['vendor_website'] ?>" target="_blank">
+                                    <?= $resp['vendor_website'] ?>
                                 </a>
                             </div>
 

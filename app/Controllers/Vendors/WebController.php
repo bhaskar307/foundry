@@ -34,7 +34,7 @@ class WebController extends Common
         if (!$data) {
             return view('vendors/login.php');
         }
-        return redirect()->to(base_url('vendor/dashboard'));
+        return redirect()->to(base_url('vendor/products'));
     }
 
     /** Dashboard */

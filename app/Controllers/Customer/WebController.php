@@ -199,7 +199,7 @@ class WebController extends Common
             );
         }
 
-
+        // $this->dd($resp) ; 
         return
             view('customer/templates/header.php', $metaTags) .
             view('customer/product_details.php', $resp) .

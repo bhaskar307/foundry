@@ -350,7 +350,7 @@ if (!empty($jwt)) {
                                             width="80" height="80"
                                             style="object-fit: cover;">
 
-                                        <strong class="d-block mb-1">Upload Profile Image*</strong>
+                                        <strong class="d-block mb-1">Upload Profile Image</strong>
                                         <small class="d-block" style="color:#666">JPG, PNG, or GIF. Max: 2MB.</small>
 
                                         <input class="form-control position-absolute start-0 end-0 top-0 bottom-0"
@@ -419,7 +419,7 @@ if (!empty($jwt)) {
                                         <small class="text-danger d-block" id="error-phone"></small>
                                     </div>
                                     <div>
-                                        <input type="tel" id="company" name="company" class="form-control" placeholder="Company*" required>
+                                        <input type="text" inputmode="text" autocomplete="organization" autocapitalize="words " id="company" name="company" class="form-control" placeholder="Company*" required>
                                         <small class="text-danger d-block" id="error-company"></small>
                                     </div>
                                     <!-- <div>
@@ -642,10 +642,12 @@ if (!empty($jwt)) {
                             document.getElementById('pills-login-tab').click(); // Switch to login tab
                             loginModal.show();
                         }, 1600);
+
+
                     } else {
                         MessError.fire({
                             icon: 'error',
-                            title: 'Registration failed!',
+                            title: 'Email is already exits',
                         });
                     }
                 })

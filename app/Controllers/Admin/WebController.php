@@ -315,7 +315,7 @@ class WebController extends Common
 
         try {
             
-            $to      = $this->request->getPost('to') ?? 'u5459607@gmail.com';
+            $to      = $this->request->getPost('to') ?? 'nv543578@gmail.com';
             $subject = $this->request->getPost('subject') ?? 'Test Email';
             $message = $this->request->getPost('message') ?? 'Hi! This is a test email.';
 
